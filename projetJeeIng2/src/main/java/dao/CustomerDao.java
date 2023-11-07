@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.SQLQuery;
@@ -18,11 +19,11 @@ public class CustomerDao {
 		sessionFactory = sf;
 	}
 	
-	public boolean saveCustomer (Customer user) {
+	public boolean saveCustomer (Customer customer) {
 		boolean b = false;		
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		int i=(Integer)session.save(user);
+		int i=(Integer)session.save(customer);
 		if(i>0) {b=true;}
 		
 		tx.commit();
@@ -30,22 +31,13 @@ public class CustomerDao {
 		return b;
 	}
 	
-	public boolean saveUser2 (Administrator user) {
-		boolean b = false;		
-		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		int i=(Integer)session.save(user);
-		if(i>0) {b=true;}
-		tx.commit();
-		session.close();
-		return b;
-	}
 	
 	
-	public void getAllUser(){
+	//a mettre dans admin
+	public List<Customer> getAllCustomer(){
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		String sql = "SELECT * FROM User;";
+		String sql = "SELECT * FROM Customer;";
 		
 		SQLQuery query = session.createSQLQuery(sql).addEntity(Customer.class);
 		List<Customer> liste = query.list();
@@ -54,37 +46,47 @@ public class CustomerDao {
 		}
 		tx.commit();
 		session.close();
+		
+		return liste;
 	}
 	
-	public boolean getUser(String nom, String prenom) {
-		boolean b = false;
+	public Customer getCustomerById(int id) {
+		
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		String sql = "SELECT * FROM User WHERE nom='"+nom+"' AND prenom='"+prenom+"';";
+		String sql = "SELECT * FROM Customer WHERE id='"+id+"';";
 		
 		SQLQuery query = session.createSQLQuery(sql).addEntity(Customer.class);
-		List<Customer> liste = query.list();
-		if (liste.size()==1) {b = true;}
+		Customer customer = (Customer) query.uniqueResult();
+		
 		
 		tx.commit();
 		session.close();
 		
-		return b;
+		return customer;
 	}
 	
-	public boolean getUser2(String nom, String prenom) {
-		boolean b = false;
+	public boolean setFidelityPoint (Customer customer, int points) {
+				
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		String sql = "SELECT * FROM User2 WHERE nom='"+nom+"' AND prenom='"+prenom+"';";
-		
-		SQLQuery query = session.createSQLQuery(sql).addEntity(Administrator.class);
-		List<Customer> liste = query.list();
-		if (liste.size()==1) {b = true;}
-		
+		String sql = "UPDATE Customer SET fidelityPoint = fidelityPoint"+ (points>0 ? "+":"") + points + " WHERE id="+customer.getId()+";";
+
+		SQLQuery query = session.createSQLQuery(sql);
+		int rowCount = query.executeUpdate();
 		tx.commit();
 		session.close();
+
+		if (rowCount > 0) {
+		    return true;
+		} else {
+		    return false;
+		}
 		
-		return b;
 	}
+	
+	
+	
+	
+	
 }
