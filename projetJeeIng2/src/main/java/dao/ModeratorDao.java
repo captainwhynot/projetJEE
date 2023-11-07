@@ -33,7 +33,7 @@ public SessionFactory sessionFactory;
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		String sql = "DELETE * FROM Moderator WHERE id="+moderator.getId()+";";
+		String sql = "DELETE FROM Moderator WHERE id="+moderator.getId()+";";
 		SQLQuery query = session.createSQLQuery(sql);
 		int rowCount = query.executeUpdate();
 		
@@ -48,7 +48,7 @@ public SessionFactory sessionFactory;
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		String sql = "UPDATE Moderator SET "+right+"='"+bool+"' WHERE id="+moderator.getId()+";";
+		String sql = "UPDATE Moderator SET "+right+"="+(bool?"1":"0")+" WHERE id="+moderator.getId()+";";
 		SQLQuery query = session.createSQLQuery(sql);
 		int rowCount = query.executeUpdate();
 		
