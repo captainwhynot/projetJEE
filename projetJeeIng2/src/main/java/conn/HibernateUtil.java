@@ -20,7 +20,7 @@ public class HibernateUtil {
 			Configuration configuration = new Configuration();
 			Properties properties = new Properties();
 			properties.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
-			properties.put(Environment.URL, "jdbc:mysql://localhost:3306/bddmoha");
+			properties.put(Environment.URL, "jdbc:mysql://localhost:3306/bdd_projet_jee");
 			properties.put(Environment.USER, "root");
 			properties.put(Environment.PASS, "");
 			properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");

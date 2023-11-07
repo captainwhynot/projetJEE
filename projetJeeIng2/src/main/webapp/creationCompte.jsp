@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <!DOCTYPE html>
-<!-- test nv ajout -->
 <html>
 <head>
     <meta charset="ISO-8859-1">
@@ -10,7 +9,7 @@
 
 </head>
 <body>
-<h1>test ejgreg</h1>
+<h1>Connexion</h1>
     <div class="container">
         <form method="post" action="creationCompte" class="mt-4">
             <div class="form-group">
