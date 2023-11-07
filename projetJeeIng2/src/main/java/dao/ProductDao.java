@@ -5,21 +5,21 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import entity.Moderator;
+import entity.Product;
 
-public class ModeratorDao {
+public class ProductDao {
 	public SessionFactory sessionFactory;
 	
-	public ModeratorDao(SessionFactory sf) {
+	public ProductDao(SessionFactory sf) {
 		sessionFactory = sf;
 	}
 	
-	public boolean addModerator (Moderator moderator) {
+	public boolean addProduct (Product product) {
 		boolean b = false;		
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		int i=(Integer)session.save(moderator);
+		int i=(Integer)session.save(product);
 		if (i>0) b=true;
 		
 		tx.commit();
@@ -28,27 +28,27 @@ public class ModeratorDao {
 		return b;
 	}
 	
-	public boolean deleteModerator (Moderator moderator) {
+	public boolean modifyProduct (Product product, String name, double price, int stock) {
 		boolean b = false;		
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		String sql = "DELETE FROM Moderator WHERE id="+moderator.getId()+";";
+		String sql = "UPDATE Product SET name='"+name+"', price="+price+", stock="+stock+" WHERE id="+product.getId()+";";
 		SQLQuery query = session.createSQLQuery(sql);
 		int rowCount = query.executeUpdate();
 		
 		tx.commit();
 		session.close();
 
-		return (rowCount > 0);
+		return (rowCount > 0);	
 	}
 	
-	public boolean modifyRight (Moderator moderator, String right, boolean bool) {
+	public boolean deleteProduct (Product product) {
 		boolean b = false;		
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		String sql = "UPDATE Moderator SET "+right+"="+(bool?"1":"0")+" WHERE id="+moderator.getId()+";";
+		String sql = "DELETE FROM Product WHERE id="+product.getId()+";";
 		SQLQuery query = session.createSQLQuery(sql);
 		int rowCount = query.executeUpdate();
 		

@@ -32,5 +32,11 @@ public class Main {
 		System.out.println(customerDao.setFidelityPoint(cust, 10));
 		System.out.println(customerDao.setFidelityPoint(cust, -5));
 		
+		ProductDao productDao = new ProductDao(sessionFactory);
+		Product product = new Product("poster", 15.99, 5, modo.getId());
+		System.out.println(productDao.addProduct(product));
+		System.out.println(productDao.modifyProduct(product, product.getName(), 50.15, product.getStock()));
+		
+		
 	}
 }
