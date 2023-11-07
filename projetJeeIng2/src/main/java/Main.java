@@ -1,9 +1,8 @@
 import conn.HibernateUtil;
-import dao.UserDao;
+import dao.CustomerDao;
 
 public class Main {
 	public static void main(String[] args) {
-		UserDao dao= new UserDao(HibernateUtil.getSessionFactory());
-		dao.getUser("tyaty","tyty");
+		CustomerDao dao = new CustomerDao(HibernateUtil.getSessionFactory());
 	}
 }

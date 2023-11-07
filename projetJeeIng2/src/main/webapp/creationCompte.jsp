@@ -3,39 +3,31 @@
 <html>
 <head>
     <meta charset="ISO-8859-1">
-    <title>Creation compte client</title>
+    <title>Create Customer Account</title>
     <!-- Inclure Bootstrap CSS (assurez-vous d'avoir lié Bootstrap CSS dans votre projet) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
 </head>
 <body>
-<h1>Connexion</h1>
+<h1 style="text-align:center;">Create your Account</h1>
     <div class="container">
         <form method="post" action="creationCompte" class="mt-4">
             <div class="form-group">
-                <label for="nom">Nom :</label>
-                <input type="text" id="nom" name="nom" class="form-control" required>
+                <label for="email">E-mail :</label>
+                <input type="text" id="email" name="email" class="form-control" required>
             </div>
 
             <div class="form-group">
-                <label for="prenom">Prenom :</label>
-                <input type="text" id="prenom" name="prenom" class="form-control" required>
+                <label for="password">Password :</label>
+                <input type="text" id="password" name="password" class="form-control" required>
             </div>
-
+            
             <div class="form-group">
-                <label>Type :</label>
-                <div class="form-check">
-                    <input type="radio" id="user1" name="typeUser" value="user1" class="form-check-input" checked>
-                    <label for="user1" class="form-check-label">User1</label>
-                </div>
-
-                <div class="form-check">
-                    <input type="radio" id="user2" name="typeUser" value="user2" class="form-check-input">
-                    <label for="user2" class="form-check-label">User2</label>
-                </div>
+                <label for="username">Username :</label>
+                <input type="text" id="username" name="username" class="form-control" required>
             </div>
 
-            <button type="submit" class="btn btn-primary">Envoyer</button>
+            <button type="submit" class="btn btn-primary">Send</button>
         </form>
     </div>
 </body>

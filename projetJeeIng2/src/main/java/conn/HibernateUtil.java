@@ -8,8 +8,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
-import entity.User;
-import entity.User2;
+import entity.*;
 
 public class HibernateUtil {
 	
@@ -28,8 +27,12 @@ public class HibernateUtil {
 			properties.put(Environment.SHOW_SQL, true);
 			
 			configuration.setProperties(properties);
-			configuration.addAnnotatedClass(User.class);
-			configuration.addAnnotatedClass(User2.class);
+			configuration.addAnnotatedClass(Customer.class);
+			configuration.addAnnotatedClass(Administrator.class);
+			configuration.addAnnotatedClass(Moderator.class);
+			configuration.addAnnotatedClass(Product.class);
+			configuration.addAnnotatedClass(Basket.class);
+			configuration.addAnnotatedClass(CreditCard.class);
 			
 			
 			ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
