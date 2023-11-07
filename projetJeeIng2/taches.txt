@@ -3,7 +3,6 @@ Admin :
 - AdminDao à faire 
   - addProduct / modifyProduct / deleteProduct
   - addModo / deleteModo / addRight / deleteRight
-  - addFidelityPoint
 - Page de gestion des modos
 - Page de gestion des points de fidélité
 

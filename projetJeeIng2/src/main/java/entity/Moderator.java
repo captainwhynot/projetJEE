@@ -1,61 +1,47 @@
 package entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import java.io.Serializable;
 
+import javax.persistence.Entity;
 
 @Entity
-public class Moderator {
+public class Moderator extends User implements Serializable {
 
-	@Id
-	private String email;
-	private String password;
-	private String username;
 	private boolean addProduct;
 	private boolean modifyProduct;
 	private boolean deleteProduct;
 	
 	public Moderator() {
+		super();
 	}
 	
 	public Moderator(String email, String password, String username) {
-		this.email = email;
-		this.password = password;
-		this.username = username;
+		super(email, password, username);
 		this.addProduct = false;
 		this.modifyProduct = false;
 		this.deleteProduct = false;
 	}
-	public String getEmail() {
-		return email;
-	}
-
-	private String getPassword() {
-		return password;
-	}
 	
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	public boolean isAddProduct() {
+	public boolean canAddProduct() {
 		return addProduct;
 	}
+	
 	public void setAddProduct(boolean addProduct) {
 		this.addProduct = addProduct;
 	}
-	public boolean isModifyProduct() {
+	
+	public boolean canModifyProduct() {
 		return modifyProduct;
 	}
+	
 	public void setModifyProduct(boolean modifyProduct) {
 		this.modifyProduct = modifyProduct;
 	}
-	public boolean isDeleteProduct() {
+	
+	public boolean canDeleteProduct() {
 		return deleteProduct;
 	}
+	
 	public void setDeleteProduct(boolean deleteProduct) {
 		this.deleteProduct = deleteProduct;
 	}
