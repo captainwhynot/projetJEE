@@ -1,0 +1,32 @@
+Admin : 
+- Créer un compte admin par défaut
+- AdminDao à faire 
+  - addProduct / modifyProduct / deleteProduct
+  - addModo / deleteModo / addRight / deleteRight
+  - addFidelityPoint
+- Page de gestion des modos
+- Page de gestion des points de fidélité
+
+
+Customer :
+- Créer une page d'inscription/connexion
+- Faire un envoi de mail pour la création du compte
+- CustomerDao à faire (méthodes)
+  - addOrder / payOrder / checkStock dans payOrder et addOrder
+- Confirmation de paiement à mettre lors de payOrder.
+- Page d'accueil (recherche de produits)
+
+Credit Card :
+- CreditCardDao à faire 
+  - checkCredit / checkId
+
+
+Moderator :
+- ModeratorDao à faire 
+  - addProduct / modifyProduct / deleteProduct
+- Page de gestion des produits à créer
+
+
+Basket : 
+- Page pour le panier (buy = true : acheté / false : à commander)
+- Page pour les commandes finalisés
