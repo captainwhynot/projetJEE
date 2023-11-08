@@ -5,7 +5,7 @@ Admin :
 
 Customer :
 - Créer une page d'inscription/connexion
-- Faire un envoi de mail pour la création du compte
+- Faire un envoi de mail pour la création du compte -> CustomerDao 
 - Confirmation de paiement à mettre lors de payOrder.
 - Page d'accueil (recherche de produits)
 
@@ -22,3 +22,5 @@ rajouter vérification duplicat email dans chaque save Customer/Modo/Admin
 
 vérifier duplicat creditcard number dans CreditCardDao
 supprimer carte de crédit expiré
+
+vérification droit des modos pour Add/Modify/Delete Product
