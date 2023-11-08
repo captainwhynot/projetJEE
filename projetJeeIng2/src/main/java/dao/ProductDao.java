@@ -1,10 +1,14 @@
 package dao;
 
+import java.util.List;
+
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import entity.Basket;
+import entity.Customer;
 import entity.Product;
 
 public class ProductDao {
@@ -29,7 +33,6 @@ public class ProductDao {
 	}
 	
 	public boolean modifyProduct (Product product, String name, double price, int stock) {
-		boolean b = false;		
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
@@ -43,12 +46,38 @@ public class ProductDao {
 		return (rowCount > 0);	
 	}
 	
-	public boolean deleteProduct (Product product) {
-		boolean b = false;		
+	public List<Product> getProductList() {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		String sql = "DELETE FROM Product WHERE id="+product.getId()+";";
+		String sql = "SELECT * FROM Product;";
+		SQLQuery query = session.createSQLQuery(sql).addEntity(Product.class);
+		List<Product> productList = query.list();
+		
+		tx.commit();
+		session.close();
+		return productList;
+	}
+	
+	public Product getProduct(int id) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		String sql = "SELECT * FROM Product WHERE id='"+id+"';";
+		SQLQuery query = session.createSQLQuery(sql).addEntity(Product.class);
+		Product product = (Product) query.uniqueResult();
+		
+		tx.commit();
+		session.close();
+		
+		return product;
+	}
+	
+	public boolean deleteProduct (int id) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		String sql = "DELETE FROM Product WHERE id="+id+";";
 		SQLQuery query = session.createSQLQuery(sql);
 		int rowCount = query.executeUpdate();
 		
