@@ -21,6 +21,7 @@ public class CreditCardDao {
 		boolean b = false;		
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
+		//CreditCard n'existe pas dans la bdd
 		int i=(Integer)session.save(card);
 		if(i>0) {b=true;}
 		
@@ -28,20 +29,23 @@ public class CreditCardDao {
 		session.close();
 		return b;
 	}
-	//incomplet rajouter verif date
-	public boolean getCreditCard(int id) {
+
+	public CreditCard getCreditCard(int cardNumber) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		String sql = "SELECT * FROM CreditCard WHERE cardNumber='"+id+";";
-		SQLQuery query = session.createSQLQuery(sql);
-		//int rowCount = query.();
+		
+		String sql = "SELECT * FROM CreditCard WHERE cardNumber='"+cardNumber+"';";
+		SQLQuery query = session.createSQLQuery(sql).addEntity(CreditCard.class);
+		CreditCard card = (CreditCard) query.uniqueResult();
+		
 		tx.commit();
 		session.close();
-
-		if (query == null) {
-		    return false;
-		} else {
-		    return true;
+		
+		if (card.getExpirationDate().compareTo(new Date()) >= 0) {
+			return card;
+		}
+		else {
+			return null;
 		}
 	}
 	
@@ -54,39 +58,59 @@ public class CreditCardDao {
 		
 	}*/
 	
-	public boolean getSolde(int cardNumber,double depense) {
-		boolean b=false;
+	public boolean checkCreditCard(int cardNumber, int cvv, Date date) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		String sql = "SELECT * FROM CreditCard WHERE cardNumber='"+cardNumber+"';";
 		
-		SQLQuery query = session.createSQLQuery(sql).addEntity(CreditCard.class);
-		CreditCard cb = (CreditCard) query.uniqueResult();
-		
-		System.out.println("credit: "+cb.getCredit());
-		System.out.println("depense: "+depense);
-		if((cb.getCredit() - depense)>0) {b=true;}
-		
-		
+		String sqlCardNumber = "SELECT * FROM CreditCard WHERE cardNumber="+cardNumber+" AND cvv="+cvv+" AND expirationDate="+date+";";
+		SQLQuery queryCardNumber = session.createSQLQuery(sqlCardNumber);
+		int rowCount = queryCardNumber.executeUpdate();
+
 		tx.commit();
 		session.close();
-		return b;
+
+		return (rowCount > 0);
 	}
 	
-	public boolean setCredit(int cb, int nvCredit) {
+	public boolean checkBalance(int cardNumber, double price) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		String sql = "UPDATE CreditCard SET credit = credit"+(nvCredit>0 ? "+":"")+ nvCredit +" WHERE cardNumber="+cb+";";
-
+		
+		String sqlCardNumber = "SELECT credit FROM CreditCard WHERE cardNumber="+cardNumber+";";
+		SQLQuery queryCardNumber = session.createSQLQuery(sqlCardNumber);
+		double credit = (double) queryCardNumber.uniqueResult();
+		
+		tx.commit();
+		session.close();
+		System.out.println(credit + " - " + price);
+		return (credit - price > 0);
+	}
+	
+	public boolean setCredit(int cardNumber, int credit) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		String sql = "UPDATE CreditCard SET credit = credit"+(credit>0 ? "+":"")+ credit +" WHERE cardNumber="+cardNumber+";";
 		SQLQuery query = session.createSQLQuery(sql);
 		int rowCount = query.executeUpdate();
+		
 		tx.commit();
 		session.close();
 
-		if (rowCount > 0) {
-		    return true;
-		} else {
-		    return false;
-		}
+		return (rowCount > 0);
+	}
+	
+	public boolean deleteCreditCard(int cardNumber) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		String sql = "DELETE FROM CreditCard WHERE cardNumber="+cardNumber+";";
+		SQLQuery query = session.createSQLQuery(sql);
+		int rowCount = query.executeUpdate();
+		
+		tx.commit();
+		session.close();
+
+		return (rowCount > 0);
 	}
 }

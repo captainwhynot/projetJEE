@@ -1,10 +1,13 @@
 package dao;
 
+import java.util.List;
+
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import entity.Customer;
 import entity.Moderator;
 
 public class ModeratorDao {
@@ -28,8 +31,35 @@ public class ModeratorDao {
 		return b;
 	}
 	
+	public List<Moderator> getModeratorList(){
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		String sql = "SELECT * FROM Moderator;";
+		SQLQuery query = session.createSQLQuery(sql).addEntity(Moderator.class);
+		List<Moderator> ModeratorList = query.list();
+		
+		tx.commit();
+		session.close();
+		
+		return ModeratorList;
+	}
+	
+	public Moderator getModeratorById(int id) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		String sql = "SELECT * FROM Moderator WHERE id='"+id+"';";
+		SQLQuery query = session.createSQLQuery(sql).addEntity(Moderator.class);
+		Moderator moderator = (Moderator) query.uniqueResult();
+		
+		tx.commit();
+		session.close();
+		
+		return moderator;
+	}
+	
 	public boolean deleteModerator (Moderator moderator) {
-		boolean b = false;		
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
@@ -44,7 +74,6 @@ public class ModeratorDao {
 	}
 	
 	public boolean modifyRight (Moderator moderator, String right, boolean bool) {
-		boolean b = false;		
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		

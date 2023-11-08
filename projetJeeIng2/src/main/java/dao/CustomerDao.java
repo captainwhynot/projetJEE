@@ -31,21 +31,18 @@ public class CustomerDao {
 		return b;
 	}
 	
-	public List<Customer> getAllCustomer(){
+	public List<Customer> getCustomerList(){
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
 		String sql = "SELECT * FROM Customer;";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(Customer.class);
-		List<Customer> liste = query.list();
-		/*for(Customer u:liste) {
-			System.out.println("customer : " + u);
-		}*/
+		List<Customer> customerList = query.list();
 		
 		tx.commit();
 		session.close();
 		
-		return liste;
+		return customerList;
 	}
 	
 	public Customer getCustomerById(int id) {
