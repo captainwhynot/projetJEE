@@ -66,6 +66,22 @@ public class CustomerDao {
 		return customer;
 	}
 	
+	public boolean getCustomerConnexion(String username, String password) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		String sql = "SELECT * FROM Customer WHERE username='"+username+"' AND password ='"+password+"';";
+		SQLQuery query = session.createSQLQuery(sql);
+		//int rowCount = query.();
+		tx.commit();
+		session.close();
+
+		if (query == null) {
+		    return false;
+		} else {
+		    return true;
+		}
+	}
+	
 	public boolean setFidelityPoint (Customer customer, int points) {
 				
 		Session session = sessionFactory.openSession();

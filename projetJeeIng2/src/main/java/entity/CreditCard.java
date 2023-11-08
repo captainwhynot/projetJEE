@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,22 +11,50 @@ import javax.persistence.Id;
 public class CreditCard {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private int cardNumber;
+	
 	private double credit;
-	private int customerId;
+	
+	private int cvv;
+	private Date expirationDate;
+	
+	
+	public int getCardNumber() {
+		return cardNumber;
+	}
+	public void setCardNumber(int cardNumber) {
+		this.cardNumber = cardNumber;
+	}
+	public int getCvv() {
+		return cvv;
+	}
+	public void setCvv(int cvv) {
+		this.cvv = cvv;
+	}
+	public Date getExpirationDate() {
+		return expirationDate;
+	}
+	public void setExpirationDate(Date expirationDate) {
+		this.expirationDate = expirationDate;
+	}
+	
+
+	
+	
 	
 	public CreditCard() {
 	}
-	public CreditCard(int id, int customerId) {
-		this.id = id;
+	public CreditCard( int cardNumber, int cvv, Date expirationDate) {
+		
 		this.credit = 0;
-		this.customerId = customerId;
+		
+		this.cardNumber= cardNumber;
+		this.cvv=cvv;
+		this.expirationDate = expirationDate;
+		
 	}
 
-	public int getId() {
-		return id;
-	}
+	
 
 	public double getCredit() {
 		return credit;
@@ -34,13 +64,7 @@ public class CreditCard {
 		this.credit = credit;
 	}
 
-	public int getCustomerId() {
-		return customerId;
-	}
-
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
-	}
+	
 	
 	
 	
