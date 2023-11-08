@@ -1,14 +1,11 @@
 import java.util.Date;
 import java.util.List;
 
-
-import dao.CreditCardDao;
-import dao.CustomerDao;
-import entity.CreditCard;
-import entity.Customer;
-
+import org.hibernate.SessionFactory;
 import conn.HibernateUtil;
-public class Main {
+import dao.*;
+import entity.*;
+public class Main{
 	public static void main(String[] args) {
 		//Créer un admin
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
