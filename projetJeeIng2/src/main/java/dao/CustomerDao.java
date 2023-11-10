@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 
 import entity.Customer;
 
+@SuppressWarnings({"deprecation", "rawtypes", "unchecked"})
 public class CustomerDao {
 	
 	public SessionFactory sessionFactory;
@@ -17,18 +18,36 @@ public class CustomerDao {
 		sessionFactory = sf;
 	}
 	
-	public boolean saveCustomer (Customer customer) {
-		boolean b = false;		
+	public boolean saveCustomer(Customer customer) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		int i=(Integer)session.save(customer);
-		if (i>0) b=true;
+		int save = 0;
+		if (checkCustomer(customer)){
+			save = (Integer) session.save(customer);
+		}
+		else {
+			System.out.println("The customer already exists in the database.");
+		}
 		
 		tx.commit();
 		session.close();
 		
-		return b;
+		return (save > 0);
+	}
+	
+	public boolean checkCustomer(Customer customer) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		String sql = "SELECT * FROM Customer WHERE email = '"+ customer.getEmail() +"';";
+		SQLQuery query = session.createSQLQuery(sql).addEntity(Customer.class);		
+		Customer result = (Customer) query.uniqueResult();
+
+	    tx.commit();
+	    session.close();
+
+	    return (result == null);
 	}
 	
 	public List<Customer> getCustomerList(){
@@ -45,7 +64,7 @@ public class CustomerDao {
 		return customerList;
 	}
 	
-	public Customer getCustomerById(int id) {
+	public Customer getCustomer(int id) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
@@ -59,27 +78,39 @@ public class CustomerDao {
 		return customer;
 	}
 	
-	public boolean getCustomerConnexion(String username, String password) {
+	public boolean getCustomerConnexion(String email, String password) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		String sql = "SELECT * FROM Customer WHERE username='"+username+"' AND password ='"+password+"';";
+		
+		String sql = "SELECT * FROM Customer WHERE email='"+email+"' AND password ='"+password+"';";
 		SQLQuery query = session.createSQLQuery(sql);
-		//int rowCount = query.();
+		int rowCount = query.executeUpdate();
+		
 		tx.commit();
 		session.close();
-
-		if (query == null) {
-		    return false;
-		} else {
-		    return true;
-		}
+		
+		return (rowCount > 0);
 	}
 	
-	public boolean setFidelityPoint (Customer customer, int points) {
+	public boolean setFidelityPoint(Customer customer, int points) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
 		String sql = "UPDATE Customer SET fidelityPoint = fidelityPoint"+ (points>0 ? "+":"") + points + " WHERE id="+customer.getId()+";";
+		SQLQuery query = session.createSQLQuery(sql);
+		int rowCount = query.executeUpdate();
+		
+		tx.commit();
+		session.close();
+
+		return (rowCount > 0);
+	}
+
+	public boolean deleteCustomer(Customer customer) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		String sql = "DELETE FROM Customer WHERE id="+customer.getId()+";";
 		SQLQuery query = session.createSQLQuery(sql);
 		int rowCount = query.executeUpdate();
 		

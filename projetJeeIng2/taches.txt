@@ -12,15 +12,9 @@ Customer :
 
 Moderator :
 - Page de gestion des produits à créer
+- Vérification droit des modos pour Add/Modify/Delete Product pour afficher les différentes méthodes dispo
 
 
 Basket : 
 - Page pour le panier (buy = true : acheté / false : à commander)
 - Page pour les commandes finalisés
-
-rajouter vérification duplicat email dans chaque save Customer/Modo/Admin
-
-vérifier duplicat creditcard number dans CreditCardDao
-supprimer carte de crédit expiré
-
-vérification droit des modos pour Add/Modify/Delete Product

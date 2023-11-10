@@ -1,7 +1,6 @@
 package dao;
 
 import java.util.List;
-import java.util.Date;
 
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -9,9 +8,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import entity.Basket;
-import entity.CreditCard;
-import entity.Customer;
 
+@SuppressWarnings({"deprecation", "rawtypes", "unchecked"})
 public class BasketDao {
 public SessionFactory sessionFactory;
 	
@@ -19,11 +17,11 @@ public SessionFactory sessionFactory;
 		sessionFactory = sf;
 	}
 	
-	public boolean addOrder (Basket basket) {
+	public boolean addOrder(Basket basket) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		int save=(Integer)session.save(basket);
+		int save = (Integer) session.save(basket);
 		
 		tx.commit();
 		session.close();
@@ -31,7 +29,7 @@ public SessionFactory sessionFactory;
 		return (save > 0);
 	}
 	
-	public boolean updateQuantity (int id, int quantity) {
+	public boolean updateQuantity(int id, int quantity) {
 		//Add product only if there is stock left.
 		if (checkStock(id, quantity)) {
 			Session session = sessionFactory.openSession();
@@ -61,6 +59,7 @@ public SessionFactory sessionFactory;
 		
 		tx.commit();
 		session.close();
+		
 		return basketList;
 	}
 	
@@ -78,20 +77,22 @@ public SessionFactory sessionFactory;
 		return basket;
 	}
 	
-	public boolean confirmOrder (int customerId) {
+	public boolean confirmOrder(int customerId) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 
 		//Check the stock for the final order.
-		String sql = "SELECT * FROM Basket WHERE customerId = "+customerId+";";
+		String sql = "SELECT * FROM Basket WHERE customerId = "+customerId+" AND bought = 0;";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(Basket.class);;
 		List<Basket> basketList = query.list();
+		
 		for (Basket basket : basketList) {
 			if (!checkStock(basket.getId(), basket.getQuantity())) {
 				String sqlRemove = "UPDATE Basket SET quantity = 0 WHERE id="+basket.getId()+";";
 				SQLQuery queryRemove = session.createSQLQuery(sqlRemove);
 				int rowCount = queryRemove.executeUpdate();
-				//if there is an error when deleting the out of stock order, return false.
+				
+				//if there is an error when updating the out of stock order, return false.
 				if (rowCount <= 0) return false;
 				else System.out.println("The order number n°" + basket.getId() + " has been removed due to rupture of stock.");
 			}
@@ -121,7 +122,7 @@ public SessionFactory sessionFactory;
 		return (numberRowSolde > 0 && numberRowBasket > 0);
 	}
 	
-	public boolean checkStock (int id, int quantity) {
+	public boolean checkStock(int id, int quantity) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
@@ -142,14 +143,15 @@ public SessionFactory sessionFactory;
 		Transaction tx = session.beginTransaction();
 
 		//Check the price for the final order.
-		String sql = "SELECT * FROM Basket WHERE customerId = "+customerId+" AND quantity > 0;";
+		String sql = "SELECT * FROM Basket WHERE customerId = "+customerId+" AND quantity > 0 AND bought = 0;";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(Basket.class);
 		List<Basket> basketList = query.list();
+		
 		for (Basket basket : basketList) {
 			String sqlProduct = "SELECT price FROM Product WHERE id="+basket.getProductId()+";";
 			SQLQuery queryProduct = session.createSQLQuery(sqlProduct);
-			
 			double price = (double) queryProduct.uniqueResult();
+			
 			totalPrice += price * basket.getQuantity();
 		}
 
