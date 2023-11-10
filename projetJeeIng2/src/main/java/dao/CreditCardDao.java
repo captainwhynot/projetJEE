@@ -8,8 +8,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import entity.CreditCard;
-import entity.Customer;
 
+@SuppressWarnings({"deprecation", "rawtypes"})
 public class CreditCardDao {
 	public SessionFactory sessionFactory;
 		
@@ -17,17 +17,37 @@ public class CreditCardDao {
 		sessionFactory = sf;
 	}
 	
-	public boolean saveCreditCard (CreditCard card) {
-		boolean b = false;		
+	public boolean saveCreditCard(CreditCard card) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		//CreditCard n'existe pas dans la bdd
-		int i=(Integer)session.save(card);
-		if(i>0) {b=true;}
+		
+		int save = 0;
+		
+		deleteExpiredCard();
+		if (this.getCreditCard(card.getCardNumber()) == null) {
+			save = (Integer) session.save(card);
+		}
+		else {
+			System.out.println("The credit card already exists in the database.");
+		}
 		
 		tx.commit();
 		session.close();
-		return b;
+		
+		return (save > 0);
+	}
+	
+	public void deleteExpiredCard() {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		String sql = "DELETE FROM CreditCard WHERE expirationDate < :currentDate";
+	    SQLQuery query = session.createSQLQuery(sql);
+	    query.setParameter("currentDate", new Date());
+		query.executeUpdate();
+
+		tx.commit();
+		session.close();
 	}
 
 	public CreditCard getCreditCard(int cardNumber) {
@@ -41,7 +61,7 @@ public class CreditCardDao {
 		tx.commit();
 		session.close();
 		
-		if (card.getExpirationDate().compareTo(new Date()) >= 0) {
+		if (card != null && card.getExpirationDate().after(new Date())) {
 			return card;
 		}
 		else {
@@ -49,22 +69,13 @@ public class CreditCardDao {
 		}
 	}
 	
-	/*public boolean compareDate(int id, Date paramDate) {
-		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		String sql = "SELECT * FROM CreditCard WHERE cardNumber='"+id+";";
-		SQLQuery query = session.createSQLQuery(sql);
-		CreditCard cb = 
-		
-	}*/
-	
 	public boolean checkCreditCard(int cardNumber, int cvv, Date date) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		String sqlCardNumber = "SELECT * FROM CreditCard WHERE cardNumber="+cardNumber+" AND cvv="+cvv+" AND expirationDate="+date+";";
-		SQLQuery queryCardNumber = session.createSQLQuery(sqlCardNumber);
-		int rowCount = queryCardNumber.executeUpdate();
+		String sql = "SELECT * FROM CreditCard WHERE cardNumber="+cardNumber+" AND cvv="+cvv+" AND expirationDate="+date+";";
+		SQLQuery query = session.createSQLQuery(sql);
+		int rowCount = query.executeUpdate();
 
 		tx.commit();
 		session.close();
@@ -76,13 +87,13 @@ public class CreditCardDao {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		String sqlCardNumber = "SELECT credit FROM CreditCard WHERE cardNumber="+cardNumber+";";
-		SQLQuery queryCardNumber = session.createSQLQuery(sqlCardNumber);
-		double credit = (double) queryCardNumber.uniqueResult();
+		String sql = "SELECT credit FROM CreditCard WHERE cardNumber="+cardNumber+";";
+		SQLQuery query = session.createSQLQuery(sql);
+		double credit = (double) query.uniqueResult();
 		
 		tx.commit();
 		session.close();
-		System.out.println(credit + " - " + price);
+		
 		return (credit - price > 0);
 	}
 	

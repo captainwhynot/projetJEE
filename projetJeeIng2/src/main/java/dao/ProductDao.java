@@ -7,10 +7,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import entity.Basket;
-import entity.Customer;
 import entity.Product;
 
+@SuppressWarnings({"deprecation", "rawtypes", "unchecked"})
 public class ProductDao {
 	public SessionFactory sessionFactory;
 	
@@ -18,21 +17,19 @@ public class ProductDao {
 		sessionFactory = sf;
 	}
 	
-	public boolean addProduct (Product product) {
-		boolean b = false;		
+	public boolean addProduct(Product product) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		int i=(Integer)session.save(product);
-		if (i>0) b=true;
+		int save = (Integer) session.save(product);
 		
 		tx.commit();
 		session.close();
 		
-		return b;
+		return (save > 0);
 	}
 	
-	public boolean modifyProduct (Product product, String name, double price, int stock) {
+	public boolean modifyProduct(Product product, String name, double price, int stock) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
@@ -56,6 +53,7 @@ public class ProductDao {
 		
 		tx.commit();
 		session.close();
+		
 		return productList;
 	}
 	
@@ -73,7 +71,7 @@ public class ProductDao {
 		return product;
 	}
 	
-	public boolean deleteProduct (int id) {
+	public boolean deleteProduct(int id) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		

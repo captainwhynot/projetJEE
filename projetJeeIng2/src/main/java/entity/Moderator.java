@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 @Entity
 public class Moderator extends User implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private boolean addProduct;
 	private boolean modifyProduct;
 	private boolean deleteProduct;
