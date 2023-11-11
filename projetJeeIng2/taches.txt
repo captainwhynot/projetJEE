@@ -4,9 +4,9 @@ Admin :
 
 
 Customer :
-- ServletRegistration vérifier mail dans les 3 BDD aussi
-- ServletLogin à faire (vérifier dans les 3 BDD (admin, customer, modo) pour se connecter)
-- Faire un envoi de mail pour la création du compte -> CustomerDao 
+- ServletRegistration vérifier mail checkUser()
+- ServletLogin à faire vérifier login UserLogin()
+- Faire un envoi de mail pour la création du compte -> UserDao 
 - Confirmation de paiement à mettre lors de payOrder -> ServletBasket.
 - ServletHistory (potentiellement ajouter une date de paiement ?)
 - ServletProduct (recherche de produits) 
@@ -32,13 +32,12 @@ Web :
 
 
 JSP :
-- Supprimer connexion.jsp / creationCompte.jsp
 - Créer un jsp pour Basket / History + Servlet
 - Créer un jsp pour addProduct / manageProduct + Servlet
-- Renommer product.jsp par market.jsp + Servlet
-- Afficher ProductDetail (rename product.jsp) + Servlet
+- Afficher détail de produit + Servlet
 - Créer un jsp pour addModerator (avec la liste des clients qu'on transforme en modo) + Servlet
 - Créer un jsp pour manageModerator + Servlet
 - Créer un jsp pour manageFidelityPoint (prix d'achat / 10 dans finalyPaiement() de BasketDao) ServletFidelityPoint
 - Créer un jsp pour profil et ServletProfil
 
+Traduire le site en anglais

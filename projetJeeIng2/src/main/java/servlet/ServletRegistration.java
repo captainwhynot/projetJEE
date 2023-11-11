@@ -10,10 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import conn.HibernateUtil;
-import dao.CustomerDao;
 import dao.UserDao;
 import entity.Customer;
-import entity.Administrator;
 
 @WebServlet("/Registration")
 public class ServletRegistration extends HttpServlet {
