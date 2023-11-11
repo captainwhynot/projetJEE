@@ -50,11 +50,11 @@ public class ModeratorDao {
 		return ModeratorList;
 	}
 	
-	public Moderator getModerator(int id) {
+	public Moderator getModerator(String email) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		String sql = "SELECT * FROM Moderator m JOIN User u ON m.id = u.id WHERE m.id = " + id + ";";
+		String sql = "SELECT * FROM Moderator m JOIN User u ON m.id = u.id WHERE u.email = '" + email + "';";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(Moderator.class);
 		Moderator moderator = (Moderator) query.uniqueResult();
 		

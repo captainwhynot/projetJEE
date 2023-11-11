@@ -26,7 +26,7 @@
 
 	<div
 		class="d-flex justify-content-center align-items-center login-container">
-		<form method="post" class="login-form text-center">
+		<form method="post" class="login-form text-center" action="Login">
 			<div class="form-group">
                 <label for="email">E-mail :</label>
                 <input type="text" id="email" name="email" class="form-control" required>

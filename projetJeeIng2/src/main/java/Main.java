@@ -19,7 +19,7 @@ public class Main{
 		ModeratorDao modoDao = new ModeratorDao(sessionFactory);
 		Moderator moderator = new Moderator("mailModo", "password", "modo");
 		System.out.println(userDao.saveUser(moderator));
-		Moderator modo = modoDao.getModerator(5);
+		Moderator modo = modoDao.getModerator("mailModo");
 		System.out.println(modo.getEmail());
 		System.out.println(modoDao.modifyRight(modo, "addProduct", true));
 		//System.out.println(modoDao.deleteModerator(modo));
@@ -28,7 +28,7 @@ public class Main{
 		CustomerDao customerDao = new CustomerDao(sessionFactory);
 		Customer customer = new Customer("mailCustomer", "password", "customer");
 		System.out.println(userDao.saveUser(customer));
-		Customer cust = customerDao.getCustomer(4);
+		Customer cust = customerDao.getCustomer("mailCustomer");
 		List<Customer> liste = customerDao.getCustomerList();
 		
 		//Créer une carte bancaire

@@ -72,18 +72,32 @@ public class UserDao {
 		}
 	}
 	
-	public boolean getUserLogin(String email, String password) {
+	public boolean checkUserLogin(String email, String password) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
 		String sql = "SELECT * FROM User WHERE email='"+email+"' AND password ='"+password+"';";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);
-		List<User> userList = query.list();
+		List<User> userList = (List<User>) query.list();
 		
 		tx.commit();
 		session.close();
 		
 		return (!userList.isEmpty());
+	}
+	
+	public User getUser(String email) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		String sql = "SELECT * FROM User WHERE email='"+email+"';";
+		SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);
+		User user = (User) query.uniqueResult();
+		
+		tx.commit();
+		session.close();
+		
+		return user;
 	}
 }
 	

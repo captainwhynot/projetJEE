@@ -4,8 +4,7 @@ Admin :
 
 
 Customer :
-- ServletRegistration vérifier mail checkUser()
-- ServletLogin à faire vérifier login UserLogin()
+- ServletLogin récupérer User à mettre en session
 - Faire un envoi de mail pour la création du compte -> UserDao 
 - Confirmation de paiement à mettre lors de payOrder -> ServletBasket.
 - ServletHistory (potentiellement ajouter une date de paiement ?)

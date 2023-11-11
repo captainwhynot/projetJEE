@@ -51,11 +51,11 @@ public class CustomerDao {
 		return customerList;
 	}
 	
-	public Customer getCustomer(int id) {
+	public Customer getCustomer(String email) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		String sql = "SELECT * FROM Customer c JOIN User u ON c.id = u.id WHERE c.id='"+id+"';";
+		String sql = "SELECT * FROM Customer c JOIN User u ON c.id = u.id WHERE u.email='"+email+"';";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(Customer.class);
 		Customer customer = (Customer) query.uniqueResult();
 		
