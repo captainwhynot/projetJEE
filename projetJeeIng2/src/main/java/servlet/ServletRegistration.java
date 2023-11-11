@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import conn.HibernateUtil;
 import dao.CustomerDao;
+import dao.UserDao;
 import entity.Customer;
 import entity.Administrator;
 
@@ -34,8 +35,8 @@ public class ServletRegistration extends HttpServlet {
 		
 		Customer user = new Customer(email ,password, username);
 			
-		CustomerDao dao= new CustomerDao(HibernateUtil.getSessionFactory());
-		boolean b = dao.saveCustomer(user);
+		UserDao dao= new UserDao(HibernateUtil.getSessionFactory());
+		boolean b = dao.saveUser(user);
 		
 		if(b) {
 			System.out.println("Sauvegarde réussie");

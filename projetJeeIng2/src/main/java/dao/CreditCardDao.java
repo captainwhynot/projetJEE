@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -9,7 +10,7 @@ import org.hibernate.Transaction;
 
 import entity.CreditCard;
 
-@SuppressWarnings({"deprecation", "rawtypes"})
+@SuppressWarnings({"deprecation", "rawtypes", "unchecked"})
 public class CreditCardDao {
 	public SessionFactory sessionFactory;
 		
@@ -22,19 +23,21 @@ public class CreditCardDao {
 		Transaction tx = session.beginTransaction();
 		
 		int save = 0;
-		
-		deleteExpiredCard();
-		if (this.getCreditCard(card.getCardNumber()) == null) {
-			save = (Integer) session.save(card);
+		try {
+			deleteExpiredCard();
+			if (this.getCreditCard(card.getCardNumber()) == null) {
+				save = (Integer) session.save(card);
+				tx.commit();
+			}
+			else {
+				System.out.println("The credit card already exists in the database.");
+			}
+			return (save > 0);
+		} catch (Exception e) {
+	        return false;
+		} finally {
+			session.close();
 		}
-		else {
-			System.out.println("The credit card already exists in the database.");
-		}
-		
-		tx.commit();
-		session.close();
-		
-		return (save > 0);
 	}
 	
 	public void deleteExpiredCard() {
@@ -70,17 +73,28 @@ public class CreditCardDao {
 	}
 	
 	public boolean checkCreditCard(int cardNumber, int cvv, Date date) {
-		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		
-		String sql = "SELECT * FROM CreditCard WHERE cardNumber="+cardNumber+" AND cvv="+cvv+" AND expirationDate="+date+";";
-		SQLQuery query = session.createSQLQuery(sql);
-		int rowCount = query.executeUpdate();
+	    Session session = sessionFactory.openSession();
+	    Transaction tx = session.beginTransaction();
 
-		tx.commit();
-		session.close();
+	    try {
+	        String sql = "SELECT * FROM CreditCard WHERE cardNumber = :cardNumber AND cvv = :cvv AND expirationDate = :expirationDate";
+	        SQLQuery query = session.createSQLQuery(sql).addEntity(CreditCard.class);
+	        query.setParameter("cardNumber", cardNumber);
+	        query.setParameter("cvv", cvv);
+	        query.setParameter("expirationDate", date);
 
-		return (rowCount > 0);
+	        List<CreditCard> creditCard = query.list();
+
+	        tx.commit();
+	    	System.out.println(!creditCard.isEmpty());
+	        return !creditCard.isEmpty();
+	    } catch (Exception e) {
+	        tx.rollback();
+	        e.printStackTrace();
+	        return false;
+	    } finally {
+	        session.close();
+	    }
 	}
 	
 	public boolean checkBalance(int cardNumber, double price) {

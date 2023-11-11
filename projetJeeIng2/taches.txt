@@ -39,6 +39,6 @@ JSP :
 - Afficher ProductDetail (rename product.jsp) + Servlet
 - Créer un jsp pour addModerator (avec la liste des clients qu'on transforme en modo) + Servlet
 - Créer un jsp pour manageModerator + Servlet
-- Créer un jsp pour manageFidelityPoint (potentiellement +1pt à chaque quantité de produit acheté -> 10pt : +1€) ServletFidelityPoint
+- Créer un jsp pour manageFidelityPoint (prix d'achat / 10 dans finalyPaiement() de BasketDao) ServletFidelityPoint
 - Créer un jsp pour profil et ServletProfil
 

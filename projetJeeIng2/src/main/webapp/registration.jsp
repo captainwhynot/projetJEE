@@ -22,9 +22,8 @@
 	<%@ include file="header.jsp" %>
 
     <div class="d-flex justify-content-center align-items-center login-container" id="Inscr">
-        <!--Formulaire d'ajour d'utilisateur-->
-        
-        <form method="post" class="login-form text-center" action="creationCompte">
+          
+        <form method="post" class="login-form text-center" action="Registration">
 
             <div class="form-group">
                 <label for="email">E-mail :</label>
@@ -41,12 +40,6 @@
                 <input type="text" id="username" name="username" class="form-control" required>
             </div>
             
-            <div class="form-group">
-                <label for="username">Adresse :</label>
-                <input type="text" id="username" name="username" class="form-control" required>
-            </div>
-
-
             <button type="submit"
                 class="btn-lg btn-custom btn-block text-uppercase">inscription</button>
 

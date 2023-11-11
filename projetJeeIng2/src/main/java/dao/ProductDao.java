@@ -33,14 +33,18 @@ public class ProductDao {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		String sql = "UPDATE Product SET name='"+name+"', price="+price+", stock="+stock+" WHERE id="+product.getId()+";";
-		SQLQuery query = session.createSQLQuery(sql);
-		int rowCount = query.executeUpdate();
-		
-		tx.commit();
-		session.close();
-
-		return (rowCount > 0);	
+		try {
+			String sql = "UPDATE Product SET name='"+name+"', price="+price+", stock="+stock+" WHERE id="+product.getId()+";";
+			SQLQuery query = session.createSQLQuery(sql);
+			int rowCount = query.executeUpdate();
+			
+			tx.commit();
+			return (rowCount > 0);	
+		} catch (Exception e) {
+	        return false;
+		} finally {
+			session.close();
+		}
 	}
 	
 	public List<Product> getProductList() {

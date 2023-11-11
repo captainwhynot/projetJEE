@@ -21,12 +21,15 @@ public SessionFactory sessionFactory;
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		int save = (Integer) session.save(basket);
-		
-		tx.commit();
-		session.close();
-		
-		return (save > 0);
+		try {
+			int save = (Integer) session.save(basket);
+			tx.commit();			
+			return (save > 0);
+		} catch (Exception e) {
+	        return false;
+		} finally {
+			session.close();
+		}
 	}
 	
 	public boolean updateQuantity(int id, int quantity) {
@@ -115,11 +118,15 @@ public SessionFactory sessionFactory;
 		String sqlPaidBasket = "UPDATE Basket SET bought = 1 WHERE customerId = " + customerId + " AND quantity > 0;";
 		SQLQuery queryPaidBasket = session.createSQLQuery(sqlPaidBasket);
 		int numberRowBasket = queryPaidBasket.executeUpdate();
+		
+		String sqlFidelityPoint = "UPDATE Customer SET fidelityPoint = fidelityPoint + " + price/10 + " WHERE id = " + customerId + ";";
+		SQLQuery queryFidelityPoint = session.createSQLQuery(sqlFidelityPoint);
+		int numberFidelityPoint = queryFidelityPoint.executeUpdate();
 
 		tx.commit();
 		session.close();
 		
-		return (numberRowSolde > 0 && numberRowBasket > 0);
+		return (numberRowSolde > 0 && numberRowBasket > 0 && numberFidelityPoint > 0);
 	}
 	
 	public boolean checkStock(int id, int quantity) {

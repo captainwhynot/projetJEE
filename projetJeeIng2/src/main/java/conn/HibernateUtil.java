@@ -26,7 +26,8 @@ public class HibernateUtil {
 			properties.put(Environment.HBM2DDL_AUTO, "update");
 			properties.put(Environment.SHOW_SQL, true);
 			
-			configuration.setProperties(properties);
+			configuration.setProperties(properties);	
+			configuration.addAnnotatedClass(User.class);
 			configuration.addAnnotatedClass(Customer.class);
 			configuration.addAnnotatedClass(Administrator.class);
 			configuration.addAnnotatedClass(Moderator.class);

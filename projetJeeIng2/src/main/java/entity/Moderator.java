@@ -3,6 +3,8 @@ package entity;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Moderator extends User implements Serializable {
@@ -11,13 +13,16 @@ public class Moderator extends User implements Serializable {
 	private boolean addProduct;
 	private boolean modifyProduct;
 	private boolean deleteProduct;
+	@OneToOne
+    @JoinColumn(name = "id")
+    private User user;
 	
 	public Moderator() {
 		super();
 	}
 	
 	public Moderator(String email, String password, String username) {
-		super(email, password, username);
+		super(email, password, username, "Moderator");
 		this.addProduct = false;
 		this.modifyProduct = false;
 		this.deleteProduct = false;
@@ -46,7 +51,13 @@ public class Moderator extends User implements Serializable {
 	public void setDeleteProduct(boolean deleteProduct) {
 		this.deleteProduct = deleteProduct;
 	}
-	
-	
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 }
 

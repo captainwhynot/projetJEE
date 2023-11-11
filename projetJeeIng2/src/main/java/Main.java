@@ -11,28 +11,29 @@ public class Main{
 	public static void main(String[] args) {
 		//Créer un admin
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		AdministratorDao adminDao = new AdministratorDao(sessionFactory);
+		UserDao userDao = new UserDao(sessionFactory);
 		Administrator admin = new Administrator("mailAdmin", "password", "admin");
-		System.out.println(adminDao.saveAdmin(admin));
+		System.out.println(userDao.saveUser(admin));
 
 		//Créer et modifier un modo
 		ModeratorDao modoDao = new ModeratorDao(sessionFactory);
 		Moderator moderator = new Moderator("mailModo", "password", "modo");
-		System.out.println(modoDao.addModerator(moderator));
-		Moderator modo = modoDao.getModerator(1);
+		System.out.println(userDao.saveUser(moderator));
+		Moderator modo = modoDao.getModerator(5);
+		System.out.println(modo.getEmail());
 		System.out.println(modoDao.modifyRight(modo, "addProduct", true));
 		//System.out.println(modoDao.deleteModerator(modo));
 		
 		//Créer un client
 		CustomerDao customerDao = new CustomerDao(sessionFactory);
 		Customer customer = new Customer("mailCustomer", "password", "customer");
-		customerDao.saveCustomer(customer);
-		Customer cust = customerDao.getCustomer(1);
+		System.out.println(userDao.saveUser(customer));
+		Customer cust = customerDao.getCustomer(4);
 		List<Customer> liste = customerDao.getCustomerList();
 		
 		//Créer une carte bancaire
 		CreditCardDao creditCardDao = new CreditCardDao(sessionFactory);
-		CreditCard card = new CreditCard(123, 111, new Date(2023 - 1900, 11, 20));
+		CreditCard card = new CreditCard(123, 111, new Date(2023 - 1900, 11 - 1, 20));
 		System.out.println(creditCardDao.saveCreditCard(card));
 		
 		//Modifier un client
@@ -55,7 +56,7 @@ public class Main{
 		System.out.println(basketDao.addOrder(basket));
 		System.out.println(basketDao.updateQuantity(basket.getId(), 2));
 		System.out.println(basketDao.confirmOrder(cust.getId()));
-		if (true/*creditCardDao.checkCreditCard(123, 111, new Date(2023,11,07))*/) {
+		if (creditCardDao.checkCreditCard(123, 111, new Date(2023 - 1900, 11 - 1, 20))) {
 			System.out.println("credit card valid");
 			if (creditCardDao.checkBalance(123, basketDao.totalPrice(cust.getId()))) {
 				System.out.println("enough credit to pay");
