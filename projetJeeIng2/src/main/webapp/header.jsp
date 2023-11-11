@@ -14,7 +14,7 @@
 			<div class="icons">
 				<i><img src="" alt="" width="20px"></i>
 				<div class="input-box">
-					<form method="post" onsubmit="return validateForm()"
+					<form method="post" onsubmit="ServletProduct"
 						action="product.jsp" class="mb-3">
 						<input type="text" id="category" name="category"
 							placeholder="Rechercher..."> <span class="icon"> <i
