@@ -24,7 +24,7 @@
     <div class="d-flex justify-content-center align-items-center login-container" id="Inscr">
         <!--Formulaire d'ajour d'utilisateur-->
         
-        <form method="post" class="login-form text-center" onsubmit="return validateForm()">
+        <form method="post" class="login-form text-center" action="creationCompte">
 
             <div class="form-group">
                 <label for="email">E-mail :</label>
