@@ -70,6 +70,12 @@
   	<description></description>
   	<servlet-class>servlet.ServletProfil</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>ServletLogout</servlet-name>
+  	<display-name>ServletLogout</display-name>
+  	<description></description>
+  	<servlet-class>servlet.ServletLogout</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>ServletIndex</servlet-name>
   	<url-pattern>/ServletIndex</url-pattern>
@@ -113,5 +119,9 @@
   <servlet-mapping>
   	<servlet-name>ServletProfil</servlet-name>
   	<url-pattern>/ServletProfil</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>ServletLogout</servlet-name>
+  	<url-pattern>/ServletLogout</url-pattern>
   </servlet-mapping>
 </web-app>

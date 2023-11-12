@@ -40,7 +40,7 @@
 			<button type="submit"
 				class="btn-lg btn-custom btn-block text-uppercase">Connexion</button>
 			<p class="mt-3 font-weight-normal">
-				Vous ne possédez pas de compte ? <a href="registration.jsp"><strong>Inscrivez-vous</strong></a>
+				Vous ne possédez pas de compte ? <a href="./Registration"><strong>Inscrivez-vous</strong></a>
 			</p>
 
 		</form>

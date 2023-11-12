@@ -76,7 +76,7 @@ public class UserDao {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		String sql = "SELECT * FROM User WHERE email='"+email+"' AND password ='"+password+"';";
+		String sql = "SELECT *, 0 AS clazz_ FROM User WHERE email='"+email+"' AND password ='"+password+"';";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);
 		List<User> userList = (List<User>) query.list();
 		
@@ -90,7 +90,7 @@ public class UserDao {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		String sql = "SELECT * FROM User WHERE email='"+email+"';";
+		String sql = "SELECT *, 0 AS clazz_ FROM User WHERE email='"+email+"';";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);
 		User user = (User) query.uniqueResult();
 		

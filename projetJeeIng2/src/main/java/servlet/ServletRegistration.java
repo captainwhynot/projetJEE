@@ -37,7 +37,7 @@ public class ServletRegistration extends HttpServlet {
 		if(dao.saveUser(user)) {
 			HttpSession session = request.getSession();
 			session.setAttribute("user", user);
-			//sauvegarder en session l'utilisateur
+
 			response.sendRedirect("./Index");
 			}
 		else {

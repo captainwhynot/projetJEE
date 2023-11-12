@@ -4,7 +4,6 @@ Admin :
 
 
 Customer :
-- ServletLogin récupérer User à mettre en session
 - Faire un envoi de mail pour la création du compte -> UserDao 
 - Confirmation de paiement à mettre lors de payOrder -> ServletBasket.
 - ServletHistory (potentiellement ajouter une date de paiement ?)
@@ -25,11 +24,6 @@ Product :
 - Ajouter image (type : url relative) dans la bdd + dans Product.java
 
 
-Web :
-- Sauvegarder l'utilisateur en session pour toutes les pages?
-- ServletIndex if (session.user instanceof (modo && haveRight) ou admin) afficherBouton (css invisible)
-
-
 JSP :
 - Créer un jsp pour Basket / History + Servlet
 - Créer un jsp pour addProduct / manageProduct + Servlet
@@ -39,4 +33,5 @@ JSP :
 - Créer un jsp pour manageFidelityPoint (prix d'achat / 10 dans finalyPaiement() de BasketDao) ServletFidelityPoint
 - Créer un jsp pour profil et ServletProfil
 
-Traduire le site en anglais
+
+- Traduire le site en anglais

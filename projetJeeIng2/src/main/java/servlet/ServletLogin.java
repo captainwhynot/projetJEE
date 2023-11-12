@@ -46,7 +46,7 @@ public class ServletLogin extends HttpServlet {
 			User user = dao.getUser(email);
 			HttpSession session = request.getSession();
 			session.setAttribute("user", user);
-			//sauvegarder en session l'utilisateur
+
 			response.sendRedirect("./Index");
 			}
 		else {

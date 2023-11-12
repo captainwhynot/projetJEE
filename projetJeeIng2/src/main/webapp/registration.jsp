@@ -44,7 +44,7 @@
                 class="btn-lg btn-custom btn-block text-uppercase">inscription</button>
 
             <p class="mt-3 font-weight-normal">Vous possédez déjà un compte ? <a
-                    href="login.jsp"><strong>Connectez-vous</strong></a></p>
+                    href="./Login"><strong>Connectez-vous</strong></a></p>
         </form>
     </div>
     <%@ include file="footer.jsp" %>
