@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import entity.Basket;
 import entity.Customer;
 import entity.User;
 
@@ -21,14 +22,11 @@ public class CustomerDao {
 	
 	public boolean checkCustomer(Customer customer) {
 		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		
 		try {
 			String sql = "SELECT * FROM Customer c JOIN User u ON c.id = u.id WHERE u.email = '"+ customer.getEmail() +"';";
 			SQLQuery query = session.createSQLQuery(sql).addEntity(Customer.class);		
 			List<Customer> customerList = query.list();
-	
-		    tx.commit();
+			
 		    return (customerList.isEmpty());
 	    } catch (Exception e) {
 	        return false;
@@ -39,13 +37,11 @@ public class CustomerDao {
 	
 	public List<Customer> getCustomerList(){
 		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
 		
 		String sql = "SELECT * FROM Customer c JOIN User u ON c.id = u.id;";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(Customer.class);
 		List<Customer> customerList = query.list();
 		
-		tx.commit();
 		session.close();
 		
 		return customerList;
@@ -53,13 +49,11 @@ public class CustomerDao {
 	
 	public Customer getCustomer(String email) {
 		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
 		
 		String sql = "SELECT * FROM Customer c JOIN User u ON c.id = u.id WHERE u.email='"+email+"';";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(Customer.class);
 		Customer customer = (Customer) query.uniqueResult();
 		
-		tx.commit();
 		session.close();
 		
 		return customer;
@@ -84,17 +78,20 @@ public class CustomerDao {
 	}
 
 	public boolean deleteCustomer(Customer customer) {
-		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
+	    Session session = sessionFactory.openSession();
+	    Transaction tx = session.beginTransaction();
 
-		try {
+	    try {
 	        User user = customer.getUser();
-	        customer.setUser(null); 
+	        customer.setUser(null);
+	        List<Basket> baskets = customer.getBaskets();
 
 	        session.delete(customer);
-
 	        if (user != null) {
 	            session.delete(user);
+	        }
+	        for (Basket basket : baskets) {
+	            session.delete(basket);
 	        }
 
 	        tx.commit();
@@ -105,4 +102,5 @@ public class CustomerDao {
 	        session.close();
 	    }
 	}
+
 }

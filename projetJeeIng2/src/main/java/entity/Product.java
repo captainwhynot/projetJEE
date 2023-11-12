@@ -1,9 +1,15 @@
 package entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Product {
@@ -14,19 +20,27 @@ public class Product {
 	private String name;
 	private double price;
 	private int stock;
-	private int sellerId;
+    @ManyToOne
+    @JoinColumn(name = "sellerId")
+    private Moderator moderator;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Basket> baskets;
 	
 	public Product() {
 	}
-	public Product(String name, double price, int stock, int sellerId) {
+	public Product(String name, double price, int stock, Moderator moderator) {
 		this.name = name;
 		this.price = price;
 		this.stock = stock;
-		this.sellerId = sellerId;
+		this.moderator = moderator;
 	}
 
 	public int getId() {
 		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public String getName() {
@@ -52,14 +66,20 @@ public class Product {
 	public void setStock(int stock) {
 		this.stock = stock;
 	}
-
-	public int getSellerId() {
-		return sellerId;
-	}
-
-	public void setSellerId(int sellerId) {
-		this.sellerId = sellerId;
+	
+	public Moderator getModerator() {
+		return moderator;
 	}
 	
+	public void setModerator(Moderator moderator) {
+		this.moderator = moderator;
+	}
 	
+	public List<Basket> getBaskets() {
+        return baskets;
+    }
+
+    public void setBaskets(List<Basket> baskets) {
+        this.baskets = baskets;
+    }	
 }

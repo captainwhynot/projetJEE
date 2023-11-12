@@ -55,13 +55,7 @@ public class CreditCardDao {
 
 	public CreditCard getCreditCard(int cardNumber) {
 		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		
-		String sql = "SELECT * FROM CreditCard WHERE cardNumber='"+cardNumber+"';";
-		SQLQuery query = session.createSQLQuery(sql).addEntity(CreditCard.class);
-		CreditCard card = (CreditCard) query.uniqueResult();
-		
-		tx.commit();
+		CreditCard card = session.get(CreditCard.class, cardNumber);
 		session.close();
 		
 		if (card != null && card.getExpirationDate().after(new Date())) {
@@ -74,23 +68,16 @@ public class CreditCardDao {
 	
 	public boolean checkCreditCard(int cardNumber, int cvv, Date date) {
 	    Session session = sessionFactory.openSession();
-	    Transaction tx = session.beginTransaction();
-
 	    try {
 	        String sql = "SELECT * FROM CreditCard WHERE cardNumber = :cardNumber AND cvv = :cvv AND expirationDate = :expirationDate";
 	        SQLQuery query = session.createSQLQuery(sql).addEntity(CreditCard.class);
 	        query.setParameter("cardNumber", cardNumber);
 	        query.setParameter("cvv", cvv);
 	        query.setParameter("expirationDate", date);
-
 	        List<CreditCard> creditCard = query.list();
 
-	        tx.commit();
-	    	System.out.println(!creditCard.isEmpty());
 	        return !creditCard.isEmpty();
 	    } catch (Exception e) {
-	        tx.rollback();
-	        e.printStackTrace();
 	        return false;
 	    } finally {
 	        session.close();
@@ -99,13 +86,11 @@ public class CreditCardDao {
 	
 	public boolean checkBalance(int cardNumber, double price) {
 		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
 		
 		String sql = "SELECT credit FROM CreditCard WHERE cardNumber="+cardNumber+";";
 		SQLQuery query = session.createSQLQuery(sql);
 		double credit = (double) query.uniqueResult();
 		
-		tx.commit();
 		session.close();
 		
 		return (credit - price > 0);
@@ -128,14 +113,15 @@ public class CreditCardDao {
 	public boolean deleteCreditCard(int cardNumber) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		
-		String sql = "DELETE FROM CreditCard WHERE cardNumber="+cardNumber+";";
-		SQLQuery query = session.createSQLQuery(sql);
-		int rowCount = query.executeUpdate();
-		
-		tx.commit();
-		session.close();
-
-		return (rowCount > 0);
+		try {
+			CreditCard card = session.get(CreditCard.class, cardNumber);
+	        session.delete(card);
+			tx.commit();
+	        return true;
+	    } catch (Exception e) {
+	        return false;
+	    } finally {
+	        session.close();
+	    }
 	}
 }

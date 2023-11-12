@@ -34,6 +34,7 @@ public class Main{
 		//Créer une carte bancaire
 		CreditCardDao creditCardDao = new CreditCardDao(sessionFactory);
 		CreditCard card = new CreditCard(123, 111, new Date(2023 - 1900, 11 - 1, 20));
+		card.setCredit(1000);
 		System.out.println(creditCardDao.saveCreditCard(card));
 		
 		//Modifier un client
@@ -44,13 +45,13 @@ public class Main{
 		
 		//Créer et modifier un produit
 		ProductDao productDao = new ProductDao(sessionFactory);
-		Product product = new Product("poster", 15.99, 5, modo.getId());
+		Product product = new Product("poster", 15.99, 5, modo);
 		System.out.println(productDao.addProduct(product));
 		System.out.println(productDao.modifyProduct(product, product.getName(), 10.15, product.getStock()));
 		
 		//Créer un panier
 		BasketDao basketDao = new BasketDao(sessionFactory);
-		Basket basket = new Basket(product.getId(), 2, cust.getId());
+		Basket basket = new Basket(product, 2, cust);
 				
 		//Modifier et payer un panier
 		System.out.println(basketDao.addOrder(basket));
@@ -63,7 +64,10 @@ public class Main{
 				System.out.println(basketDao.finalizePaiement(cust.getId(), 123, basketDao.totalPrice(cust.getId())));
 			}
 		}
-		
-		
+		//System.out.println(basketDao.deleteOrder(basket.getId()));
+		//System.out.println(productDao.deleteProduct(product.getId()));
+		//System.out.println(modoDao.deleteModerator(modo));
+		//System.out.println(customerDao.deleteCustomer(cust));		
+		//System.out.println(creditCardDao.deleteCreditCard(card.getCardNumber()));
 	}
 }

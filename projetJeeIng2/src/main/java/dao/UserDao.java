@@ -76,7 +76,7 @@ public class UserDao {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		String sql = "SELECT *, 0 AS clazz_ FROM User WHERE email='"+email+"' AND password ='"+password+"';";
+		String sql = "SELECT * FROM User WHERE email='"+email+"' AND password ='"+password+"';";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);
 		List<User> userList = (List<User>) query.list();
 		
@@ -87,17 +87,28 @@ public class UserDao {
 	}
 	
 	public User getUser(String email) {
-		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		
-		String sql = "SELECT *, 0 AS clazz_ FROM User WHERE email='"+email+"';";
-		SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);
-		User user = (User) query.uniqueResult();
-		
-		tx.commit();
-		session.close();
-		
-		return user;
+	    Session session = sessionFactory.openSession();
+	    Transaction tx = session.beginTransaction();
+
+	    User user = null;
+	    try {
+	        String sql = "SELECT * FROM User WHERE email = :email";
+	        SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);
+	        query.setParameter("email", email);
+
+	        user = (User) query.uniqueResult();
+
+	        tx.commit();
+	    } catch (Exception e) {
+	        if (tx != null) {
+	            tx.rollback();
+	        }
+	    } finally {
+	        session.close();
+	    }
+
+	    return user;
 	}
+
 }
 	

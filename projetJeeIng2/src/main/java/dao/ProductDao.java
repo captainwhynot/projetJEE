@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import entity.Basket;
 import entity.Product;
 
 @SuppressWarnings({"deprecation", "rawtypes", "unchecked"})
@@ -63,29 +64,36 @@ public class ProductDao {
 	
 	public Product getProduct(int id) {
 		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
 		
-		String sql = "SELECT * FROM Product WHERE id='"+id+"';";
-		SQLQuery query = session.createSQLQuery(sql).addEntity(Product.class);
-		Product product = (Product) query.uniqueResult();
+		Product product = session.get(Product.class, id);
 		
-		tx.commit();
 		session.close();
 		
 		return product;
 	}
 	
 	public boolean deleteProduct(int id) {
-		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		
-		String sql = "DELETE FROM Product WHERE id="+id+";";
-		SQLQuery query = session.createSQLQuery(sql);
-		int rowCount = query.executeUpdate();
-		
-		tx.commit();
-		session.close();
+	    Session session = sessionFactory.openSession();
+	    Transaction tx = session.beginTransaction();
 
-		return (rowCount > 0);
+	    try {
+	        Product product = session.get(Product.class, id);
+	        if (product != null) {
+	            List<Basket> baskets = product.getBaskets();
+
+		        session.delete(product);
+		        for (Basket basket : baskets) {
+		            session.delete(basket);
+		        }
+	        }
+
+	        tx.commit();
+	        return true;
+	    } catch (Exception e) {
+	        return false;
+	    } finally {
+	        session.close();
+	    }
 	}
+
 }

@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import entity.Moderator;
+import entity.Product;
 import entity.User;
 
 @SuppressWarnings({"deprecation", "rawtypes", "unchecked"})
@@ -19,15 +20,12 @@ public class ModeratorDao {
 	}
 	
 	public boolean checkModerator(Moderator moderator) {
-		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		
+		Session session = sessionFactory.openSession();		
 		try {
 			String sql = "SELECT * FROM Moderator m JOIN User u ON m.id = u.id WHERE u.email = '"+ moderator.getEmail() +"';";
 			SQLQuery query = session.createSQLQuery(sql).addEntity(Moderator.class);		
 			List<Moderator> moderatorList = query.list();
 	
-		    tx.commit();
 		    return (moderatorList.isEmpty());
 		} catch (Exception e) {
 	        return false;
@@ -38,13 +36,11 @@ public class ModeratorDao {
 
 	public List<Moderator> getModeratorList(){
 		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
 		
 		String sql = "SELECT * FROM Moderator m JOIN User u ON m.id = u.id;";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(Moderator.class);
 		List<Moderator> ModeratorList = query.list();
 		
-		tx.commit();
 		session.close();
 		
 		return ModeratorList;
@@ -52,13 +48,11 @@ public class ModeratorDao {
 	
 	public Moderator getModerator(String email) {
 		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
 		
 		String sql = "SELECT * FROM Moderator m JOIN User u ON m.id = u.id WHERE u.email = '" + email + "';";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(Moderator.class);
 		Moderator moderator = (Moderator) query.uniqueResult();
 		
-		tx.commit();
 		session.close();
 		
 		return moderator;
@@ -71,13 +65,17 @@ public class ModeratorDao {
 		try {
 	        User user = moderator.getUser();
 	        moderator.setUser(null); 
+	        
+	        List<Product> products = moderator.getProducts();
 
 	        session.delete(moderator);
-
 	        if (user != null) {
 	            session.delete(user);
 	        }
-
+	        for (Product product : products) {
+	            session.delete(product);
+	        }
+	        
 	        tx.commit();
 	        return true;
 	    } catch (Exception e) {

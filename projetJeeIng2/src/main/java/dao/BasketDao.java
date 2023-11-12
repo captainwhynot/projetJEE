@@ -68,13 +68,7 @@ public SessionFactory sessionFactory;
 	
 	public Basket getBasket(int id) {
 		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		
-		String sql = "SELECT * FROM Basket WHERE id='"+id+"';";
-		SQLQuery query = session.createSQLQuery(sql).addEntity(Basket.class);
-		Basket basket = (Basket) query.uniqueResult();
-		
-		tx.commit();
+		Basket basket = session.get(Basket.class, id);
 		session.close();
 		
 		return basket;
@@ -147,7 +141,6 @@ public SessionFactory sessionFactory;
 	public double totalPrice(int customerId) {
 		double totalPrice = 0;
 		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
 
 		//Check the price for the final order.
 		String sql = "SELECT * FROM Basket WHERE customerId = "+customerId+" AND quantity > 0 AND bought = 0;";
@@ -155,14 +148,12 @@ public SessionFactory sessionFactory;
 		List<Basket> basketList = query.list();
 		
 		for (Basket basket : basketList) {
-			String sqlProduct = "SELECT price FROM Product WHERE id="+basket.getProductId()+";";
+			String sqlProduct = "SELECT price FROM Product WHERE id="+basket.getProduct().getId()+";";
 			SQLQuery queryProduct = session.createSQLQuery(sqlProduct);
 			double price = (double) queryProduct.uniqueResult();
 			
 			totalPrice += price * basket.getQuantity();
 		}
-
-		tx.commit();
 		session.close();
 		
 		return totalPrice;
@@ -171,14 +162,15 @@ public SessionFactory sessionFactory;
 	public boolean deleteOrder(int id) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		
-		String sql = "DELETE FROM Basket WHERE id="+id+";";
-		SQLQuery query = session.createSQLQuery(sql);
-		int rowCount = query.executeUpdate();
-		
-		tx.commit();
-		session.close();
-
-		return (rowCount > 0);
+		try {
+	        Basket basket = session.get(Basket.class, id);
+	        session.delete(basket);
+			tx.commit();
+	        return true;
+	    } catch (Exception e) {
+	        return false;
+	    } finally {
+	        session.close();
+	    }
 	}
 }

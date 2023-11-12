@@ -7,10 +7,14 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
+
+import org.hibernate.annotations.DiscriminatorOptions;
+
 import javax.persistence.CascadeType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorOptions(force = true)
 public class User {
 
 	@Id
@@ -76,6 +80,5 @@ public class User {
 
 	public void setTypeUser(String typeUser) {
 		this.typeUser = typeUser;
-	}
-	
+	}	
 }

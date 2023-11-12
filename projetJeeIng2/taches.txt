@@ -7,6 +7,7 @@ Admin :
 Customer :
 - Faire un envoi de mail pour la création du compte -> UserDao : saveUser()
 - ServletProfil + profil.jsp
+- Ajouter des méthodes pour pouvoir réutiliser les points de fidélités lors de l'achat
 
 
 Moderator :

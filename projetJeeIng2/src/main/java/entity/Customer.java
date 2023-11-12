@@ -1,9 +1,12 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -14,6 +17,9 @@ public class Customer extends User implements Serializable {
 	@OneToOne
     @JoinColumn(name = "id")
     private User user;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Basket> baskets;
+
 
 	public Customer() {
 		super();
@@ -39,5 +45,13 @@ public class Customer extends User implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
+	public List<Basket> getBaskets() {
+        return baskets;
+    }
+
+    public void setBaskets(List<Basket> baskets) {
+        this.baskets = baskets;
+    }
 }
 
