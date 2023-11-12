@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="entity.*" %>
+    
 <!DOCTYPE html>
 <html>
 <%@ include file="header.jsp" %>
@@ -8,7 +11,36 @@
     <div class="d-flex justify-content-center align-items-center page-container">
         <div class="interieurAddProduct">
             <div class="centered">
-                <h1>Formulaire pour ajouter des modérators dans la DB</h1>
+                <h1>User List</h1>
+                <form method="POST" action="AddModerator">
+	                <table class="table">
+	                    <thead>
+	                        <tr>
+	                            <th>ID</th>
+	                            <th>Email</th>
+	                            <th>Username</th>
+	                            <th>Moderator</th>
+	                        </tr>
+	                    </thead>
+	                    <tbody>
+	                        <% List<User> userList = (List<User>) request.getAttribute("userList");
+	                            for (User user : userList) {
+	                        %>
+	                            <tr>
+	                                <td><%= user.getId() %></td>
+	                                <td><%= user.getEmail() %></td>
+	                                <td><%= user.getUsername() %></td>
+	                                <td><input type="checkbox" name="transferList" value="<%= user.getEmail() %>"
+	                                <%= user.getTypeUser().equals("Moderator") ? "checked" : "" %>>
+	                                <input type="hidden" name="userList" value="<%= user.getEmail() %>"></td>
+	                            </tr>
+	                        <%
+	                            }
+	                        %>
+	                    </tbody>
+	                </table>
+	            	<button type="submit">Confirm</button>
+	          </form>
         </div>
        
     </div>

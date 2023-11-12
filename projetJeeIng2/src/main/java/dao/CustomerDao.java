@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 
 import entity.Basket;
 import entity.Customer;
+import entity.Moderator;
 import entity.User;
 
 @SuppressWarnings({"deprecation", "rawtypes", "unchecked"})
@@ -77,6 +78,15 @@ public class CustomerDao {
 	    }
 	}
 
+	public boolean transferIntoModerator(Customer customer) {
+		UserDao userDao = new UserDao(sessionFactory);
+		Moderator moderator = new Moderator(customer.getEmail(), customer.getPassword(), customer.getUsername());
+		moderator.setId(customer.getId());
+	    boolean delete = deleteCustomer(customer);
+	    boolean save = userDao.saveUser(moderator);
+		return (delete && save);
+	}
+	
 	public boolean deleteCustomer(Customer customer) {
 	    Session session = sessionFactory.openSession();
 	    Transaction tx = session.beginTransaction();

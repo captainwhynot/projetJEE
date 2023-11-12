@@ -64,6 +64,8 @@ public class Main{
 				System.out.println(basketDao.finalizePaiement(cust.getId(), 123, basketDao.totalPrice(cust.getId())));
 			}
 		}
+		//customerDao.transferIntoModerator(cust);
+		//modoDao.transferIntoCustomer(modo);
 		//System.out.println(basketDao.deleteOrder(basket.getId()));
 		//System.out.println(productDao.deleteProduct(product.getId()));
 		//System.out.println(modoDao.deleteModerator(modo));

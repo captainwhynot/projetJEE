@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import entity.Customer;
 import entity.Moderator;
 import entity.Product;
 import entity.User;
@@ -56,6 +57,15 @@ public class ModeratorDao {
 		session.close();
 		
 		return moderator;
+	}
+	
+	public boolean transferIntoCustomer(Moderator moderator) {
+		UserDao userDao = new UserDao(sessionFactory);
+		Customer customer = new Customer(moderator.getEmail(), moderator.getPassword(), moderator.getUsername());
+		customer.setId(moderator.getId());
+	    boolean delete = deleteModerator(moderator);
+	    boolean save = userDao.saveUser(customer);
+		return (delete && save);
 	}
 	
 	public boolean deleteModerator(Moderator moderator) {
