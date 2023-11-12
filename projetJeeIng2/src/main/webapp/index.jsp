@@ -16,13 +16,13 @@
                 </ol>
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <a href="productDetails.php?id=8"><button type="button" class="btn btn-3">Voir le produit</button></a>
+                        <a href="productDetails.php?id=8"><button type="button" class="btn btn-3">See more</button></a>
                     </div>
                     <div class="carousel-item">
-                        <a href="productDetails.php?id=7"><button class="btn btn-3">Voir le produit</button></a>
+                        <a href="productDetails.php?id=7"><button class="btn btn-3">See more</button></a>
                     </div>
                     <div class="carousel-item">
-                    <a href="productDetails.php?id=9"><button class="btn btn-3">Voir le produit</button></a>
+                    <a href="productDetails.php?id=9"><button class="btn btn-3">See more</button></a>
                     </div>
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
