@@ -10,15 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import conn.HibernateUtil;
 import dao.ModeratorDao;
-import dao.UserDao;
 import entity.Moderator;
-import entity.User;
 
 /**
  * Servlet implementation class ServletManageModerator
@@ -61,9 +57,9 @@ public class ServletManageModerator extends HttpServlet {
 		String[] moderatorList = request.getParameterValues("moderatorList");
 		
 		if (moderatorList != null) {
+			ModeratorDao moderatorDao = new ModeratorDao(sessionFactory);
 			Moderator moderator = null;
     		for (String email: moderatorList) {
-    			ModeratorDao moderatorDao = new ModeratorDao(sessionFactory);
     			moderator = moderatorDao.getModerator(email);
     			if (addProductList != null && Arrays.asList(addProductList).contains(email)) {
     				 moderatorDao.modifyRight(moderator, "addProduct", true);

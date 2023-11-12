@@ -1,11 +1,19 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.hibernate.SessionFactory;
+
+import conn.HibernateUtil;
+import dao.CustomerDao;
+import entity.Customer;
 
 /**
  * Servlet implementation class ServletManageFidelityPoint
@@ -27,6 +35,12 @@ public class ServletManageFidelityPoint extends HttpServlet {
    	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
    	 */
    	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		
+		CustomerDao customerDao = new CustomerDao(sessionFactory);
+		List<Customer> customerList = customerDao.getCustomerList();
+		
+	    request.setAttribute("customerList", customerList);
    		this.getServletContext().getRequestDispatcher("/manageFidelityPoint.jsp").include(request, response);
    	}
 
@@ -35,6 +49,23 @@ public class ServletManageFidelityPoint extends HttpServlet {
    	 */
    	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
    		doGet(request, response);
+   		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+
+		String[] fidelityPointList = request.getParameterValues("fidelityPointList");
+		String[] customerList = request.getParameterValues("customerList");
+		if (fidelityPointList != null && customerList != null && fidelityPointList.length == customerList.length) {
+			CustomerDao customerDao = new CustomerDao(sessionFactory);
+			Customer customer = null;
+			String email = null;
+			int fidelityPoint = 0;
+    		for (int i = 0; i < customerList.length; i++) {
+    			email = customerList[i];
+    			fidelityPoint = Integer.parseInt(fidelityPointList[i]);
+    			customer = customerDao.getCustomer(email);
+				customerDao.setFidelityPoint(customer, fidelityPoint - customer.getFidelityPoint());
+    		}
+		}
+		response.sendRedirect("./ManageFidelityPoint");
    	}
 
 }

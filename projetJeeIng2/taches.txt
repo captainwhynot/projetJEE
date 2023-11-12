@@ -1,7 +1,7 @@
 Admin : 
-- ServletAddModerator + addModerator.jsp (avec la liste des clients qu'on transforme en modo)
-- ServletManageModerator + manageModerator.jsp
-- ServletManageFidelityPoint + manageFidelityPoint.jsp (prix d'achat / 10 dans finalizePaiement() de BasketDao)
+- addModerator.jsp affichage
+- manageModerator.jsp affichage
+- manageFidelityPoint.jsp affichage
 
 
 Customer :

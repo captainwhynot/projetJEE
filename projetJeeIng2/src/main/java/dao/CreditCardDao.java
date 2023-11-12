@@ -100,7 +100,7 @@ public class CreditCardDao {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		String sql = "UPDATE CreditCard SET credit = credit"+(credit>0 ? "+":"")+ credit +" WHERE cardNumber="+cardNumber+";";
+		String sql = "UPDATE CreditCard SET credit = credit"+(credit>=0 ? "+":"")+ credit +" WHERE cardNumber="+cardNumber+";";
 		SQLQuery query = session.createSQLQuery(sql);
 		int rowCount = query.executeUpdate();
 		

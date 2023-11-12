@@ -65,7 +65,7 @@ public class CustomerDao {
 		Transaction tx = session.beginTransaction();
 		
 		try {
-			String sql = "UPDATE Customer SET fidelityPoint = fidelityPoint"+ (points>0 ? "+":"") + points + " WHERE id="+customer.getId()+";";
+			String sql = "UPDATE Customer SET fidelityPoint = fidelityPoint"+ (points>=0 ? "+":"") + points + " WHERE id="+customer.getId()+";";
 			SQLQuery query = session.createSQLQuery(sql);
 			int rowCount = query.executeUpdate();
 			
