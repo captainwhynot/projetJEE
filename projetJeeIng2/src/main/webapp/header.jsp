@@ -112,8 +112,7 @@ if (session.getAttribute("user") != null) {
 						<div class="dropdown-menu"
 							aria-labelledby="navbarDropdownMenuLink">
 							<a class="dropdown-item" href="./ManageProduct">Manage
-								Product</a> <a class="dropdown-item" href="./AddProduct">Add
-								Product</a>
+								Product</a> <a class="dropdown-item" href="./AddProduct">Add Product</a>
 						</div></li>
 					<%
 					}
@@ -142,11 +141,11 @@ if (session.getAttribute("user") != null) {
 							<%
 							}
 							%>
+							</div></li>
 							<%
-							}
-							%>
+					}%>
 
-						</div></li>
+						
 
 					<li><a class="nav-link" aria-current="page" href="./Logout">Logout</a></li>
 					<%
