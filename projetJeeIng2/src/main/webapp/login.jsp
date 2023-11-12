@@ -19,9 +19,9 @@
             </div>
 
 			<button type="submit"
-				class="btn-lg btn-custom btn-block text-uppercase">Connexion</button>
+				class="btn-lg btn-custom btn-block text-uppercase">Login</button>
 			<p class="mt-3 font-weight-normal">
-				Vous ne possédez pas de compte ? <a href="./Registration"><strong>Inscrivez-vous</strong></a>
+				Don't have an account? <a href="./Registration"><strong>Sign up</strong></a>
 			</p>
 
 		</form>

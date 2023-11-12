@@ -20,15 +20,15 @@
             </div>
             
             <div class="form-group">
-                <label for="username">Nom d'utilisateur :</label>
+                <label for="username">Username :</label>
                 <input type="text" id="username" name="username" class="form-control" required>
             </div>
             
             <button type="submit"
-                class="btn-lg btn-custom btn-block text-uppercase">inscription</button>
+                class="btn-lg btn-custom btn-block text-uppercase">register</button>
 
-            <p class="mt-3 font-weight-normal">Vous possédez déjà un compte ? <a
-                    href="./Login"><strong>Connectez-vous</strong></a></p>
+            <p class="mt-3 font-weight-normal">Already have an account? <a
+                    href="./Login"><strong>Login</strong></a></p>
         </form>
     </div>
     <%@ include file="footer.jsp" %>
