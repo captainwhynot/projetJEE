@@ -1,5 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="dao.*" %>
+<%@ page import="entity.*" %>
+<%@ page import="conn.*" %>
+
+<%
+	User loginUser = null;
+    if (session.getAttribute("user") != null) {
+    	loginUser = (User) session.getAttribute("user");
+    }
+%>
 <head>
     <title>MANGASTORE</title>
     <meta charset="UTF-8">
@@ -32,11 +42,10 @@
 					<form method="post" onsubmit="ServletProduct" action="Product" class="mb-3">
 						<input type="text" id="category" name="category" placeholder="Rechercher..."> 
 						<span class="icon"> <i class="uil uil-search search-icon"></i>
-							<%-- SI UTILISATEUR CONNECTER --%>
-                			<% if (session.getAttribute("user") != null) { %>
-							<a href="./History"><i><img src="img/historique.png" alt="" width="24px"></i></a>
-							<%--<a id="decal" href="./Basket"><i><img src="img/shopping-cart.png" alt="" width="32px"></i></a> --%> 
-							<a id="decal2" href="./Basket"><i><img src="img/shopping-cart.png" alt="" width="32px"></i></a>
+                			<% if (loginUser != null) { %>
+								<a href="./History"><i><img src="img/historique.png" alt="" width="24px"></i></a>
+								<%--<a id="decal" href="./Basket"><i><img src="img/shopping-cart.png" alt="" width="32px"></i></a> --%> 
+								<a id="decal2" href="./Basket"><i><img src="img/shopping-cart.png" alt="" width="32px"></i></a>
 							<% } %>
 						</span> <i class="uil uil-times close-icon"></i>
 					</form>
@@ -59,19 +68,40 @@
 			<!-- Navbar links -->
 			<div class="collapse navbar-collapse" id="collapsibleNavbar">
 				<ul class="navbar-nav">
-					<li class="nav-item"><a class="nav-link" href="./Index">Accueil</a>
+					<li class="nav-item"><a class="nav-link" href="./Index">Home</a>
 					</li>
-					<li class="nav-item"><a class="nav-link" href="./Market">Produits</a>
+					<li class="nav-item"><a class="nav-link" href="./Market">Market</a>
 					</li>
-					<%-- SI UTILISATEUR DÉCONNECTÉ --%>
-                <% if (session.getAttribute("user") == null) { %>
-                    <li><a class="nav-link" aria-current="page" href="./Login">Connexion</a></li>
-                <% } %>
-
-                <%-- SINON AFFICHER PANIER + BOUTON DÉCONNEXION --%>
-                <% if (session.getAttribute("user") != null) { %>
-                    <li><a class="nav-link" aria-current="page" href="./Logout">Déconnexion</a></li>
-                <% } %>
+				 	<% if (loginUser == null) { %>
+	                    	<li><a class="nav-link" aria-current="page" href="./Login">Login</a></li>
+	                <% } 
+				 	else { %>
+					 	<% if (loginUser.getTypeUser().equals("Administrator")) { %>
+							<li class="nav-item"><a class="nav-link" href="./AddModerator">Add Moderator</a>
+							</li>
+							<li class="nav-item"><a class="nav-link" href="./ManageFidelityPoint">Manage Fidelity Points</a>
+							</li>
+							<li class="nav-item"><a class="nav-link" href="./ManageModerator">Manage Moderator's Rights</a>
+							</li>
+							<li class="nav-item"><a class="nav-link" href="./AddProduct">Add Product</a>
+							</li>
+							<li class="nav-item"><a class="nav-link" href="./ManageProduct">Manage Product</a>
+							</li>	
+		                <% } %>
+		                <%if (loginUser.getTypeUser().equals("Moderator")) { 
+		                	ModeratorDao moderatorDao = new ModeratorDao(HibernateUtil.getSessionFactory());
+		                	Moderator moderator = moderatorDao.getModerator(loginUser.getEmail());
+			                if (moderator.canAddProduct()) { %>
+								<li class="nav-item"><a class="nav-link" href="./AddProduct">Add Product</a>
+								</li>		        		
+							<% }
+							if (moderator.canModifyProduct() || moderator.canDeleteProduct()) { %>
+								<li class="nav-item"><a class="nav-link" href="./ManageProduct">Manage Product</a>
+								</li>		        		
+							<% } %>
+	                	<% } %>
+	                    <li><a class="nav-link" aria-current="page" href="./Logout">Logout</a></li>
+	                <% } %>
 				</ul>
 			</div>
 		</div>

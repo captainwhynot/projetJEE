@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import="entity.*" %>
     
 <!DOCTYPE html>
 <html>
@@ -28,11 +27,11 @@
 	                        %>
 	                            <tr>
 	                                <td><%= user.getId() %></td>
-	                                <td><%= user.getEmail() %></td>
+	                                <td><%= user.getEmail() %>
+	                                <input type="hidden" name="userList" value="<%= user.getEmail() %>"></td>
 	                                <td><%= user.getUsername() %></td>
 	                                <td><input type="checkbox" name="transferList" value="<%= user.getEmail() %>"
-	                                <%= user.getTypeUser().equals("Moderator") ? "checked" : "" %>>
-	                                <input type="hidden" name="userList" value="<%= user.getEmail() %>"></td>
+	                                <%= user.getTypeUser().equals("Moderator") ? "checked" : "" %>></td>
 	                            </tr>
 	                        <%
 	                            }
