@@ -4,11 +4,11 @@
 <html>
 <%@ include file="header.jsp" %>
 <body>
-
+    
     <div class="d-flex justify-content-center align-items-center page-container">
         <div class="interieurAddProduct">
             <div class="centered">
-                <h1>Formulaire pour gérer un produit dans la DB</h1>
+                <h1>Formulaire pour gérer le profil dans la DB</h1>
         </div>
        
     </div>

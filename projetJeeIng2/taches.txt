@@ -1,37 +1,31 @@
 Admin : 
-- ServletManageModerator
-- ServletManageFidelityPoint + manageFidelityPoint.jsp
+- ServletAddModerator + addModerator.jsp (avec la liste des clients qu'on transforme en modo)
+- ServletManageModerator + manageModerator.jsp
+- ServletManageFidelityPoint + manageFidelityPoint.jsp (prix d'achat / 10 dans finalizePaiement() de BasketDao)
 
 
 Customer :
-- Faire un envoi de mail pour la création du compte -> UserDao 
-- Confirmation de paiement à mettre lors de payOrder -> ServletBasket.
-- ServletHistory (potentiellement ajouter une date de paiement ?)
-- ServletProduct (recherche de produits) 
+- Faire un envoi de mail pour la création du compte -> UserDao : saveUser()
+- ServletProfil + profil.jsp
 
 
 Moderator :
-- ServletManageProduct
-- Vérification droit des modos pour Add/Modify/Delete Product pour afficher les différentes méthodes dispo dans le servlet
+- ServletAddProduct + addProduct.jsp
+- ServletManageProduct + manageProduct.jsp
+- ServletProductDetail + product.jsp
+- Vérification droit des modos pour Add/Modify/Delete Product pour afficher les différentes méthodes dispo dans le .jsp/Servlet
 
 
 Basket : 
-- ServletBasket (buy = true : acheté / false : à commander)
-- ServletHistory
+- ServletBasket + basket.jsp (Confirmation de paiement à mettre lors de confirmOrder())
+- ServletHistory + history.jsp (potentiellement ajouter une date de paiement ?)
 
 
 Product :
+- ServletMarket + market.jsp (recherche de produits) 
 - Ajouter image (type : url relative) dans la bdd + dans Product.java
 
 
-JSP :
-- Créer un jsp pour Basket / History + Servlet
-- Créer un jsp pour addProduct / manageProduct + Servlet
-- Afficher détail de produit + Servlet
-- Créer un jsp pour addModerator (avec la liste des clients qu'on transforme en modo) + Servlet
-- Créer un jsp pour manageModerator + Servlet
-- Créer un jsp pour manageFidelityPoint (prix d'achat / 10 dans finalyPaiement() de BasketDao) ServletFidelityPoint
-- Créer un jsp pour profil et ServletProfil
-
-
 - Traduire le site en anglais
+- Javadoc en anglais
+- Supprimer tous les sysout dans les méthodes etc...

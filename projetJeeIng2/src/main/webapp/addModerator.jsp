@@ -8,7 +8,7 @@
     <div class="d-flex justify-content-center align-items-center page-container">
         <div class="interieurAddProduct">
             <div class="centered">
-                <h1>Formulaire pour gérer un produit dans la DB</h1>
+                <h1>Formulaire pour ajouter des modérators dans la DB</h1>
         </div>
        
     </div>
