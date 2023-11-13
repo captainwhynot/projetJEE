@@ -45,7 +45,7 @@ public class Main{
 		
 		//Créer et modifier un produit
 		ProductDao productDao = new ProductDao(sessionFactory);
-		Product product = new Product("poster", 15.99, 5, modo);
+		Product product = new Product("poster", 15.99, 5, "img/logo.png", modo);
 		System.out.println(productDao.addProduct(product));
 		System.out.println(productDao.modifyProduct(product, product.getName(), 10.15, product.getStock()));
 		

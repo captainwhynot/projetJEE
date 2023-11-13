@@ -13,7 +13,6 @@ Moderator :
 - ServletAddProduct + addProduct.jsp
 - ServletManageProduct + manageProduct.jsp
 - ServletProductDetail + product.jsp
-- Vérification droit des modos pour Add/Modify/Delete Product pour afficher les différentes méthodes dispo dans le .jsp/Servlet
 
 
 Basket : 
@@ -23,10 +22,7 @@ Basket :
 
 Product :
 - ServletMarket + market.jsp (recherche de produits) 
-- Ajouter image (type : url relative) dans la bdd + dans Product.java
 
-
-- Ajouter une méthode générique pour vérifier les login ?
 
 - Traduire le site en anglais
 - Javadoc en anglais

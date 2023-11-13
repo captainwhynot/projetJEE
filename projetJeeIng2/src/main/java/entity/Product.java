@@ -20,6 +20,7 @@ public class Product {
 	private String name;
 	private double price;
 	private int stock;
+	private String img;
     @ManyToOne
     @JoinColumn(name = "sellerId")
     private Moderator moderator;
@@ -28,10 +29,11 @@ public class Product {
 	
 	public Product() {
 	}
-	public Product(String name, double price, int stock, Moderator moderator) {
+	public Product(String name, double price, int stock, String img, Moderator moderator) {
 		this.name = name;
 		this.price = price;
 		this.stock = stock;
+		this.img = img;
 		this.moderator = moderator;
 	}
 
@@ -81,5 +83,13 @@ public class Product {
 
     public void setBaskets(List<Basket> baskets) {
         this.baskets = baskets;
-    }	
+    }
+    
+	public String getImg() {
+		return img;
+	}
+	
+	public void setImg(String img) {
+		this.img = img;
+	}	
 }
