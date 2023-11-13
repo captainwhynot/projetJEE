@@ -33,18 +33,37 @@
 	                                <td><%= basket.getProduct().getPrice() %></td>
 	                                <td><%= basket.getQuantity() %></td>
 	                                <td><%= basket.getProduct().getModerator().getUsername() %></td>
-	                                <% double total = basket.getProduct().getPrice() * basket.getQuantity(); 
-	                                String totalPrice = String.format("%.2f", total);
-	                                totalOrderPrice += total;
+	                                <% double totalPrice = basket.getProduct().getPrice() * basket.getQuantity(); 
+	                                String totalPriceString = String.format("%.2f", totalPrice);
+	                                totalOrderPrice += totalPrice;
 	                                %>
-	                                <td><span class="totalPrice"><%= totalPrice %></span></td>
+	                                <td><span class="totalPrice"><%= totalPriceString %></span></td>
 	                            </tr>
 	                        <%
 	                            }
 	                        %>
 	                        <tr>
-	                        <td colspan=4>Total Order Price :</td>
-	                        <td><%= totalOrderPrice %></td>
+		                        <td colspan=4>Total Order before discount</td>
+                                <% String totalOrderPriceString = String.format("%.2f", totalOrderPrice); %>
+		                        <td><%= totalOrderPriceString %></td>
+	                        </tr>
+	                        <tr>
+		                        <td colspan=4>Discount</td>
+		                        <% CustomerDao customerDao = new CustomerDao(HibernateUtil.getSessionFactory());
+		                        Customer customer = customerDao.getCustomer(loginUser.getId());
+		                        double fidelityPoint = customer.getFidelityPoint();
+                                String fidelityPointString = String.format("%.2f", fidelityPoint);
+                                String discount = (fidelityPoint > totalOrderPrice) ? totalOrderPriceString : fidelityPointString;
+                                %>
+		                        <td><%= discount %></td>
+	                        </tr>
+	                        <tr>
+		                        <td colspan=4>Total Order Price :</td>
+		                        <% BasketDao basketDao = new BasketDao(HibernateUtil.getSessionFactory());
+		                        totalOrderPrice = basketDao.totalPrice(loginUser.getId());
+                                totalOrderPriceString = String.format("%.2f", totalOrderPrice); 
+                                %>
+		                        <td><%= totalOrderPriceString %></td>
 	                        </tr>
 	                    </tbody>
 	                </table>
