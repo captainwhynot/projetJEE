@@ -3,6 +3,9 @@
 <!DOCTYPE html>
 <html>
 <%@ include file="header.jsp" %>
+<%
+if (isLogged) {
+%>
 <body>
     
     <div class="d-flex justify-content-center align-items-center page-container">
@@ -27,5 +30,10 @@
     </script>
 
 </body>
-
+<%
+} else {
+%><script type="text/javascript">window.location.replace("./Index");</script>
+<%
+}
+%>
 </html>

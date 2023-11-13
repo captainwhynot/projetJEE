@@ -1,11 +1,15 @@
 package servlet;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import entity.User;
 
 /**
  * Servlet implementation class ServletIndex
@@ -30,4 +34,13 @@ public class ServletIndex extends HttpServlet {
 		doGet(request, response);
 	}
 
+	public static User loginUser(HttpServletRequest request, HttpServletResponse response) {
+   		HttpSession session = request.getSession();
+		User loginUser = (User) session.getAttribute("user");
+		return loginUser;
+	}
+	
+	public static boolean isLogged(HttpServletRequest request, HttpServletResponse response) {
+		return (loginUser(request, response) != null);
+	}
 }

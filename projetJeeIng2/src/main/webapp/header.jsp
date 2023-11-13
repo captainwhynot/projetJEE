@@ -3,12 +3,11 @@
 <%@ page import="dao.*"%>
 <%@ page import="entity.*"%>
 <%@ page import="conn.*"%>
+<%@ page import="servlet.*"%>
 
 <%
-User loginUser = null;
-if (session.getAttribute("user") != null) {
-	loginUser = (User) session.getAttribute("user");
-}
+User loginUser = ServletIndex.loginUser(request, response);
+boolean isLogged = ServletIndex.isLogged(request, response);
 %>
 <head>
 <title>MANGASTORE</title>
@@ -30,6 +29,29 @@ if (session.getAttribute("user") != null) {
 	href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 <link rel="stylesheet" type="text/css"
 	href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+	function showAlert() {
+		Swal.fire({
+		    title: 'You cannot access this page.',
+		    icon: 'warning',
+		    position: 'center',
+		    showConfirmButton: true,
+		}).then((result) => {
+		    window.location.href = './Index';
+		});
+	}
+</script>
 </head>
 <header>
 	<!-- navbar top -->
@@ -43,17 +65,16 @@ if (session.getAttribute("user") != null) {
 				<h3>MANGASTORE</h3>
 			</div>
 			<div class="icons">
-				<i><img src="" alt="" width="20px"></i>
 				<div class="input-box">
 					<form method="post" onsubmit="ServletProduct" action="Product"
 						class="mb-3">
 						<input type="text" id="category" name="category"
 							placeholder="Search..."> <span class="icon"> <i
 							class="uil uil-search search-icon"></i> <%
-							 if (loginUser != null) {
+							 if (isLogged && loginUser.getTypeUser().equals("Customer")) {
 							 %>
 							<a href="./History"><i><img src="img/historique.png"
-									alt="" width="24px"></i></a> <%--<a id="decal" href="./Basket"><i><img src="img/shopping-cart.png" alt="" width="32px"></i></a> --%>
+									alt="" width="24px"></i></a>
 							<a id="decal2" href="./Basket"><i><img
 									src="img/shopping-cart.png" alt="" width="32px"></i></a> <%
 							 }
@@ -84,7 +105,7 @@ if (session.getAttribute("user") != null) {
 					<li class="nav-item"><a class="nav-link" href="./Market">Market</a>
 					</li>
 					<%
-					if (loginUser == null) {
+					if (!isLogged) {
 					%>
 					<li><a class="nav-link" aria-current="page" href="./Login">Login</a></li>
 					<%
