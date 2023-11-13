@@ -30,12 +30,12 @@ public class ProductDao {
 		return (save > 0);
 	}
 	
-	public boolean modifyProduct(Product product, String name, double price, int stock) {
+	public boolean modifyProduct(Product product, String name, double price, int stock, String img) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
 		try {
-			String sql = "UPDATE Product SET name='"+name+"', price="+price+", stock="+stock+" WHERE id="+product.getId()+";";
+			String sql = "UPDATE Product SET name='"+name+"', price="+price+", stock="+stock+", img="+img+" WHERE id="+product.getId()+";";
 			SQLQuery query = session.createSQLQuery(sql);
 			int rowCount = query.executeUpdate();
 			
