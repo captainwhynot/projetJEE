@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +17,7 @@ public class Basket {
 	private int id;
 	private int quantity;
 	private boolean bought;
+	private Date purchaseDate;
 	@ManyToOne
     @JoinColumn(name = "productId")
     private Product product;
@@ -29,6 +32,7 @@ public class Basket {
 	public Basket(Product product, int quantity, Customer customer) {
 		this.product = product;
 		this.quantity = quantity;
+		this.setPurchaseDate(null);
 		this.customer = customer;
 		this.setBought(false);
 	}
@@ -71,5 +75,13 @@ public class Basket {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+
+	public Date getPurchaseDate() {
+		return purchaseDate;
+	}
+
+	public void setPurchaseDate(Date date) {
+		this.purchaseDate = date;
 	}
 }

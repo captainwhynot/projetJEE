@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.SQLQuery;
@@ -114,8 +115,9 @@ public SessionFactory sessionFactory;
 		SQLQuery queryCardSolde = session.createSQLQuery(sqlCardSolde);
 		int numberRowSolde = queryCardSolde.executeUpdate();
 
-		String sqlPaidBasket = "UPDATE Basket SET bought = 1 WHERE customerId = " + customerId + " AND quantity > 0;";
+		String sqlPaidBasket = "UPDATE Basket SET bought = 1, purchaseDate = :currentDate WHERE customerId = " + customerId + " AND quantity > 0 AND bought=0;";
 		SQLQuery queryPaidBasket = session.createSQLQuery(sqlPaidBasket);
+		queryPaidBasket.setParameter("currentDate", new Date());
 		int numberRowBasket = queryPaidBasket.executeUpdate();
 
 		int numberRowProduct = 0;
