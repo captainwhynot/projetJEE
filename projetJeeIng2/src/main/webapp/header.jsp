@@ -48,16 +48,16 @@ if (session.getAttribute("user") != null) {
 					<form method="post" onsubmit="ServletProduct" action="Product"
 						class="mb-3">
 						<input type="text" id="category" name="category"
-							placeholder="Rechercher..."> <span class="icon"> <i
+							placeholder="Search..."> <span class="icon"> <i
 							class="uil uil-search search-icon"></i> <%
- if (loginUser != null) {
- %>
+							 if (loginUser != null) {
+							 %>
 							<a href="./History"><i><img src="img/historique.png"
 									alt="" width="24px"></i></a> <%--<a id="decal" href="./Basket"><i><img src="img/shopping-cart.png" alt="" width="32px"></i></a> --%>
 							<a id="decal2" href="./Basket"><i><img
 									src="img/shopping-cart.png" alt="" width="32px"></i></a> <%
- }
- %>
+							 }
+							 %>
 						</span> <i class="uil uil-times close-icon"></i>
 					</form>
 				</div>

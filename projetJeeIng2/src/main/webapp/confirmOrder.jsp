@@ -28,30 +28,32 @@
 	                            for (Basket basket : basketList) {
 	                        %>
 	                            <tr>
-	                            	<td><span class="id"><%= basket.getId() %></span></td>
+	                            	<td><%= basket.getId() %></td>
 	                                <td><%= basket.getProduct().getName() %></td>
-	                                <td><span class="price"><%= basket.getProduct().getPrice() %></span></td>
-	                                <td><input type="number" onchange="checkStock(this)" class="quantity" value="<%= basket.getQuantity() %>">
-	                                <input type="hidden" class="oldQuantity" value="<%= basket.getQuantity() %>"></td>
+	                                <td><%= basket.getProduct().getPrice() %></td>
+	                                <td><%= basket.getQuantity() %></td>
 	                                <td><%= basket.getProduct().getModerator().getUsername() %></td>
 	                                <% double total = basket.getProduct().getPrice() * basket.getQuantity(); 
-	                                String totalString = String.format("%.2f", total);
+	                                String totalPrice = String.format("%.2f", total);
 	                                totalOrderPrice += total;
 	                                %>
-	                                <td><span class="totalPrice"><%= totalString %></span></td>
+	                                <td><span class="totalPrice"><%= totalPrice %></span></td>
 	                            </tr>
 	                        <%
 	                            }
 	                        %>
 	                        <tr>
 	                        <td colspan=4>Total Order Price :</td>
-	                        <% String totalOrderPriceString = String.format("%.2f", totalOrderPrice); %>
-	                        <td><span class="totalOrderPrice"><%= totalOrderPriceString %></span></td>
+	                        <td><%= totalOrderPrice %></td>
 	                        </tr>
 	                    </tbody>
 	                </table>
-	                <input type="hidden" name="action" value="confirmOrder">
-	              	<button type="submit">Pay</button>
+	                <input type="hidden" id="action" name="action" value="confirmCreditCard">
+				    <div style="display: flex;flex-direction: row; column-gap: 10px;">
+					    <button type="button" onclick="updateAction('');">Cancel</button>
+		              	<button type="button" onclick="updateAction('confirmCreditCard');">Confirm Order</button>
+	              	</div>
+	              	<button type="submit" id="submitButton" style="display: none">Submit</button>
 	          </form>
         </div>
        
@@ -69,37 +71,9 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
     <script>
-	    function checkStock(input) {
-	        var oldQuantity = input.closest('tr').querySelector('.oldQuantity').value;
-	  	 	var quantity = input.value;
-	        var price = input.closest('tr').querySelector('.price').textContent;
-	        var basketId = input.closest('tr').querySelector('.id').textContent;
-
-	        $.ajax({
-	            type: "POST",
-	            url: "Basket",
-	            data: { basketId: basketId, quantity: quantity, action: "checkStock" },
-	            dataType: "json",
-	            success: function (response) {
-	            },
-	            error: function (jqXHR, textStatus, errorThrown) {
-	                alert("Error:", errorThrown);
-	            	input.value = oldQuantity;
-					quantity = oldQuantity;
-	            }
-	        });
-	        input.closest('tr').querySelector('.totalPrice').textContent = (price * quantity).toFixed(2);
-    	}
-	    
-	    function totalPrice() {
-	        var totalOrderPrice = 0;
-	        var totalPriceElements = document.querySelectorAll('.totalPrice');
-
-	        totalPriceElements.forEach(function(element) {
-	            totalOrderPrice += parseFloat(element.textContent);
-	        });
-
-	        document.querySelector('.totalOrderPrice').textContent = totalOrderPrice.toFixed(2);
+	    function updateAction(action) {
+	        document.getElementById('action').value = action;
+	        document.getElementById('submitButton').click();
 	    }
 	</script>
 

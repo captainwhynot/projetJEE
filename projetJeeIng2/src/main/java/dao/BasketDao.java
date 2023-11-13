@@ -56,7 +56,7 @@ public SessionFactory sessionFactory;
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		String sql = "SELECT * FROM Basket WHERE customerId = "+ customerId +";";
+		String sql = "SELECT * FROM Basket WHERE customerId = "+ customerId +" AND bought=0;";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(Basket.class);
 		List<Basket> basketList = query.list();
 		
@@ -74,7 +74,7 @@ public SessionFactory sessionFactory;
 		return basket;
 	}
 	
-	public boolean confirmOrder(int customerId) {
+	public List<Basket> confirmOrder(int customerId) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 
@@ -89,16 +89,20 @@ public SessionFactory sessionFactory;
 				SQLQuery queryRemove = session.createSQLQuery(sqlRemove);
 				int rowCount = queryRemove.executeUpdate();
 				
-				//if there is an error when updating the out of stock order, return false.
-				if (rowCount <= 0) return false;
+				//if there is an error when updating the out of stock order, return null.
+				if (rowCount <= 0) return null;
 				else System.out.println("The order number n°" + basket.getId() + " has been removed due to rupture of stock.");
 			}
 		}
 		
+		sql = "SELECT * FROM Basket WHERE customerId = "+customerId+" AND bought = 0 AND quantity > 0;";
+		query = session.createSQLQuery(sql).addEntity(Basket.class);;
+		basketList = query.list();
+		
 		tx.commit();
 		session.close();
 		
-		return true;
+		return basketList;
 	}
 	
 	public boolean finalizePaiement(int customerId, int cardNumber, double price) {
