@@ -79,7 +79,7 @@ public class ServletBasket extends HttpServlet {
 		   	        response.setContentType("application/json");
 		            response.setCharacterEncoding("UTF-8");
 	
-			   	    if (basketDao.checkStock(basket.getProduct().getId(), quantity)) {
+			   	    if (basketDao.checkStock(basketId, quantity)) {
 			   	    	basketDao.updateQuantity(basket.getId(), quantity - basket.getQuantity());
 			   	    	response.setStatus(HttpServletResponse.SC_OK); // 200 OK
 			            response.getWriter().write("{\"status\": \"Enough stock\"}");

@@ -32,11 +32,13 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
 	                        %>
 	                            <tr>
 	                            	<td><span class="id"><%= basket.getId() %></span></td>
-	                                <td><%= basket.getProduct().getName() %></td>
+	                                <td><a href="./Product"><%= basket.getProduct().getName() %></a>
+                                	<input type="hidden" name="productId" value="<%= basket.getProduct().getId() %>"></td>
 	                                <td><span class="price"><%= basket.getProduct().getPrice() %></span></td>
 	                                <td><input type="number" onchange="checkStock(this)" class="quantity" value="<%= basket.getQuantity() %>">
 	                                <input type="hidden" class="oldQuantity" value="<%= basket.getQuantity() %>"></td>
-	                                <td><%= basket.getProduct().getModerator().getUsername() %></td>
+	                                <td><a href="./Market"><%= basket.getProduct().getModerator().getUsername() %></a>
+                                	<input type="hidden" name="sellerId" value="<%= basket.getProduct().getModerator().getId() %>"></td>
 	                                <% double total = basket.getProduct().getPrice() * basket.getQuantity(); 
 	                                String totalString = String.format("%.2f", total);
 	                                totalOrderPrice += total;
@@ -63,6 +65,7 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
 
 
     <%@ include file="footer.jsp"%>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
 	    function checkStock(input) {
 	        var oldQuantity = input.closest('tr').querySelector('.oldQuantity').value;
