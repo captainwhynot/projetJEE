@@ -5,6 +5,10 @@
 <!DOCTYPE html>
 <html>
 <%@ include file="header.jsp" %>
+<%
+if (loginUser != null && loginUser.getTypeUser().equals("Administrator")) {
+%>
+
 <body>
 
     <div class="d-flex justify-content-center align-items-center page-container">
@@ -64,5 +68,10 @@
     </script>
 
 </body>
-
+<%
+} else {
+%><script type="text/javascript">window.location.replace("./Login");</script>
+<%
+}
+%>
 </html>
