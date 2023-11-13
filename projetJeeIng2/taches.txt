@@ -16,12 +16,12 @@ Moderator :
 
 
 Basket : 
-- basket.jsp + confirmOrder.jsp + checkCreditCard.jsp affichage
-- ServletHistory + history.jsp (potentiellement ajouter une date de paiement ?)
+- basket.jsp + confirmOrder.jsp + checkCreditCard.jsp affichage + lien vers le produit / produits d'un modo
+- history.jsp affichage + lien vers le produit / produits d'un modo
 
 
 Product :
-- ServletMarket + market.jsp (recherche de produits) 
+- ServletMarket + market.jsp (recherche de produits par seller/nom) 
 
 
 - Traduire le site en anglais
