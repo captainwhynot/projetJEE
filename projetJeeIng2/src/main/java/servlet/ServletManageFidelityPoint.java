@@ -35,6 +35,10 @@ public class ServletManageFidelityPoint extends HttpServlet {
    	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
    	 */
    	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   		if (!ServletIndex.isLogged(request, response)) {
+			response.sendRedirect("./Index");
+			return;
+		}
    		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		
 		CustomerDao customerDao = new CustomerDao(sessionFactory);

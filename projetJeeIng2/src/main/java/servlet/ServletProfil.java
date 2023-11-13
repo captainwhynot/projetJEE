@@ -27,6 +27,10 @@ public class ServletProfil extends HttpServlet {
    	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
    	 */
    	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   		if (!ServletIndex.isLogged(request, response)) {
+			response.sendRedirect("./Index");
+			return;
+		}
    		this.getServletContext().getRequestDispatcher("/profil.jsp").include(request, response);
    	}
 

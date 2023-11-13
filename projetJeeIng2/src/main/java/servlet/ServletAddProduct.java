@@ -34,18 +34,24 @@ public class ServletAddProduct extends HttpServlet {
    	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
    	 */
    	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   		if (!ServletIndex.isLogged(request, response)) {
+			response.sendRedirect("./Index");
+			return;
+		}
    		this.getServletContext().getRequestDispatcher("/addProduct.jsp").include(request, response);
    	}
 
    	/**
    	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
    	 */
-   	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
+   	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
+   		if (!ServletIndex.isLogged(request, response)) {
+			response.sendRedirect("./Index");
+			return;
+		}
         String name = request.getParameter("name");
         double price = Double.parseDouble(request.getParameter("price"));
         int stock = Integer.parseInt(request.getParameter("stock"));
-
-
 
         // Créer un objet Product
         Product product = new Product();

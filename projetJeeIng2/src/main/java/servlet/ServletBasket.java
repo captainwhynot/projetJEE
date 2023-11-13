@@ -41,6 +41,10 @@ public class ServletBasket extends HttpServlet {
    	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
    	 */
    	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if (!ServletIndex.isLogged(request, response)) {
+			response.sendRedirect("./Index");
+			return;
+		}
    		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		BasketDao basketDao = new BasketDao(sessionFactory);
 		List<Basket> basketList = basketDao.getBasketList(ServletIndex.loginUser(request, response).getId());
@@ -53,6 +57,10 @@ public class ServletBasket extends HttpServlet {
    	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
    	 */
    	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   		if (!ServletIndex.isLogged(request, response)) {
+			response.sendRedirect("./Index");
+			return;
+		}
    		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
    		String action = request.getParameter("action");
    		

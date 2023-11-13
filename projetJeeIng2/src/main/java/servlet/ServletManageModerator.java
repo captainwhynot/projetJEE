@@ -36,6 +36,10 @@ public class ServletManageModerator extends HttpServlet {
    	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
    	 */
    	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   		if (!ServletIndex.isLogged(request, response)) {
+			response.sendRedirect("./Index");
+			return;
+		}
    		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		
 		ModeratorDao moderatorDao = new ModeratorDao(sessionFactory);
