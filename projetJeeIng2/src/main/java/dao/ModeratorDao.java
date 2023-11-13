@@ -59,6 +59,18 @@ public class ModeratorDao {
 		return moderator;
 	}
 	
+	public Moderator getModerator(int id) {
+		Session session = sessionFactory.openSession();
+		
+		String sql = "SELECT * FROM Moderator m JOIN User u ON m.id = u.id WHERE u.id = '" + id + "';";
+		SQLQuery query = session.createSQLQuery(sql).addEntity(Moderator.class);
+		Moderator moderator = (Moderator) query.uniqueResult();
+		
+		session.close();
+		
+		return moderator;
+	}
+	
 	public boolean transferIntoCustomer(Moderator moderator) {
 		UserDao userDao = new UserDao(sessionFactory);
 		Customer customer = new Customer(moderator.getEmail(), moderator.getPassword(), moderator.getUsername());

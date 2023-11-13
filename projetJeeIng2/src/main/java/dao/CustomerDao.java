@@ -60,6 +60,18 @@ public class CustomerDao {
 		return customer;
 	}
 	
+	public Customer getCustomer(int id) {
+		Session session = sessionFactory.openSession();
+		
+		String sql = "SELECT * FROM Customer c JOIN User u ON c.id = u.id WHERE u.id='"+id+"';";
+		SQLQuery query = session.createSQLQuery(sql).addEntity(Customer.class);
+		Customer customer = (Customer) query.uniqueResult();
+		
+		session.close();
+		
+		return customer;
+	}
+	
 	public boolean setFidelityPoint(Customer customer, int points) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();

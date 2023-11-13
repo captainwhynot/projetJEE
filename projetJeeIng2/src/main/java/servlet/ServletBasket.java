@@ -65,7 +65,6 @@ public class ServletBasket extends HttpServlet {
    		HttpSession session = request.getSession();
    		String action = request.getParameter("action");
 
-   		System.out.println(action);
    		User loginUser = (User) session.getAttribute("user");
 
 		if (loginUser != null) {
@@ -111,10 +110,6 @@ public class ServletBasket extends HttpServlet {
 		   	   		String cvvString = request.getParameter("cvv");
 		   	   		String expirationDateString = request.getParameter("expirationDate");
 
-		   	   		System.out.println(cardNumberString);
-		   	   		System.out.println(cvvString);
-		   	   		System.out.println(expirationDateString);
-
 		   	        int cardNumber = Integer.parseInt(cardNumberString);
 		   	        int cvv = Integer.parseInt(cvvString);
 		   	        String[] expirationDateArray = expirationDateString.split("-");
@@ -124,24 +119,26 @@ public class ServletBasket extends HttpServlet {
 				   	
 					Date expirationDate = new Date(year, month, day);
 		   	        CreditCardDao creditCardDao = new CreditCardDao(sessionFactory);
+
 		   	        if (creditCardDao.checkCreditCard(cardNumber, cvv, expirationDate)) {
 			   			BasketDao basketDao = new BasketDao(sessionFactory);
+			   		
 			   			if (basketDao.finalizePaiement(loginUser.getId(), cardNumber, basketDao.totalPrice(loginUser.getId()))) {
 				   	         out.println("<script>");
-				   	         out.println("alert('Le paiement a été effectué.');");
+				   	         out.println("alert('Successfully paid.');");
 				   	         out.println("window.location.href = '/projetJeeIng2/Basket';");
 				   	         out.println("</script>");
 			   			}
 			   			else {
 				   	         out.println("<script>");
-				   	         out.println("alert('Le paiement n'a pas pu être effectué.');");
+				   	         out.println("alert('Payment failed.');");
 				   	         out.println("window.location.href = '/projetJeeIng2/Basket';");
 				   	         out.println("</script>");
 			   			}
 		   	        } else {
 			   	    	 this.getServletContext().getRequestDispatcher("/checkCreditCard.jsp").include(request, response);
 			   	         out.println("<script>");
-			   	         out.println("alert('La carte de crédit n\\'est pas valide. Veuillez vérifier les informations.');");
+			   	         out.println("alert('The credit card is invalid, please check the informations.');");
 			   	         out.println("</script>");
 		   	        }
 		   	    } else {

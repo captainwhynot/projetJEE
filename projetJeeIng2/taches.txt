@@ -7,7 +7,6 @@ Admin :
 Customer :
 - Faire un envoi de mail pour la création du compte -> UserDao : saveUser()
 - ServletProfil + profil.jsp
-- Ajouter des méthodes pour pouvoir réutiliser les points de fidélités lors de l'achat
 
 
 Moderator :
@@ -18,7 +17,7 @@ Moderator :
 
 
 Basket : 
-- ServletBasket + basket.jsp (Confirmation de paiement à mettre lors de confirmOrder())
+- basket.jsp + confirmOrder.jsp + checkCreditCard.jsp affichage
 - ServletHistory + history.jsp (potentiellement ajouter une date de paiement ?)
 
 
@@ -26,6 +25,8 @@ Product :
 - ServletMarket + market.jsp (recherche de produits) 
 - Ajouter image (type : url relative) dans la bdd + dans Product.java
 
+
+- Ajouter une méthode générique pour vérifier les login ?
 
 - Traduire le site en anglais
 - Javadoc en anglais
