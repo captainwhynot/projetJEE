@@ -39,14 +39,16 @@ public class ServletRegistration extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.setAttribute("user", user);
 			String container = "Your account has been created successfully.<br>";
-			container += "Your identifiants are : <br>";
+			container += "<div style='color: black'>"+
+					      "Your identifiants are : <br>";
 			container += "<ul>";
 			container += "<li>e-mail : " + email + "<br></li>";
 			container += "<li>password : " + password + "<br></li>";
 			container += "<li>username : " + username + "<br></li>";
 			container += "</ul>";
 			container += "Go to the site : ";
-			container += "<a href=\"http://localhost:8080/projetJeeIng2/Index\">MANGASTORE</a>";
+			container += "<a href=\"http://localhost:8080/projetJeeIng2/Index\">MANGASTORE</a>" +
+					     "</div>";
 			if (dao.sendMail(email, "MANGASTORE : Registration", container)) {
 				out.println("<script>");
 		        out.println("showAlert('Your account has been successfully created.', 'success', './Index');");

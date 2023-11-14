@@ -95,6 +95,7 @@ public class ServletBasket extends HttpServlet {
 		}
 		
    		if (action != null) {
+			PrintWriter out = response.getWriter();
 	   	    if (action.equals("checkStock")) {
 	   	        try {
 	   	        	String basketIdString = request.getParameter("basketId");
@@ -120,10 +121,26 @@ public class ServletBasket extends HttpServlet {
 		   	         response.getWriter().write("{\"status\": \"Internal Server Error.\"}");
 	   	     }
 	   	    } else if (action.equals("confirmOrder")){
-	   			List<Basket> basketList = basketDao.confirmOrder(loginUser.getId());
-	   			
-	   		    request.setAttribute("basketList", basketList);
-	   	    	this.getServletContext().getRequestDispatcher("/confirmOrder.jsp").include(request, response);
+	   	    	List<Basket> basketList = basketDao.getBasketList(ServletIndex.loginUser(request, response).getId());
+	   	    	request.setAttribute("basketList", basketList);
+	   	    	if (basketList.isEmpty()) {
+	   	    		
+	   	    		this.getServletContext().getRequestDispatcher("/basket.jsp").include(request, response);
+	   	    		out.println("<script>");
+   			        out.println("showAlert('Your basket is empty.', 'warning', './Basket');");
+   			        out.println("</script>");
+	   	    	} else {
+		   			basketList = basketDao.confirmOrder(loginUser.getId());
+		   			request.setAttribute("basketList", basketList);
+		   			if (basketList.isEmpty()) {
+		   				this.getServletContext().getRequestDispatcher("/basket.jsp").include(request, response);
+		   	    		out.println("<script>");
+	   			        out.println("showAlert('Your basket is empty.', 'warning', './Basket');");
+	   			        out.println("</script>");
+		   	    	} else {
+			   	    	this.getServletContext().getRequestDispatcher("/confirmOrder.jsp").include(request, response);
+		   	    	}
+	   	    	}
 	   			
 	   	    } else if (action.equals("confirmCreditCard")) {
 	   	    	this.getServletContext().getRequestDispatcher("/checkCreditCard.jsp").include(request, response);
@@ -131,7 +148,6 @@ public class ServletBasket extends HttpServlet {
 				List<Basket> basketList = basketDao.getBasketList(ServletIndex.loginUser(request, response).getId());
 			    request.setAttribute("basketList", basketList);
 	   	    	this.getServletContext().getRequestDispatcher("/basket.jsp").include(request, response);
-   				PrintWriter out = response.getWriter();
    				
 	   	   		String cardNumberString = request.getParameter("cardNumber");
 	   	   		String cvvString = request.getParameter("cvv");
@@ -149,13 +165,12 @@ public class ServletBasket extends HttpServlet {
 
 	   	        if (creditCardDao.checkCreditCard(cardNumber, cvv, expirationDate)) {
 		   			if (creditCardDao.checkBalance(cardNumber, basketDao.totalPrice(loginUser.getId()))) {
-		   				String container = "Here is your paiement recapitulation:<br>";
+		   				String container = "<span style='color: black'>Here is your paiement recapitulation :</span><br>";
 		   				double totalOrderPrice = 0;
-		   				container += "<table class='table'>" +
+		   				container += "<table style='border-collapse: collapse; color: black; text-align: center;' border=1>" +
 		   				                "<thead>" +
 		   				                    "<tr>" +
 		   				                        "<th>Id</th>" +
-		   				                        "<th>Image</th>" +
 		   				                        "<th>Product</th>" +
 		   				                        "<th>Price</th>" +
 		   				                        "<th>Quantity</th>" +
@@ -167,8 +182,7 @@ public class ServletBasket extends HttpServlet {
 
 		   				for (Basket basket : basketList) {
 		   				    container += "<tr>" +
-		   				                    "<td> " + basket.getId() + " </td>" +
-		   				                    "<td><img src='" + basket.getProduct().getImg() + "' style='width: 28px;'></td>" +
+		   				                    "<td> " + basket.getId() + " </td>" + 
 		   				                    "<td>" + basket.getProduct().getName() + "</td>" +
 		   				                    "<td>" + basket.getProduct().getPrice() + "</td>" +
 		   				                    "<td>" + basket.getQuantity() + "</td>" +
@@ -185,20 +199,20 @@ public class ServletBasket extends HttpServlet {
                         double fidelityPoint = customer.getFidelityPoint();
                         String discount = (fidelityPoint > totalOrderPrice) ? String.format("%.2f", totalOrderPrice) : String.format("%.2f", fidelityPoint);
 		   				container += "<tr>" +
-		   				                "<td colspan='6'>Total Order before discount</td>" +
+		   				                "<td colspan='5'>Total Order before discount</td>" +
 		   				                "<td>" + String.format("%.2f", totalOrderPrice) + "</td>" +
 		   				            "</tr>" +
 		   				            "<tr>" +
-		   				                "<td colspan='6'>Discount</td>" +
+		   				                "<td colspan='5'>Discount</td>" +
 		   				                "<td>" + discount + "</td>" +
 		   				            "</tr>" +
 		   				            "<tr>" +
-		   				                "<td colspan='6'>Total Order Price :</td>" +
+		   				                "<td colspan='5'>Total Order Price :</td>" +
 		   				                "<td>" + String.format("%.2f", totalOrderPrice) + "</td>" +
 		   				            "</tr>" +
 		   				        "</tbody>" +
 		   				    "</table>";
-		   				container += "Click below here to confirm your paiement : <br>";
+		   				container += "<span style='color: black'>Click below here to confirm your paiement :</span><br>";
 		   				container += "<form method=\"POST\" action=\"http://localhost:8080/projetJeeIng2/Basket\">" +
 		   								"<input type=\"hidden\" id=\"action\" name=\"action\" value=\"finalizePaiement\">" +
 		   								"<input type=\"hidden\" id=\"userId\" name=\"userId\" value=\""+ loginUser.getId() +"\">" +
