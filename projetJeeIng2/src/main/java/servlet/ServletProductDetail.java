@@ -36,6 +36,7 @@ public class ServletProductDetail extends HttpServlet {
    	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
    		doGet(request, response);
    		String productId = request.getParameter("productId");
+   		System.out.println(productId);
    	}
 
 }
