@@ -119,23 +119,28 @@ public class ServletBasket extends HttpServlet {
 
 	   	        if (creditCardDao.checkCreditCard(cardNumber, cvv, expirationDate)) {
 		   			BasketDao basketDao = new BasketDao(sessionFactory);
-		   		
-		   			if (basketDao.finalizePaiement(loginUser.getId(), cardNumber, basketDao.totalPrice(loginUser.getId()))) {
-			   	         out.println("<script>");
-			   	         out.println("alert('Successfully paid.');");
-			   	         out.println("window.location.href = '/projetJeeIng2/Basket';");
-			   	         out.println("</script>");
+		   			doGet(request, response);
+		   			if (creditCardDao.checkBalance(cardNumber, basketDao.totalPrice(loginUser.getId()))) {
+			   			if (basketDao.finalizePaiement(loginUser.getId(), cardNumber, basketDao.totalPrice(loginUser.getId()))) {
+				   	         out.println("<script>");
+				   	         out.println("showAlert('Successfully paid.', 'success', './Basket');");
+				   	         out.println("</script>");
+			   			}
+			   			else {
+				   	         out.println("<script>");
+				   	         out.println("showAlert('Payment failed.', 'error', './Basket');");
+				   	         out.println("</script>");
+			   			}
 		   			}
 		   			else {
 			   	         out.println("<script>");
-			   	         out.println("alert('Payment failed.');");
-			   	         out.println("window.location.href = '/projetJeeIng2/Basket';");
+			   	         out.println("showAlert('Not enough credit on the credit card.', 'error', './Basket');");
 			   	         out.println("</script>");
 		   			}
 	   	        } else {
 		   	    	 this.getServletContext().getRequestDispatcher("/checkCreditCard.jsp").include(request, response);
 		   	         out.println("<script>");
-		   	         out.println("alert('The credit card is invalid, please check the informations.');");
+		   	         out.println("showAlert('The credit card is invalid, please check the informations.', 'error', '');");
 		   	         out.println("</script>");
 	   	        }
 	   	    } else {

@@ -34,8 +34,9 @@ public class ProductDao {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
+		if (stock < 0) return false;
 		try {
-			String sql = "UPDATE Product SET name='"+name+"', price="+price+", stock="+stock+", img="+img+" WHERE id="+product.getId()+";";
+			String sql = "UPDATE Product SET name='"+name+"', price="+price+", stock="+stock+", img='"+img+"' WHERE id="+product.getId()+";";
 			SQLQuery query = session.createSQLQuery(sql);
 			int rowCount = query.executeUpdate();
 			

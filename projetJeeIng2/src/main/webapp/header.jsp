@@ -40,14 +40,16 @@ boolean isLogged = ServletIndex.isLogged(request, response);
 </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
-	function showAlert() {
+	function showAlert(text = "You can't access this page.", icon = "warning", redirection = "./Index") {
 		Swal.fire({
-		    title: 'You cannot access this page.',
-		    icon: 'warning',
+		    title: text,
+		    icon: icon,
 		    position: 'center',
 		    showConfirmButton: true,
 		}).then((result) => {
-		    window.location.href = './Index';
+			if (redirection != "") {
+		    	window.location.href = redirection;
+			}
 		});
 	}
 </script>

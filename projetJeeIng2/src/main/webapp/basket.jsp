@@ -85,7 +85,7 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
 		            success: function (response) {
 		            },
 		            error: function (jqXHR, textStatus, errorThrown) {
-		                alert("Error:", errorThrown);
+		            	showAlert("Error " + jqXHR.status + ": " + jqXHR.responseJSON.status, "error", "./Basket");
 		            	input.value = oldQuantity;
 						quantity = oldQuantity;
 		            }

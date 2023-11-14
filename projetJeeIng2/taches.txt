@@ -10,14 +10,14 @@ Customer :
 
 
 Moderator :
-- ServletAddProduct + addProduct.jsp
-- ServletManageProduct + manageProduct.jsp
+- ServletAddProduct + addProduct.jsp add Img dans product
+- manageProduct.jsp affichage
 - ServletProductDetail + product.jsp
 
 
 Basket : 
-- basket.jsp + confirmOrder.jsp + checkCreditCard.jsp affichage + lien vers le produit / produits d'un modo
-- history.jsp affichage + lien vers le produit / produits d'un modo
+- basket.jsp + confirmOrder.jsp + checkCreditCard.jsp affichage + confirmation paiement avant finalizePaiement (appelé lorsque clic sur le mail)
+- history.jsp affichage 
 
 
 Product :

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List"%>
+<%@ page import="java.util.Date"%>
 <!DOCTYPE html>
 <html>
 <%@ include file="header.jsp" %>
@@ -44,7 +45,14 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
                                 String totalString = String.format("%.2f", total);
                                 %>
                                 <td><%= totalString %></td>
-                                <td><%= basket.getPurchaseDate() %></td>
+                                <%
+                                Date purchaseDate = basket.getPurchaseDate();
+                                int year = purchaseDate.getYear() + 1900;
+                                int month = purchaseDate.getMonth() + 1;
+                                int day = purchaseDate.getDate();
+                                String formattedDate = year + "-" + (month < 10 ? "0" + month : month) + "-" + (day < 10 ? "0" + day : day);
+                                %>
+                                <td><%= formattedDate %></td>
                             </tr>
                         <%
                             }

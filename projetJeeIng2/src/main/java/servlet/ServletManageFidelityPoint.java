@@ -57,8 +57,8 @@ public class ServletManageFidelityPoint extends HttpServlet {
 
 		String[] fidelityPointList = request.getParameterValues("fidelityPointList");
 		String[] customerList = request.getParameterValues("customerList");
+		CustomerDao customerDao = new CustomerDao(sessionFactory);
 		if (fidelityPointList != null && customerList != null && fidelityPointList.length == customerList.length) {
-			CustomerDao customerDao = new CustomerDao(sessionFactory);
 			Customer customer = null;
 			String email = null;
 			int fidelityPoint = 0;
