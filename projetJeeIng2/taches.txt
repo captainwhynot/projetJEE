@@ -21,7 +21,7 @@ Basket :
 
 
 Product :
-- ServletMarket + market.jsp (recherche de produits par seller/nom) 
+- ServletMarket + market.jsp affichage card + max par page etc...
 
 
 - Traduire le site en anglais

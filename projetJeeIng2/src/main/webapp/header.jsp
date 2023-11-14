@@ -67,9 +67,9 @@ boolean isLogged = ServletIndex.isLogged(request, response);
 			</div>
 			<div class="icons">
 				<div class="input-box">
-					<form method="post" onsubmit="ServletProduct" action="Product"
+					<form method="post" action="Market"
 						class="mb-3">
-						<input type="text" id="category" name="category"
+						<input type="text" id="search" name="search"
 							placeholder="Search..."> <span class="icon"> <i
 							class="uil uil-search search-icon"></i> <%
 							 if (isLogged && loginUser.getTypeUser().equals("Customer")) {

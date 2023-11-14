@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import conn.HibernateUtil;
 import entity.Product;
@@ -55,23 +54,25 @@ public class ServletMarket extends HttpServlet {
    	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
-		String search = request.getParameter("category");
+		String search = request.getParameter("search");
 		String seller = request.getParameter("sellerId");
 		System.out.println(search + " - " + seller);
 		if (search != null) {
 	   		String sql = "SELECT * FROM Product WHERE name LIKE '%" + search + "%';";
 			SQLQuery query = session.createSQLQuery(sql).addEntity(Product.class);
 			List<Product> productList = query.list();
-			
+
 			request.setAttribute("productList", productList);
+			request.setAttribute("search", search);
 		}
 		else if (seller != null) {
 			int sellerId = Integer.parseInt(seller);
 			String sql = "SELECT * FROM Product WHERE sellerId = "+ sellerId +";";
 			SQLQuery query = session.createSQLQuery(sql).addEntity(Product.class);
 			List<Product> productList = query.list();
-			
+
 			request.setAttribute("productList", productList);
+			request.setAttribute("sellerId", sellerId);
 		}
    		doGet(request, response);
    	}

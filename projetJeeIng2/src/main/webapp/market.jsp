@@ -12,11 +12,27 @@
             <form method="post" action="Market">
             <br>
                 <div class="mb-3 centered2">
-                    <input type="text" class="form-control" id="category" name="category" placeholder="Produit...">
-                    <button type="submit" id="SR">Rechercher</button>
+                    <input type="text" class="form-control" id="search" name="search" placeholder="Search...">
+                    <button type="submit" id="SR">Search</button>
                 </div>
             </form>        
             <br>
+            <% List<Product> productList = (List<Product>) request.getAttribute("productList");
+            int size = productList.size();%>
+            <% if (request.getAttribute("search") != null) { %>
+	            <div> <%= size %> result<%= (size > 1 ? "s" : "") %> for "<%= request.getAttribute("search") %>".
+	            </div>
+            <% }
+            else if (request.getAttribute("sellerId") != null) {
+            	int sellerId = (int) request.getAttribute("sellerId");
+            	ModeratorDao moderatorDao = new ModeratorDao(HibernateUtil.getSessionFactory());
+	            Moderator moderator = moderatorDao.getModerator(sellerId);%>
+	            <div> <%= size %> result<%= (size > 1 ? "s" : "") %> for <%= moderator.getUsername() %>'s products.
+	            </div>
+            <% } else { %>
+            	<div> All products
+	            </div>
+            <% } %>
            	<table class="table">
             	<thead>
                     <tr>
@@ -29,9 +45,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% List<Product> productList = (List<Product>) request.getAttribute("productList");
-                        for (Product product : productList) {
-                    %>
+                    <% for (Product product : productList) { %>
                         <tr>
                             <td><img src="<%= product.getImg() %>" style="width: 28px;" alt="img/ProductImage.png"></img>
                             <td><%= product.getName() %></td>
