@@ -9,7 +9,6 @@ if (isLogged && (loginUser.getTypeUser().equals("Administrator") || loginUser.ge
 %>
 <body>
     <div class="d-flex justify-content-center align-items-center page-container">
-        <div class="interieurAddProduct">
             <div class="centered">
                 <h1>Product List</h1>
                 <form method="post" action="./ManageProduct">
@@ -48,7 +47,6 @@ if (isLogged && (loginUser.getTypeUser().equals("Administrator") || loginUser.ge
 	                <input type="hidden" name="action" value="updateProduct">
 	                <button type="submit">Confirm</button>
                 </form>
-            </div>
         </div>
     </div>
     <%@ include file="footer.jsp"%>

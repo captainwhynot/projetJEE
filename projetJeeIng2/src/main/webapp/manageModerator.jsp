@@ -11,8 +11,8 @@ if (isLogged && loginUser.getTypeUser().equals("Administrator")) {
 
 <body>
 
-    <div class="d-flex justify-content-center align-items-center page-container">
-        <div class="interieurAddProduct">
+    <div
+		class="d-flex justify-content-center align-items-center page-container">
             <div class="centered">
                 <h1>Moderator List</h1>
                 <form method="POST" action="ManageModerator">
@@ -51,8 +51,7 @@ if (isLogged && loginUser.getTypeUser().equals("Administrator")) {
 	            	<button type="submit">Confirm</button>
 	          </form>
         </div>
-       
-    </div>
+
     </div>
 
     <%@ include file="footer.jsp"%>

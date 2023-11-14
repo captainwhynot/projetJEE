@@ -22,3 +22,54 @@ a:hover
     min-height: 70vh;
     text-align: center;
 }
+.table-container {
+    max-height: 500px; /* Ajustez la hauteur maximale selon vos besoins */
+    overflow-y: auto;
+}
+
+.page-container {
+    min-height: 100vh;
+}
+/* Ajoutez ces styles pour les contours et l'alternance de couleurs */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px; /* Ajustez la marge selon vos besoins */
+}
+
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f2f2f2; /* Couleur de fond pour les cellules d'en-tête */
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Couleur de fond pour les lignes paires */
+}
+
+.table tbody tr:nth-child(odd) {
+    background-color: #ffffff; /* Couleur de fond pour les lignes impaires */
+}
+/* Ajoutez ces styles pour centrer le contenu à l'intérieur des cellules */
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center; /* Ajout pour centrer le contenu */
+}
+
+.table th {
+    background-color: #f2f2f2; /* Couleur de fond pour les cellules d'en-tête */
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Couleur de fond pour les lignes paires */
+}
+
+.table tbody tr:nth-child(odd) {
+    background-color: #ffffff; /* Couleur de fond pour les lignes impaires */
+}
+
