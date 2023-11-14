@@ -51,24 +51,20 @@ public class ServletManageFidelityPoint extends HttpServlet {
 		String[] customerList = request.getParameterValues("customerList");
 		CustomerDao customerDao = new CustomerDao(sessionFactory);
 		
-		if (fidelityPointList != null && customerList != null && fidelityPointList.length == customerList.length) {
+		if (fidelityPointList != null && customerList != null) {
 			Customer customer = null;
 			String email = null;
 			int fidelityPoint = 0;
-			boolean allUpdated = true;
 			
     		for (int i = 0; i < customerList.length; i++) {
     			email = customerList[i];
     			fidelityPoint = Integer.parseInt(fidelityPointList[i]);
     			customer = customerDao.getCustomer(email);
-    			allUpdated = allUpdated && customerDao.setFidelityPoint(customer, fidelityPoint - customer.getFidelityPoint());
+    			if (!customerDao.setFidelityPoint(customer, fidelityPoint - customer.getFidelityPoint())) {
+    				response.getWriter().println("<script>showAlert('Update failed.', 'error', './ManageFidelityPoint')</script>");
+    			}
     		}
-    		
-    		if (allUpdated) {
-    			response.getWriter().println("<script>showAlert('Update completed.', 'success', './ManageFidelityPoint')</script>");
-			} else {
-				response.getWriter().println("<script>showAlert('Update failed.', 'error', './ManageFidelityPoint')</script>");
-			}
+    		response.getWriter().println("<script>showAlert('Update completed.', 'success', './ManageFidelityPoint')</script>");
 		}
    	}
 

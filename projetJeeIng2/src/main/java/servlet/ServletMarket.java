@@ -32,7 +32,7 @@ public class ServletMarket extends HttpServlet {
    	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
    		if (request.getAttribute("productList") == null) {
    			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-
+   			//All results
    			ProductDao productDao = new ProductDao(sessionFactory);
    			List<Product> productList = productDao.getProductList();
 
@@ -51,14 +51,15 @@ public class ServletMarket extends HttpServlet {
 		String seller = request.getParameter("sellerId");
 
 		if (search != null) {
+			//Result by search
 	   		String sql = "SELECT * FROM Product WHERE name LIKE '%" + search + "%';";
 			SQLQuery query = session.createSQLQuery(sql).addEntity(Product.class);
 			List<Product> productList = query.list();
 
 			request.setAttribute("productList", productList);
 			request.setAttribute("search", search);
-		}
-		else if (seller != null) {
+		} else if (seller != null) {
+			//Result by seller
 			int sellerId = Integer.parseInt(seller);
 			String sql = "SELECT * FROM Product WHERE sellerId = "+ sellerId +";";
 			SQLQuery query = session.createSQLQuery(sql).addEntity(Product.class);

@@ -59,6 +59,7 @@ public class ServletBasket extends HttpServlet {
 		UserDao userDao = new UserDao(sessionFactory);
 
 		if (action != null && action.equals("finalizePaiement")) {
+			//Finalize paiement via mail click
 			this.getServletContext().getRequestDispatcher("/header.jsp").include(request, response);
 
 			int cardNumber = Integer.parseInt(request.getParameter("cardNumber"));
@@ -79,6 +80,7 @@ public class ServletBasket extends HttpServlet {
 
 		if (action != null) {
 			if (action.equals("checkStock")) {
+				//Check the stock to update quantity
 				try {
 					int basketId = Integer.parseInt(request.getParameter("basketId"));
 					int quantity = Integer.parseInt(request.getParameter("quantity"));
@@ -104,6 +106,7 @@ public class ServletBasket extends HttpServlet {
 					response.getWriter().write("{\"status\": \"Internal Server Error.\"}");
 				}
 			} else if (action.equals("confirmOrder")) {
+				//Confirm the basket to pay
 				List<Basket> basketList = basketDao.getBasketList(ServletIndex.loginUser(request, response).getId());
 				request.setAttribute("basketList", basketList);
 				
@@ -122,12 +125,13 @@ public class ServletBasket extends HttpServlet {
 					}
 				}
 			} else if (action.equals("confirmCreditCard")) {
+				//Enter the credit card to pay with
 				this.getServletContext().getRequestDispatcher("/checkCreditCard.jsp").include(request, response);
 			} else if (action.equals("sendConfirmationMail")) {
+				//Send mail to finalize paiement
 				this.getServletContext().getRequestDispatcher("/basket.jsp").include(request, response);
 				List<Basket> basketList = basketDao.getBasketList(ServletIndex.loginUser(request, response).getId());
 				request.setAttribute("basketList", basketList);
-
 
 				int cardNumber = Integer.parseInt(request.getParameter("cardNumber"));
 				int cvv = Integer.parseInt(request.getParameter("cvv"));
@@ -143,6 +147,7 @@ public class ServletBasket extends HttpServlet {
 
 				if (creditCardDao.checkCreditCard(cardNumber, cvv, expirationDate)) {
 					if (creditCardDao.checkBalance(cardNumber, basketDao.totalPrice(loginUser.getId()))) {
+						//Mail's container
 						double totalOrderPrice = 0;
 						String container = "<span style='color: black'>Here is your paiement recapitulation :</span><br>";
 						container += "<table style='border-collapse: collapse; color: black; text-align: center;' border=1>"

@@ -51,13 +51,12 @@ public class ServletAddProduct extends HttpServlet {
 		ModeratorDao moderatorDao = new ModeratorDao(sessionFactory);
 		Moderator seller = moderatorDao.getModerator(sellerId);
 
-		// Créer un objet Product à factoriser quand on aura les 5 attributs
 		Product product = new Product();
 		product.setName(name);
 		product.setPrice(price);
 		product.setStock(stock);
 		product.setModerator(seller);
-		// product.setImg(img)
+		//product.setImg(img)
 
 		ProductDao productDao = new ProductDao(sessionFactory);
 

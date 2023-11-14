@@ -34,6 +34,7 @@ public class ServletRegistration extends HttpServlet {
 		UserDao dao = new UserDao(HibernateUtil.getSessionFactory());		
 		
 		if(dao.saveUser(user)) {
+			//Mail's content
 			HttpSession session = request.getSession();
 			session.setAttribute("user", user);
 			String container = "Your account has been created successfully.<br>";

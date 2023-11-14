@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -49,12 +48,14 @@ public class ServletManageProduct extends HttpServlet {
             response.sendRedirect("./Index");
             return;
         }
+		doGet(request, response);
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         String action = request.getParameter("action");
 
         if (action != null) {
             ProductDao productDao = new ProductDao(sessionFactory);
         	if (action.equals("deleteProduct")) {
+                //Delete product
 	            try {
 	                String productIdString = request.getParameter("productId");
 	                int productId = Integer.parseInt(productIdString);
@@ -74,6 +75,7 @@ public class ServletManageProduct extends HttpServlet {
 	                response.getWriter().write("{\"status\": \"Internal Server Error\"}");
 	            }
         	} else if (action.equals("updateProduct")){
+        		//Update product's informations
                 String[] imgString = request.getParameterValues("img");
                 String[] nameString = request.getParameterValues("name");
                 String[] priceString = request.getParameterValues("price");
@@ -96,24 +98,13 @@ public class ServletManageProduct extends HttpServlet {
 
                 		if (!product.getImg().equals(img) || !product.getName().equals(name) || Double.compare(product.getPrice(), price) != 0 || Integer.compare(product.getStock(), stock) != 0) {
             				if (!productDao.modifyProduct(product, name, price, stock, img)) {
-            					doGet(request, response);
-                   				PrintWriter out = response.getWriter();
-                   				out.println("<script>");
-                   				out.println("showAlert(\"An error has occured updating the product.\", \"error\", \"./ManageProduct\")");
-                   				out.println("</script>");
-                   				return;
+                   				response.getWriter().println("<script>showAlert('An error has occured updating the product.', 'error', './ManageProduct')</script>");
                 			}
                 		}
                 	}
-                	response.sendRedirect("./ManageProduct");
-                } else {
-                    doGet(request, response);
-                }
-        	} else {
-                doGet(request, response);
+                	response.getWriter().println("<script>showAlert('All products have been updated successfully.', 'success', './ManageProduct')</script>");
+                } 
         	}
-        } else {
-            doGet(request, response);
         }
     }
 

@@ -59,30 +59,30 @@ public class ServletAddModerator extends HttpServlet {
 		UserDao userDao = new UserDao(sessionFactory);
 		
         if (userList != null) {
-        	boolean allTransfered = true;
-        	
     		for (String email: userList) {
             	boolean isChecked = false;
             	if (transferList != null) isChecked = Arrays.asList(transferList).contains(email);
         		User user = userDao.getUser(email);
         		if (user.getTypeUser().equals("Moderator") && !isChecked) {
+        			//Transfer the moderator into a customer
         			ModeratorDao moderatorDao = new ModeratorDao(sessionFactory);
         			Moderator moderator = moderatorDao.getModerator(email);
-        			allTransfered = allTransfered && moderatorDao.transferIntoCustomer(moderator);
+        			if (!moderatorDao.transferIntoCustomer(moderator)) {
+        				response.getWriter().println("<script>showAlert('Transfer failed.', 'error', './AddModerator')</script>");
+        			}
         		}
         		else if (user.getTypeUser().equals("Customer") && isChecked) {
+        			//Transfer the customer into a moderator
         			CustomerDao customerDao = new CustomerDao(sessionFactory);
         			Customer customer = customerDao.getCustomer(email);
-        			allTransfered = allTransfered && customerDao.transferIntoModerator(customer);
+        			if (!customerDao.transferIntoModerator(customer)) {
+        				response.getWriter().println("<script>showAlert('Transfer failed.', 'error', './AddModerator')</script>");
+        			}
         		}
         	}
-    		if (allTransfered) {
-				response.getWriter().println("<script>showAlert('Transfer completed.', 'success', './manageModerator')</script>");
-			} else {
-				response.getWriter().println("<script>showAlert('Transfer failed.', 'error', '')</script>");
-			}
+			response.getWriter().println("<script>showAlert('Transfer completed.', 'success', './manageModerator')</script>");
+			
         }
-		response.sendRedirect("./AddModerator");
 	}
 
 }
