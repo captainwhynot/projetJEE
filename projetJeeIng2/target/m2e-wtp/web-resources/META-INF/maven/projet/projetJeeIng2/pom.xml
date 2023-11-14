@@ -34,6 +34,13 @@
 	    <version>4.0.1</version>
 	    <scope>provided</scope>
 	</dependency>
+	
+		<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+	<dependency>
+	    <groupId>com.sun.mail</groupId>
+	    <artifactId>javax.mail</artifactId>
+	    <version>1.6.2</version> <!-- Utilisez la version la plus rÃ©cente disponible -->
+	</dependency>
   </dependencies>
   <build>
     <finalName>projetJeeIng2</finalName>

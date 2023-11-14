@@ -1,6 +1,10 @@
 package dao;
 
 import java.util.List;
+import java.util.Properties;
+
+import javax.mail.*;
+import javax.mail.internet.*;
 
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -56,14 +60,12 @@ public class UserDao {
 	
 	public boolean checkUserMail(User user) {
 		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
 		
 		try {
 			String sql = "SELECT * FROM User WHERE email = '"+ user.getEmail() +"';";
 			SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);		
 			List<User> userList = query.list();
 	
-		    tx.commit();
 		    return (userList.isEmpty());
 		} catch (Exception e) {
 	        return false;
@@ -74,13 +76,11 @@ public class UserDao {
 	
 	public boolean checkUserLogin(String email, String password) {
 		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
 		
 		String sql = "SELECT *, 0 AS clazz_ FROM User WHERE email='"+email+"' AND password ='"+password+"';";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);
 		List<User> userList = (List<User>) query.list();
 		
-		tx.commit();
 		session.close();
 		
 		return (!userList.isEmpty());
@@ -88,7 +88,6 @@ public class UserDao {
 	
 	public User getUser(String email) {
 	    Session session = sessionFactory.openSession();
-	    Transaction tx = session.beginTransaction();
 
 	    User user = null;
 	    try {
@@ -97,12 +96,8 @@ public class UserDao {
 	        query.setParameter("email", email);
 
 	        user = (User) query.uniqueResult();
-
-	        tx.commit();
 	    } catch (Exception e) {
-	        if (tx != null) {
-	            tx.rollback();
-	        }
+	        return null;
 	    } finally {
 	        session.close();
 	    }
@@ -110,5 +105,37 @@ public class UserDao {
 	    return user;
 	}
 
+	public boolean sendMail(String email, String object, String container) {
+        String siteMail = "mangastorejee2023@gmail.com";
+        String password = "huwc xvtz rxiy xbqf";
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        javax.mail.Session session = javax.mail.Session.getInstance(props, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(siteMail, password);
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            
+            message.setFrom(new InternetAddress(siteMail));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+            message.setSubject(object);
+            message.setContent(container, "text/html");
+
+            Transport.send(message);
+            return true;
+
+        } catch (Exception e) {
+            return false;
+        } 
+	}
+	
 }
 	

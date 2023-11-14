@@ -166,9 +166,7 @@ boolean isLogged = ServletIndex.isLogged(request, response);
 							</div></li>
 							<%
 					}%>
-
-						
-
+					<li><a class="nav-link" aria-current="page" href="./Profil">Profil</a></li>
 					<li><a class="nav-link" aria-current="page" href="./Logout">Logout</a></li>
 					<%
 					}

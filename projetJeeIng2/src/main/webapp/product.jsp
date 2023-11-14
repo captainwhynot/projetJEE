@@ -11,8 +11,8 @@
            <% if (request.getAttribute("productId") != null) {
             ProductDao productDao = new ProductDao(HibernateUtil.getSessionFactory());
             Product product = productDao.getProduct((int) request.getAttribute("productId"));%>
-                <div class="card" style="width: 18rem;">
-				  <img src="<%= product.getImg() %>" class="card-img-top" alt="img/ProductImage.png">
+                <div class="card centered" style="width: 18rem;">
+				  <img src="<%= product.getImg() %>" class="card-img-top">
 				  <div class="card-body">
 				    <h5 class="card-title"><%= product.getName() %></h5>
 				    <p class="card-text">Price: <%= product.getPrice() %></p>

@@ -28,10 +28,10 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
 	               			<td><input type="date" name="expirationDate" required></td>
                         </tr>
 	                </table>
-	                <input type="hidden" id="action" name="action" value="finalizePaiement">
+	                <input type="hidden" id="action" name="action" value="sendConfirmationMail">
 				    <div style="display: flex;flex-direction: row; column-gap: 10px;">
 					    <button type="button" onclick="updateAction('confirmOrder');">Cancel</button>
-		              	<button type="button" onclick="updateAction('finalizePaiement');">Confirm</button>
+		              	<button type="button" onclick="updateAction('sendConfirmationMail');">Confirm</button>
 	              	</div>
 	              	<button type="submit" id="submitButton" style="display: none">Submit</button>
 	          </form>

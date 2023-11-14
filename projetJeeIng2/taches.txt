@@ -5,7 +5,6 @@ Admin :
 
 
 Customer :
-- Faire un envoi de mail pour la création du compte -> UserDao : saveUser()
 - ServletProfil + profil.jsp
 
 
@@ -16,7 +15,7 @@ Moderator :
 
 
 Basket : 
-- basket.jsp + confirmOrder.jsp + checkCreditCard.jsp affichage + confirmation paiement avant finalizePaiement (appelé lorsque clic sur le mail)
+- basket.jsp + confirmOrder.jsp + checkCreditCard.jsp affichage 
 - history.jsp affichage 
 
 

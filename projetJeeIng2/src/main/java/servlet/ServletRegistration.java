@@ -27,26 +27,40 @@ public class ServletRegistration extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
+        PrintWriter out = response.getWriter();
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		String username = request.getParameter("username");
 		
 		Customer user = new Customer(email ,password, username);
-			
 		UserDao dao = new UserDao(HibernateUtil.getSessionFactory());		
+		
 		if(dao.saveUser(user)) {
 			HttpSession session = request.getSession();
 			session.setAttribute("user", user);
-
-			response.sendRedirect("./Index");
+			String container = "Your account has been created successfully.<br>";
+			container += "Your identifiants are : <br>";
+			container += "<ul>";
+			container += "<li>e-mail : " + email + "<br></li>";
+			container += "<li>password : " + password + "<br></li>";
+			container += "<li>username : " + username + "<br></li>";
+			container += "</ul>";
+			container += "Go to the site : ";
+			container += "<a href=\"http://localhost:8080/projetJeeIng2/Index\">MANGASTORE</a>";
+			if (dao.sendMail(email, "MANGASTORE : Registration", container)) {
+				out.println("<script>");
+		        out.println("showAlert('Your account has been successfully created.', 'success', './Index');");
+		        out.println("</script>");
+			} else {
+		        out.println("<script>");
+		        out.println("showAlert('Confirmation mail didn't send well.', 'warning', './Index');");
+		        out.println("</script>");
 			}
-		else {
-	        PrintWriter out = response.getWriter();
-	        out.println("<html>");
+		} else {
 	        out.println("<script>");
-	        out.println("alert('Erreur, email déjà pris');");
+	        out.println("showAlert('This e-mail is already taken.', 'error', '');");
 	        out.println("</script>");
-	        out.println("</html>");
+	        return;
 			}
 	}
 
