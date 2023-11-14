@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <%@ include file="header.jsp" %>
@@ -28,7 +29,25 @@ if (isLogged && (loginUser.getTypeUser().equals("Administrator") || loginUser.ge
                     <label for="stock" class="form-label">Stock</label>
                     <input type="number" step="1" class="form-control" id="stock" name="stock"
                         placeholder="Enter stock"></div>
-
+				<% if (loginUser.getTypeUser().equals("Administrator")) { %>
+				
+				<div class="labName">
+                    <label for="sellerId" class="form-label">Seller</label>
+                    <select class="form-control" id="sellerId" name="sellerId">
+                    <% ModeratorDao moderatorDao = new ModeratorDao(HibernateUtil.getSessionFactory());
+                    List<Moderator> moderatorList = moderatorDao.getModeratorList();
+                    if (!moderatorList.isEmpty()) {
+                    	for (Moderator moderator : moderatorList) { %>
+                    		<option value="<%= moderator.getId() %>"><%= moderator.getUsername() %></option>
+                    	<%}
+                    } else {%>
+                    	<option value="" disabled selected>No moderators available</option>
+                    <% } %>
+                    </select></div>
+				<% } else { %>
+					<input type="number" step="1" class="d-none" id="sellerId" name="sellerId" value="<%= loginUser.getId() %>">
+				<% } %>
+				
                 <div class="labName">
                     <label for="img" class="form-label">Image</label>
                     <input type="file" id="img" name="img" accept="image/png, image/jpeg" required>

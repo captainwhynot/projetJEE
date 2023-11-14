@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import conn.HibernateUtil;
+import dao.ProductDao;
 import entity.Product;
 @SuppressWarnings({"rawtypes", "deprecation", "unchecked"})
 
@@ -23,25 +25,16 @@ import entity.Product;
 @WebServlet("/Market")
 public class ServletMarket extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ServletMarket() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
+    
     /**
    	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
    	 */
    	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
    		if (request.getAttribute("productList") == null) {
-   			Session session = HibernateUtil.getSessionFactory().openSession();
+   			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
-   			String sql = "SELECT * FROM Product;";
-   			SQLQuery query = session.createSQLQuery(sql).addEntity(Product.class);
-   			List<Product> productList = query.list();
+   			ProductDao productDao = new ProductDao(sessionFactory);
+   			List<Product> productList = productDao.getProductList();
 
    			request.setAttribute("productList", productList);
    		}
@@ -56,7 +49,7 @@ public class ServletMarket extends HttpServlet {
 		
 		String search = request.getParameter("search");
 		String seller = request.getParameter("sellerId");
-		System.out.println(search + " - " + seller);
+
 		if (search != null) {
 	   		String sql = "SELECT * FROM Product WHERE name LIKE '%" + search + "%';";
 			SQLQuery query = session.createSQLQuery(sql).addEntity(Product.class);

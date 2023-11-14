@@ -23,14 +23,6 @@ import entity.Moderator;
 @WebServlet("/ManageModerator")
 public class ServletManageModerator extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */ 
-    public ServletManageModerator() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
     /**
    	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -63,26 +55,36 @@ public class ServletManageModerator extends HttpServlet {
 		if (moderatorList != null) {
 			ModeratorDao moderatorDao = new ModeratorDao(sessionFactory);
 			Moderator moderator = null;
+			boolean allUpdated = true;
+			
     		for (String email: moderatorList) {
     			moderator = moderatorDao.getModerator(email);
+    			//addProduct's Right
     			if (addProductList != null && Arrays.asList(addProductList).contains(email)) {
-    				 moderatorDao.modifyRight(moderator, "addProduct", true);
+    				allUpdated = allUpdated && moderatorDao.modifyRight(moderator, "addProduct", true);
     			} else {
-   				 	moderatorDao.modifyRight(moderator, "addProduct", false);
+    				allUpdated = allUpdated && moderatorDao.modifyRight(moderator, "addProduct", false);
     			}
+    			//modifyProduct's Right
     			if (modifyProductList != null && Arrays.asList(modifyProductList).contains(email)) {
-   				 	moderatorDao.modifyRight(moderator, "modifyProduct", true);
+    				allUpdated = allUpdated && moderatorDao.modifyRight(moderator, "modifyProduct", true);
     			} else {
-   				 	moderatorDao.modifyRight(moderator, "modifyProduct", false);
+    				allUpdated = allUpdated && moderatorDao.modifyRight(moderator, "modifyProduct", false);
     			}
+    			//deleteProduct's Right
     			if (deleteProductList != null && Arrays.asList(deleteProductList).contains(email)) {
-   				 	moderatorDao.modifyRight(moderator, "deleteProduct", true);
+    				allUpdated = allUpdated && moderatorDao.modifyRight(moderator, "deleteProduct", true);
    				} else {
-    				moderatorDao.modifyRight(moderator, "deleteProduct", false);
+   					allUpdated = allUpdated && moderatorDao.modifyRight(moderator, "deleteProduct", false);
 				}
     		}
+    		
+    		if (allUpdated) {
+    			response.getWriter().println("<script>showAlert('All rights updated successfully.', 'success', './ManageModerator')</script>");
+			} else {
+				response.getWriter().println("<script>showAlert('Update failed.', 'error', './ManageModerator')</script>");
+			}
 		}
-		response.sendRedirect("./ManageModerator");
    	}
 
 }

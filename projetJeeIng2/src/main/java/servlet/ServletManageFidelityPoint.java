@@ -22,14 +22,6 @@ import entity.Customer;
 @WebServlet("/ManageFidelityPoint")  
 public class ServletManageFidelityPoint extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ServletManageFidelityPoint() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
     /**
    	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -58,18 +50,26 @@ public class ServletManageFidelityPoint extends HttpServlet {
 		String[] fidelityPointList = request.getParameterValues("fidelityPointList");
 		String[] customerList = request.getParameterValues("customerList");
 		CustomerDao customerDao = new CustomerDao(sessionFactory);
+		
 		if (fidelityPointList != null && customerList != null && fidelityPointList.length == customerList.length) {
 			Customer customer = null;
 			String email = null;
 			int fidelityPoint = 0;
+			boolean allUpdated = true;
+			
     		for (int i = 0; i < customerList.length; i++) {
     			email = customerList[i];
     			fidelityPoint = Integer.parseInt(fidelityPointList[i]);
     			customer = customerDao.getCustomer(email);
-				customerDao.setFidelityPoint(customer, fidelityPoint - customer.getFidelityPoint());
+    			allUpdated = allUpdated && customerDao.setFidelityPoint(customer, fidelityPoint - customer.getFidelityPoint());
     		}
+    		
+    		if (allUpdated) {
+    			response.getWriter().println("<script>showAlert('Update completed.', 'success', './ManageFidelityPoint')</script>");
+			} else {
+				response.getWriter().println("<script>showAlert('Update failed.', 'error', './ManageFidelityPoint')</script>");
+			}
 		}
-		response.sendRedirect("./ManageFidelityPoint");
    	}
 
 }

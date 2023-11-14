@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import org.hibernate.SessionFactory;
 
 import javax.servlet.ServletException;
@@ -19,7 +18,6 @@ import entity.*;
  * Servlet implementation class ServletIndex
  */
 
-
 @WebServlet("/Login")
 public class ServletLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -29,7 +27,7 @@ public class ServletLogin extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		this.getServletContext().getRequestDispatcher("/login.jsp").include(request, response);
-		}
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -38,24 +36,18 @@ public class ServletLogin extends HttpServlet {
 		doGet(request, response);
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		
+
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		UserDao dao = new UserDao(sessionFactory);	
-		
+		UserDao dao = new UserDao(sessionFactory);
+
 		if (dao.checkUserLogin(email, password)) {
 			User user = dao.getUser(email);
 			HttpSession session = request.getSession();
 			session.setAttribute("user", user);
 
 			response.sendRedirect("./Index");
-			}
-		else {
-	        PrintWriter out = response.getWriter();
-	        out.println("<html>");
-	        out.println("<script>");
-	        out.println("alert('Erreur, identifiants incorrects');");
-	        out.println("</script>");
-	        out.println("</html>");
+		} else {
+			response.getWriter().println("<script>showAlert('Invalid identifiants.', 'error', '');</script>");
 		}
 	}
 

@@ -15,7 +15,6 @@ import entity.User;
  * Servlet implementation class ServletIndex
  */
 
-
 @WebServlet("/Index")
 public class ServletIndex extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -35,11 +34,11 @@ public class ServletIndex extends HttpServlet {
 	}
 
 	public static User loginUser(HttpServletRequest request, HttpServletResponse response) {
-   		HttpSession session = request.getSession();
+		HttpSession session = request.getSession();
 		User loginUser = (User) session.getAttribute("user");
 		return loginUser;
 	}
-	
+
 	public static boolean isLogged(HttpServletRequest request, HttpServletResponse response) {
 		return (loginUser(request, response) != null);
 	}

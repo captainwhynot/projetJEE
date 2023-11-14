@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,7 +26,6 @@ public class ServletRegistration extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
-        PrintWriter out = response.getWriter();
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		String username = request.getParameter("username");
@@ -50,20 +48,13 @@ public class ServletRegistration extends HttpServlet {
 			container += "<a href=\"http://localhost:8080/projetJeeIng2/Index\">MANGASTORE</a>" +
 					     "</div>";
 			if (dao.sendMail(email, "MANGASTORE : Registration", container)) {
-				out.println("<script>");
-		        out.println("showAlert('Your account has been successfully created.', 'success', './Index');");
-		        out.println("</script>");
+				response.getWriter().println("<script>showAlert('Your account has been successfully created.', 'success', './Index');</script>");
 			} else {
-		        out.println("<script>");
-		        out.println("showAlert('Confirmation mail didn't send well.', 'warning', './Index');");
-		        out.println("</script>");
+		        response.getWriter().println("<script>showAlert('Confirmation mail didn't send well.', 'warning', './Index');</script>");
 			}
 		} else {
-	        out.println("<script>");
-	        out.println("showAlert('This e-mail is already taken.', 'error', '');");
-	        out.println("</script>");
-	        return;
-			}
+	        response.getWriter().println("<script>showAlert('This e-mail is already taken.', 'error', '');</script>");
+		}
 	}
 
 }

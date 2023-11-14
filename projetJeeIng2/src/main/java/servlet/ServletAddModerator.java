@@ -26,14 +26,6 @@ import entity.*;
 @WebServlet("/AddModerator")
 public class ServletAddModerator extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ServletAddModerator() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
     /**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -65,7 +57,10 @@ public class ServletAddModerator extends HttpServlet {
 		String[] transferList = request.getParameterValues("transferList");
 		String[] userList = request.getParameterValues("userList");
 		UserDao userDao = new UserDao(sessionFactory);
+		
         if (userList != null) {
+        	boolean allTransfered = true;
+        	
     		for (String email: userList) {
             	boolean isChecked = false;
             	if (transferList != null) isChecked = Arrays.asList(transferList).contains(email);
@@ -73,14 +68,19 @@ public class ServletAddModerator extends HttpServlet {
         		if (user.getTypeUser().equals("Moderator") && !isChecked) {
         			ModeratorDao moderatorDao = new ModeratorDao(sessionFactory);
         			Moderator moderator = moderatorDao.getModerator(email);
-        			moderatorDao.transferIntoCustomer(moderator);
+        			allTransfered = allTransfered && moderatorDao.transferIntoCustomer(moderator);
         		}
         		else if (user.getTypeUser().equals("Customer") && isChecked) {
         			CustomerDao customerDao = new CustomerDao(sessionFactory);
         			Customer customer = customerDao.getCustomer(email);
-        			customerDao.transferIntoModerator(customer);
+        			allTransfered = allTransfered && customerDao.transferIntoModerator(customer);
         		}
         	}
+    		if (allTransfered) {
+				response.getWriter().println("<script>showAlert('Transfer completed.', 'success', './manageModerator')</script>");
+			} else {
+				response.getWriter().println("<script>showAlert('Transfer failed.', 'error', '')</script>");
+			}
         }
 		response.sendRedirect("./AddModerator");
 	}
