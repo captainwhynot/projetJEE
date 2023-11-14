@@ -17,15 +17,15 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
                 <table class="table">
                         <tr>
 	               			<td>Card Number : </td>
-	               			<td><input type="text" pattern="\d*" name="cardNumber"></td>
+	               			<td><input type="text" pattern="\d*" name="cardNumber" required></td>
                         </tr>
                         <tr>
 	               			<td>CVV : </td>
-	               			<td><input type="text" pattern="\d*" name="cvv" maxlength="3"></td>
+	               			<td><input type="text" pattern="\d*" name="cvv" maxlength="3" required></td>
                         </tr>
                         <tr>
 	               			<td>Expiration Date : </td>
-	               			<td><input type="date" name="expirationDate"></td>
+	               			<td><input type="date" name="expirationDate" required></td>
                         </tr>
 	                </table>
 	                <input type="hidden" id="action" name="action" value="finalizePaiement">

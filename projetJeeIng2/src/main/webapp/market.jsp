@@ -47,10 +47,10 @@
                 <tbody>
                     <% for (Product product : productList) { %>
                         <tr>
-                            <td><img src="<%= product.getImg() %>" style="width: 28px;" alt="img/ProductImage.png"></img>
+                            <td><img src="<%= product.getImg() %>" style="width: 28px;"></img></td>
                             <td><%= product.getName() %></td>
                             <td><%= product.getPrice() %></td>
-                            <td><%= product.getStock() %></td>
+                            <td><%= (product.getStock()==0?"Out of Stock.":product.getStock()) %></td>
                             <td><form method="POST" action="Market">
                                 <input type="hidden" name="sellerId" value="<%= product.getModerator().getId() %>">
                             	<button type="submit" style="background: none; padding: 0; font-size: 16px; color: red;"><%= product.getModerator().getUsername() %></button>

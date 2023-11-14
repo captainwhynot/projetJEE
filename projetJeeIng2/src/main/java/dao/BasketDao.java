@@ -3,6 +3,8 @@ package dao;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -24,10 +26,17 @@ public SessionFactory sessionFactory;
 		Transaction tx = session.beginTransaction();
 		
 		try {
-			int save = (Integer) session.save(basket);
-			tx.commit();			
-			return (save > 0);
-		} catch (Exception e) {
+			String sql = "SELECT id FROM Basket WHERE productId = " + basket.getProduct().getId() + " AND bought = 0;";
+			SQLQuery query = session.createSQLQuery(sql);
+			int basketId = (int) query.getSingleResult();
+			//If the product is already in the basket, add quantity
+			return updateQuantity(basketId, basket.getQuantity());
+		} catch (NoResultException e) {
+	        // Handle the case where no result is found (basketId is null)
+	        int save = (Integer) session.save(basket);
+	        tx.commit();
+	        return (save > 0);
+	    }catch (Exception e) {
 	        return false;
 		} finally {
 			session.close();

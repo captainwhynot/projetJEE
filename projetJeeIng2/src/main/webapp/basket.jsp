@@ -19,6 +19,7 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
 	                    <thead>
 	                        <tr>
 	                        	<th>Id</th>
+	                        	<th>Image</th>
 	                            <th>Product</th>
 	                            <th>Price</th>
 	                            <th>Quantity</th>
@@ -32,6 +33,7 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
 	                        %>
 	                            <tr>
 	                            	<td><span class="id"><%= basket.getId() %></span></td>
+	                            	<td><img src="<%= basket.getProduct().getImg()%>" style="width: 28px;"></td>
 	                                <td><a href="./Product"><%= basket.getProduct().getName() %></a>
                                 	<input type="hidden" name="productId" value="<%= basket.getProduct().getId() %>"></td>
 	                                <td><span class="price"><%= basket.getProduct().getPrice() %></span></td>
@@ -49,7 +51,7 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
 	                            }
 	                        %>
 	                        <tr>
-		                        <td colspan=4>Total Order Price :</td>
+		                        <td colspan=6>Total Order Price :</td>
 		                        <% String totalOrderPriceString = String.format("%.2f", totalOrderPrice); %>
 		                        <td><span class="totalOrderPrice"><%= totalOrderPriceString %></span></td>
 	                        </tr>
