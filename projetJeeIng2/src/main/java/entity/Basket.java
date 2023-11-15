@@ -16,7 +16,6 @@ public class Basket {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private int quantity;
-	private boolean bought;
 	private Date purchaseDate;
 	@ManyToOne
     @JoinColumn(name = "productId")
@@ -34,7 +33,6 @@ public class Basket {
 		this.quantity = quantity;
 		this.setPurchaseDate(null);
 		this.customer = customer;
-		this.setBought(false);
 	}
 	
 	public int getId() {
@@ -51,14 +49,6 @@ public class Basket {
 	
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
-	}
-	
-	public boolean isBought() {
-		return bought;
-	}
-	
-	public void setBought(boolean bought) {
-		this.bought = bought;
 	}
 
 	public Product getProduct() {

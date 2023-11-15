@@ -33,10 +33,14 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
 	                            <tr>
 	                            	<td><%= basket.getId() %></td>
 	                            	<td><img src="<%= basket.getProduct().getImg()%>" style="height: 28px;"></td>
-	                                <td><%= basket.getProduct().getName() %></td>
+	                                <td><button type="button" style="background: none; padding: 0; font-size: 16px; color: #007bff;" 
+	                                	onclick="seeProduct('<%= basket.getProduct().getId() %>')">
+	                                	<%= basket.getProduct().getName() %></button></td>
 	                                <td><%= basket.getProduct().getPrice() %></td>
 	                                <td><%= basket.getQuantity() %></td>
-	                                <td><%= basket.getProduct().getUser().getUsername() %></td>
+	                                <td><button type="button" style="background: none; padding: 0; font-size: 16px; color: #007bff;" 
+		                                onclick="seeMarket('<%= basket.getProduct().getUser().getId() %>')">
+		                                <%= basket.getProduct().getUser().getUsername() %></button></td>
 	                                <% double totalPrice = basket.getProduct().getPrice() * basket.getQuantity(); 
 	                                String totalPriceString = String.format("%.2f", totalPrice);
 	                                totalOrderPrice += totalPrice;
@@ -81,6 +85,7 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
     </div>
 
     <%@ include file="footer.jsp"%>
+    <script src="./js/basket.js"></script>
     <script>
 	    function updateAction(action) {
 	        document.getElementById('action').value = action;

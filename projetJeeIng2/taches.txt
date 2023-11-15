@@ -1,22 +1,6 @@
-Admin : 
-- addModerator.jsp affichage
-- manageModerator.jsp affichage
-- manageFidelityPoint.jsp affichage
-
-
 Customer :
-- ServletProfil + profil.jsp
-
-
-Moderator :
-- ServletAddProduct + addProduct.jsp add Img dans product
-- manageProduct.jsp affichage
-- ServletProductDetail + product.jsp
-
-
-Basket : 
-- basket.jsp + confirmOrder.jsp + checkCreditCard.jsp affichage 
-- history.jsp affichage 
+- ServletProfil + profil.jsp updateProfil + affichage
+- ServletLogin : hashage password
 
 
 Product :
@@ -24,5 +8,7 @@ Product :
 
 
 - Traduire le site en anglais
-- Javadoc en anglais
+- Javadoc / commentaire en anglais
 - Supprimer tous les sysout dans les méthodes etc...
+
+-update Image dans manageProduct

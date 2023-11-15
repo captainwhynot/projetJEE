@@ -12,6 +12,7 @@ import org.hibernate.Transaction;
 
 import entity.Basket;
 import entity.Customer;
+import entity.User;
 
 @SuppressWarnings({"deprecation", "rawtypes", "unchecked"})
 public class BasketDao {
@@ -21,16 +22,16 @@ public SessionFactory sessionFactory;
 		sessionFactory = sf;
 	}
 	
-	public boolean addOrder(Basket basket) {
+	public boolean addOrder(Basket basket, int customerId, int quantity) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
 		try {
-			String sql = "SELECT id FROM Basket WHERE productId = " + basket.getProduct().getId() + " AND bought = 0;";
-			SQLQuery query = session.createSQLQuery(sql);
-			int basketId = (int) query.getSingleResult();
-			//If the product is already in the basket, add quantity
-			return updateQuantity(basketId, basket.getQuantity());
+			String sql = "SELECT * FROM Basket WHERE productId = " + basket.getProduct().getId() + " AND purchaseDate IS NULL AND customerId = "+ customerId +";";
+			SQLQuery query = session.createSQLQuery(sql).addEntity(Basket.class);
+			Basket oldBasket = (Basket) query.getSingleResult();
+			//If the product is already in the basket, add quantity if there is enough stock
+			return checkStock(oldBasket.getId(), oldBasket.getQuantity()+quantity) && updateQuantity(oldBasket.getId(), quantity);
 		} catch (NoResultException e) {
 	        // Handle the case where no result is found (basketId is null)
 	        int save = (Integer) session.save(basket);
@@ -67,7 +68,7 @@ public SessionFactory sessionFactory;
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
-		String sql = "SELECT * FROM Basket WHERE customerId = "+ customerId +" AND bought=0;";
+		String sql = "SELECT * FROM Basket WHERE customerId = "+ customerId +" AND purchaseDate IS NULL;";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(Basket.class);
 		List<Basket> basketList = query.list();
 		
@@ -90,7 +91,7 @@ public SessionFactory sessionFactory;
 		Transaction tx = session.beginTransaction();
 
 		//Check the stock for the final order.
-		String sql = "SELECT * FROM Basket WHERE customerId = "+customerId+" AND bought = 0;";
+		String sql = "SELECT * FROM Basket WHERE customerId = "+customerId+" AND purchaseDate IS NULL;";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(Basket.class);;
 		List<Basket> basketList = query.list();
 		
@@ -106,7 +107,7 @@ public SessionFactory sessionFactory;
 			}
 		}
 		
-		sql = "SELECT * FROM Basket WHERE customerId = "+customerId+" AND bought = 0 AND quantity > 0;";
+		sql = "SELECT * FROM Basket WHERE customerId = "+customerId+" AND purchaseDate IS NULL AND quantity > 0;";
 		query = session.createSQLQuery(sql).addEntity(Basket.class);;
 		basketList = query.list();
 		
@@ -116,7 +117,7 @@ public SessionFactory sessionFactory;
 		return basketList;
 	}
 	
-	public boolean finalizePaiement(int customerId, int cardNumber, double price) {
+	public boolean finalizePaiement(int customerId, int cardNumber, double price, String mailContainer) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
@@ -124,7 +125,7 @@ public SessionFactory sessionFactory;
 		SQLQuery queryCardSolde = session.createSQLQuery(sqlCardSolde);
 		int numberRowSolde = queryCardSolde.executeUpdate();
 
-		String sqlPaidBasket = "UPDATE Basket SET bought = 1, purchaseDate = :currentDate WHERE customerId = " + customerId + " AND quantity > 0 AND bought=0;";
+		String sqlPaidBasket = "UPDATE Basket SET purchaseDate = :currentDate WHERE customerId = " + customerId + " AND quantity > 0 AND purchaseDate IS NULL;";
 		SQLQuery queryPaidBasket = session.createSQLQuery(sqlPaidBasket);
 		queryPaidBasket.setParameter("currentDate", new Date());
 		int numberRowBasket = queryPaidBasket.executeUpdate();
@@ -149,8 +150,12 @@ public SessionFactory sessionFactory;
 
 		tx.commit();
 		session.close();
+
+		UserDao userDao = new UserDao(sessionFactory);
+		User user = userDao.getUser(customerId);
+		boolean mailSent = userDao.sendMail(user.getEmail(), "MANGASTORE : Paiement recapitulation", mailContainer);
 		
-		return (numberRowSolde > 0 && numberRowBasket > 0 && numberFidelityPoint > 0 && numberRowProduct > 0);
+		return (numberRowSolde > 0 && numberRowBasket > 0 && numberFidelityPoint > 0 && numberRowProduct > 0 && mailSent);
 	}
 	
 	public boolean checkStock(int id, int quantity) {
@@ -172,7 +177,7 @@ public SessionFactory sessionFactory;
 		double totalPrice = 0;
 		Session session = sessionFactory.openSession();
 		//Check the price for the final order.
-		String sql = "SELECT * FROM Basket WHERE customerId = "+customerId+" AND quantity > 0 AND bought = 0;";
+		String sql = "SELECT * FROM Basket WHERE customerId = "+customerId+" AND quantity > 0 AND purchaseDate IS NULL;";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(Basket.class);
 		List<Basket> basketList = query.list();
 		

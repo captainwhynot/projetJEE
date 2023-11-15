@@ -39,7 +39,7 @@ public class ServletHistory extends HttpServlet {
 		User loginUser = ServletIndex.loginUser(request, response);
 
 		Session session = sessionFactory.openSession();
-		String sql = "SELECT * FROM Basket WHERE customerId = " + loginUser.getId() + " AND bought=1;";
+		String sql = "SELECT * FROM Basket WHERE customerId = " + loginUser.getId() + " AND purchaseDate IS NOT NULL;";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(Basket.class);
 		List<Basket> basketList = query.list();
 		session.close();

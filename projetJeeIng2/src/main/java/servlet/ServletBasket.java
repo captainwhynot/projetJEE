@@ -16,7 +16,6 @@ import conn.HibernateUtil;
 import dao.BasketDao;
 import dao.CreditCardDao;
 import dao.CustomerDao;
-import dao.UserDao;
 import entity.Basket;
 import entity.Customer;
 import entity.User;
@@ -51,32 +50,15 @@ public class ServletBasket extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if (!ServletIndex.isLogged(request, response)) {
+			response.sendRedirect("./Index");
+			return;
+		}
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		String action = request.getParameter("action");
 
 		User loginUser = ServletIndex.loginUser(request, response);
 		BasketDao basketDao = new BasketDao(sessionFactory);
-		UserDao userDao = new UserDao(sessionFactory);
-
-		if (action != null && action.equals("finalizePaiement")) {
-			//Finalize paiement via mail click
-			this.getServletContext().getRequestDispatcher("/header.jsp").include(request, response);
-
-			int cardNumber = Integer.parseInt(request.getParameter("cardNumber"));
-			int userId = Integer.parseInt(request.getParameter("userId"));
-			
-			if (basketDao.finalizePaiement(userId, cardNumber, basketDao.totalPrice(userId))) {
-				response.getWriter().println("<script>showAlert('Payment completed successfully.', 'success', './Basket');</script>");
-			} else {
-				response.getWriter().println("<script>showAlert('Payment failed.', 'error', './Basket');</script>");
-			}
-			return;
-		}
-
-		if (!ServletIndex.isLogged(request, response)) {
-			response.sendRedirect("./Index");
-			return;
-		}
 
 		if (action != null) {
 			if (action.equals("checkStock")) {
@@ -127,11 +109,11 @@ public class ServletBasket extends HttpServlet {
 			} else if (action.equals("confirmCreditCard")) {
 				//Enter the credit card to pay with
 				this.getServletContext().getRequestDispatcher("/checkCreditCard.jsp").include(request, response);
-			} else if (action.equals("sendConfirmationMail")) {
-				//Send mail to finalize paiement
-				this.getServletContext().getRequestDispatcher("/basket.jsp").include(request, response);
+			} else if (action.equals("finalizePaiement")) {
+				//Finalize paiement
 				List<Basket> basketList = basketDao.getBasketList(ServletIndex.loginUser(request, response).getId());
 				request.setAttribute("basketList", basketList);
+				this.getServletContext().getRequestDispatcher("/basket.jsp").include(request, response);
 
 				int cardNumber = Integer.parseInt(request.getParameter("cardNumber"));
 				int cvv = Integer.parseInt(request.getParameter("cvv"));
@@ -175,19 +157,13 @@ public class ServletBasket extends HttpServlet {
 								+ String.format("%.2f", totalOrderPrice) + "</td>" + "</tr>" + "<tr>"
 								+ "<td colspan='5'>Discount</td>" + "<td>" + discount + "</td>" + "</tr>" + "<tr>"
 								+ "<td colspan='5'>Total Order Price :</td>" + "<td>"
-								+ String.format("%.2f", totalOrderPrice) + "</td>" + "</tr>" + "</tbody>" + "</table>";
-						container += "<span style='color: black'>Click below here to confirm your paiement :</span><br>";
-						container += "<form method=\"POST\" action=\"http://localhost:8080/projetJeeIng2/Basket\">"
-								+ "<input type=\"hidden\" id=\"action\" name=\"action\" value=\"finalizePaiement\">"
-								+ "<input type=\"hidden\" id=\"userId\" name=\"userId\" value=\"" + loginUser.getId()
-								+ "\">" + "<input type=\"hidden\" id=\"cardNumber\" name=\"cardNumber\" value=\""
-								+ cardNumber + "\">" + "<button type=\"submit\">" + "Confirm Paiement" + "</button>"
-								+ "</form>";
-						
-						if (userDao.sendMail(loginUser.getEmail(), "MANGASTORE : Confirm paiement", container)) {
-							response.getWriter().println("<script>showAlert('A confirmation mail has been sent.', 'info', './Basket');</script>");
+								+ String.format("%.2f", totalOrderPrice) + "</td>" + "</tr>" + "</tbody>" + "</table><br>";
+						container += "<span style='color: black'>Click here to access the site : </span>";
+						container += "<a href=\"http://localhost:8080/projetJeeIng2/Index\">MANGASTORE</a>";
+						if (basketDao.finalizePaiement(loginUser.getId(), cardNumber, basketDao.totalPrice(loginUser.getId()), container)) {
+							response.getWriter().println("<script>showAlert('Payment completed successfully.', 'success', './Basket');</script>");
 						} else {
-							response.getWriter().println("<script>showAlert('Confirmation mail didn't send well.', 'warning', './Basket');</script>");
+							response.getWriter().println("<script>showAlert('Payment failed.', 'error', './Basket');</script>");
 						}
 					} else {
 						response.getWriter().println("<script>showAlert('Not enough credit on the credit card.', 'error', './Basket');</script>");

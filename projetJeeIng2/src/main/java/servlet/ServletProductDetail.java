@@ -54,7 +54,7 @@ public class ServletProductDetail extends HttpServlet {
    						
    						BasketDao basketDao = new BasketDao(sessionFactory);
    						Basket basket = new Basket(product, 1, customer);
-   						if (basketDao.addOrder(basket)) {
+   						if (basketDao.addOrder(basket, user.getId(), 1)) {
    	   	   					response.getWriter().println("<script>showAlert('Product successfully added to the basket.', 'success', '');</script>");
    						} else {
    	   	   					response.getWriter().println("<script>showAlert('Failed to add the product to the basket.', 'error', '');</script>");

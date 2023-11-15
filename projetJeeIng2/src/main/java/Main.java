@@ -28,9 +28,9 @@ public class Main{
 		
 		//Créer un client
 		CustomerDao customerDao = new CustomerDao(sessionFactory);
-		Customer customer = new Customer("mailCustomer", "password", "customer");
+		Customer customer = new Customer("caichristo@cy-tech.fr", "password", "chris");
 		System.out.println(userDao.saveUser(customer));
-		Customer cust = customerDao.getCustomer("mailCustomer");
+		Customer cust = customerDao.getCustomer("caichristo@cy-tech.fr");
 		List<Customer> liste = customerDao.getCustomerList();
 		
 		//Créer une carte bancaire
@@ -56,14 +56,14 @@ public class Main{
 		Basket basket = new Basket(product, 2, cust);
 				
 		//Modifier et payer un panier
-		System.out.println(basketDao.addOrder(basket));
+		System.out.println(basketDao.addOrder(basket, cust.getId(), 1));
 		System.out.println(basketDao.updateQuantity(basket.getId(), 2));
 		System.out.println(basketDao.confirmOrder(cust.getId()));
 		if (creditCardDao.checkCreditCard(123, 111, new Date(2023 - 1900, 11 - 1, 20))) {
 			System.out.println("credit card valid");
 			if (creditCardDao.checkBalance(123, basketDao.totalPrice(cust.getId()))) {
 				System.out.println("enough credit to pay");
-				System.out.println(basketDao.finalizePaiement(cust.getId(), 123, basketDao.totalPrice(cust.getId())));
+				System.out.println(basketDao.finalizePaiement(cust.getId(), 123, basketDao.totalPrice(cust.getId()),"testMain"));
 			}
 		}
 		//customerDao.transferIntoModerator(cust);

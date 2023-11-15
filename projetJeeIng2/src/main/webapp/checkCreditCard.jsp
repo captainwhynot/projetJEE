@@ -15,20 +15,20 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
                 <table class="table">
                         <tr>
 	               			<td>Card Number : </td>
-	               			<td><input type="text" pattern="\d*" name="cardNumber" required></td>
+	               			<td><input type="text" style="text-align: center;" pattern="\d*" name="cardNumber" required></td>
                         </tr>
                         <tr>
 	               			<td>CVV : </td>
-	               			<td><input type="text" pattern="\d*" name="cvv" maxlength="3" required></td>
+	               			<td><input type="text" style="text-align: center;" pattern="\d*" name="cvv" maxlength="3" required></td>
                         </tr>
                         <tr>
 	               			<td>Expiration Date : </td>
 	               			<td><input style="text-align: center;" type="date" name="expirationDate" required></td>
                         </tr>
 	                </table>
-	                <input type="hidden" id="action" name="action" value="sendConfirmationMail">
+	                <input type="hidden" id="action" name="action" value="finalizePaiement">
 					    <button type="button" onclick="updateAction('confirmOrder');">Cancel</button>
-		              	<button type="button" onclick="updateAction('sendConfirmationMail');">Confirm</button>
+		              	<button type="button" onclick="updateAction('finalizePaiement');">Confirm</button>
 	              	<button type="submit" id="submitButton" style="display: none">Submit</button>
 	          </form>
         </div>
@@ -38,6 +38,12 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
     <script>
 	    function updateAction(action) {
 	        document.getElementById('action').value = action;
+	        if (action == "confirmOrder") {
+	        	var inputs = document.querySelectorAll('input');
+		            inputs.forEach(function (input) {
+		                input.required = false;
+	            });
+	        }
 	        document.getElementById('submitButton').click();
 	    }
 	</script>

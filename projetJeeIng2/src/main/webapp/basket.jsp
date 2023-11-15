@@ -33,15 +33,15 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
 	                            <tr>
 	                            	<td><span class="id"><%= basket.getId() %></span></td>
 	                            	<td><img src="<%= basket.getProduct().getImg()%>" style="height: 28px;"></td>
-	                                <td><form method="POST" action="Product" class="mr-2">
-								      <input type="hidden" name="productId" value="<%= basket.getProduct().getId() %>">
-								      <button type="submit" style="background: none; padding: 0; font-size: 16px; color: #007bff;"><%= basket.getProduct().getName() %></button>
-								    </form></td>
+	                                <td><button type="button" style="background: none; padding: 0; font-size: 16px; color: #007bff;" 
+	                                	onclick="seeProduct('<%= basket.getProduct().getId() %>')">
+	                                	<%= basket.getProduct().getName() %></button></td>
 	                                <td><span class="price"><%= basket.getProduct().getPrice() %></span></td>
 	                                <td><input type="number" onchange="checkStock(this)" class="quantity" value="<%= basket.getQuantity() %>">
 	                                <input type="hidden" class="oldQuantity" value="<%= basket.getQuantity() %>"></td>
-	                                <td><a href="./Market"><%= basket.getProduct().getUser().getUsername() %></a>
-                                	<input type="hidden" name="sellerId" value="<%= basket.getProduct().getUser().getId() %>"></td>
+	                                <td><button type="button" style="background: none; padding: 0; font-size: 16px; color: #007bff;" 
+		                                onclick="seeMarket('<%= basket.getProduct().getUser().getId() %>')">
+		                                <%= basket.getProduct().getUser().getUsername() %></button></td>
 	                                <% double total = basket.getProduct().getPrice() * basket.getQuantity(); 
 	                                String totalString = String.format("%.2f", total);
 	                                totalOrderPrice += total;
@@ -67,6 +67,7 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
 
     <%@ include file="footer.jsp"%>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="./js/basket.js"></script>
     <script>
 	    function checkStock(input) {
 	        var oldQuantity = input.closest('tr').querySelector('.oldQuantity').value;
