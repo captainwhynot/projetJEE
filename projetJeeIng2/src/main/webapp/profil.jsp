@@ -9,7 +9,7 @@ if (isLogged) {
 <body>
 	<div class="content" id="min-taille">
 	<br>
-		<div class="card centered" style="width: 18rem;">
+		<div class="card centered" style="width: 40rem;">
 			<img src="./img/profilePicture.png" class="card-img-top">
 			<div class="card-body">
 				<p class="card-text">E-mail : <%= loginUser.getEmail() %></p>

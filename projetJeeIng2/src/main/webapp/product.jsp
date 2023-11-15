@@ -11,7 +11,7 @@
            <% if (request.getAttribute("productId") != null) {
             ProductDao productDao = new ProductDao(HibernateUtil.getSessionFactory());
             Product product = productDao.getProduct((int) request.getAttribute("productId"));%>
-                <div class="card centered" style="width: 18rem;">
+                <div class="card centered" style="width: 40rem;">
 				  <img src="<%= product.getImg() %>" class="card-img-top">
 				  <div class="card-body">
 				    <h5 class="card-title"><%= product.getName() %></h5>
@@ -23,21 +23,21 @@
                       	</form>
 				    <br>
 				    <div class="d-flex justify-content-center">
-					    <form method="POST" action="Product" class="mr-2">
-					      <input type="hidden" name="action" value="addOrder">
-					      <input type="hidden" name="productId" value="<%= product.getId() %>">
-					      <button type="submit" class="btn btn-success">Add to Basket</button>
-					    </form>
-					    <form method="POST" action="Market">
-					      <button type="submit" class="btn btn-primary">Return to Market</button>
-					    </form>
-				    </div>
-				  </div>
+                    <form method="POST" action="Market">
+                        <button type="submit" style="margin-right: 15px; background-color: black; color: white;">Return to Market</button>
+                    </form>
+                    <form method="POST" action="Product" class="mr-2">
+                        <input type="hidden" name="action" value="addOrder">
+                        <input type="hidden" name="productId" value="<%= product.getId() %>">
+                        <button type="submit" >Add to Basket</button>
+                    </form>
+                </div>
 				</div>    
            <% } else { %>
            	<script>showAlert("This product does not exist.", "error", "./Market")</script>
            <% } %>
-        </div>
+           </div>
+           </div>
     </div>
     <%@ include file="footer.jsp"%>
 </body>
