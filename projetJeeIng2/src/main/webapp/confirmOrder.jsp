@@ -32,11 +32,11 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
 	                        %>
 	                            <tr>
 	                            	<td><%= basket.getId() %></td>
-	                            	<td><img src="<%= basket.getProduct().getImg()%>" style="width: 28px;"></td>
+	                            	<td><img src="<%= basket.getProduct().getImg()%>" style="height: 28px;"></td>
 	                                <td><%= basket.getProduct().getName() %></td>
 	                                <td><%= basket.getProduct().getPrice() %></td>
 	                                <td><%= basket.getQuantity() %></td>
-	                                <td><%= basket.getProduct().getModerator().getUsername() %></td>
+	                                <td><%= basket.getProduct().getUser().getUsername() %></td>
 	                                <% double totalPrice = basket.getProduct().getPrice() * basket.getQuantity(); 
 	                                String totalPriceString = String.format("%.2f", totalPrice);
 	                                totalOrderPrice += totalPrice;

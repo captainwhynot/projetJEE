@@ -29,17 +29,16 @@ if (isLogged && (loginUser.getTypeUser().equals("Administrator") || loginUser.ge
 	                            for (Product product : productList) {
 	                        %>
 	                            <tr>
-	                                <td><img src="<%= product.getImg() %>" style="width: 28px;"></img>
+	                                <td><img src="<%= product.getImg() %>" style="height: 28px;"></img>
 	                                <input type="hidden" name="img" value="<%= product.getImg() %>"></td>
 	                                <td><input type="text" name="name" value="<%= product.getName() %>"></td>
 	                                <td><input type="number" name="price" value="<%= product.getPrice() %>" step="0.01"></td>
 	                                <td><input type="number" name="stock" value="<%= product.getStock() %>"></td>
-	                                <td>
-	                                    <a href="./Market"><%= product.getModerator().getUsername() %></a>
-	                                    <input type="hidden" name="sellerId" value="<%= product.getModerator().getId() %>">
-	                                </td>
-	                                <td><button type="button" style="padding : 0; background : none;" onclick="seeDetails(<%= product.getId() %>)"><i class="fas fa-eye"></i></button></td>
-	                                <td><button type="button" style="padding : 0; background : none;" onclick="deleteProduct(<%= product.getId() %>)"><i class="fas fa-trash"></i></button></td>
+	                                <td><%= product.getUser().getUsername() %></td>
+	                                <td><button type="button" style="padding : 0; background : none;" onclick="seeDetails(<%= product.getId() %>)">
+	                                <i class="fas fa-eye" style="color: #007bff;"></i></button></td>
+	                                <td><button type="button" style="padding : 0; background : none;" onclick="deleteProduct(<%= product.getId() %>)">
+	                                <i class="fas fa-trash" style="color: red;"></i></button></td>
 	                            </tr>
 	                        <% } %>
 	                    </tbody>

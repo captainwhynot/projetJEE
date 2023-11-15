@@ -48,7 +48,6 @@ public class ServletManageProduct extends HttpServlet {
             response.sendRedirect("./Index");
             return;
         }
-		doGet(request, response);
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         String action = request.getParameter("action");
 
@@ -65,16 +64,17 @@ public class ServletManageProduct extends HttpServlet {
 	
 	                if (productDao.deleteProduct(productId)) {
 	                    response.setStatus(HttpServletResponse.SC_OK); // 200 OK
-	                    response.getWriter().write("{\"status\": \"Product deleted successfully\"}");
+	                    response.getWriter().write("{\"status\": \"Product deleted successfully.\"}");
 	                } else {
 	                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400 Bad Request
-	                    response.getWriter().write("{\"status\": \"Failed to delete product\"}");
+	                    response.getWriter().write("{\"status\": \"Failed to delete product.\"}");
 	                }
 	            } catch (Exception e) {
 	                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500 Internal Server Error
-	                response.getWriter().write("{\"status\": \"Internal Server Error\"}");
+	                response.getWriter().write("{\"status\": \"Internal Server Error.\"}");
 	            }
         	} else if (action.equals("updateProduct")){
+        		doGet(request, response);
         		//Update product's informations
                 String[] imgString = request.getParameterValues("img");
                 String[] nameString = request.getParameterValues("name");
@@ -105,6 +105,8 @@ public class ServletManageProduct extends HttpServlet {
                 	response.getWriter().println("<script>showAlert('All products have been updated successfully.', 'success', './ManageProduct')</script>");
                 } 
         	}
+        } else {
+    		doGet(request, response);
         }
     }
 

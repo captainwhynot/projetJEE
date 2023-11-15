@@ -12,7 +12,7 @@ if (isLogged && (loginUser.getTypeUser().equals("Administrator") || loginUser.ge
     <div class="d-flex justify-content-center align-items-center page-container" id="addPD">
         <div class="interieurAddProduct">
             <h1 class="text-center">Add a product</h1>
-            <form method="post" class="text-center" action="AddProduct">
+            <form method="post" class="text-center" action="AddProduct" enctype="multipart/form-data">
 				
                 <div class="labName">
                     <label for="name" class="form-label">Name</label>
@@ -29,24 +29,8 @@ if (isLogged && (loginUser.getTypeUser().equals("Administrator") || loginUser.ge
                     <label for="stock" class="form-label">Stock</label>
                     <input type="number" step="1" class="form-control" id="stock" name="stock"
                         placeholder="Enter stock"></div>
-				<% if (loginUser.getTypeUser().equals("Administrator")) { %>
 				
-				<div class="labName">
-                    <label for="sellerId" class="form-label">Seller</label>
-                    <select class="form-control" id="sellerId" name="sellerId">
-                    <% ModeratorDao moderatorDao = new ModeratorDao(HibernateUtil.getSessionFactory());
-                    List<Moderator> moderatorList = moderatorDao.getModeratorList();
-                    if (!moderatorList.isEmpty()) {
-                    	for (Moderator moderator : moderatorList) { %>
-                    		<option value="<%= moderator.getId() %>"><%= moderator.getUsername() %></option>
-                    	<%}
-                    } else {%>
-                    	<option value="" disabled selected>No moderators available</option>
-                    <% } %>
-                    </select></div>
-				<% } else { %>
-					<input type="number" step="1" class="d-none" id="sellerId" name="sellerId" value="<%= loginUser.getId() %>">
-				<% } %>
+				<input type="number" step="1" class="d-none" id="sellerId" name="sellerId" value="<%= loginUser.getId() %>">
 				
                 <div class="labName">
                     <label for="img" class="form-label">Image</label>

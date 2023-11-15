@@ -159,7 +159,7 @@ public class ServletBasket extends HttpServlet {
 							container += "<tr>" + "<td> " + basket.getId() + " </td>" + "<td>"
 									+ basket.getProduct().getName() + "</td>" + "<td>" + basket.getProduct().getPrice()
 									+ "</td>" + "<td>" + basket.getQuantity() + "</td>" + "<td>"
-									+ basket.getProduct().getModerator().getUsername() + "</td>";
+									+ basket.getProduct().getUser().getUsername() + "</td>";
 
 							double totalPrice = basket.getProduct().getPrice() * basket.getQuantity();
 							totalOrderPrice += totalPrice;

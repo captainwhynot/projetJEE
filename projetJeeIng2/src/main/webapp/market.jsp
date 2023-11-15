@@ -25,9 +25,9 @@
             <% }
             else if (request.getAttribute("sellerId") != null) {
             	int sellerId = (int) request.getAttribute("sellerId");
-            	ModeratorDao moderatorDao = new ModeratorDao(HibernateUtil.getSessionFactory());
-	            Moderator moderator = moderatorDao.getModerator(sellerId);%>
-	            <div> <%= size %> result<%= (size > 1 ? "s" : "") %> for <%= moderator.getUsername() %>'s products.
+            	UserDao userDao = new UserDao(HibernateUtil.getSessionFactory());
+	            User user = userDao.getUser(sellerId);%>
+	            <div> <%= size %> result<%= (size > 1 ? "s" : "") %> for <%= user.getUsername() %>'s products.
 	            </div>
             <% } else { %>
             	<div> All products
@@ -47,18 +47,18 @@
                 <tbody>
                     <% for (Product product : productList) { %>
                         <tr>
-                            <td><img src="<%= product.getImg() %>" style="width: 28px;"></img></td>
+                            <td><img src="<%= product.getImg() %>" style="height: 28px;"></img></td>
                             <td><%= product.getName() %></td>
                             <td><%= product.getPrice() %></td>
                             <td><%= (product.getStock()==0?"Out of Stock.":product.getStock()) %></td>
                             <td><form method="POST" action="Market">
-                                <input type="hidden" name="sellerId" value="<%= product.getModerator().getId() %>">
-                            	<button type="submit" style="background: none; padding: 0; font-size: 16px; color: red;"><%= product.getModerator().getUsername() %></button>
+                                <input type="hidden" name="sellerId" value="<%= product.getUser().getId() %>">
+                            	<button type="submit" style="background: none; padding: 0; font-size: 16px; color: #007bff;"><%= product.getUser().getUsername() %></button>
                            	</form></td>
                             <td>
                             <form method="POST" action="Product">
                             	<input type="hidden" name="productId" value="<%= product.getId() %>">
-                            	<button type="submit" style="padding : 0; background : none;" ><i class="fas fa-eye"></i></button>
+                            	<button type="submit" style="padding: 0; background: none;" ><i class="fas fa-eye"></i></button>
                            	</form></td>
                         </tr>
                     <% } %>

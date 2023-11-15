@@ -24,6 +24,8 @@ public class Main{
 		System.out.println(modoDao.modifyRight(modo, "addProduct", true));
 		//System.out.println(modoDao.deleteModerator(modo));
 		
+		User user = userDao.getUser("mailAdmin");
+		
 		//Créer un client
 		CustomerDao customerDao = new CustomerDao(sessionFactory);
 		Customer customer = new Customer("mailCustomer", "password", "customer");
@@ -45,7 +47,7 @@ public class Main{
 		
 		//Créer et modifier un produit
 		ProductDao productDao = new ProductDao(sessionFactory);
-		Product product = new Product("poster", 15.99, 5, "img/logo.png", modo);
+		Product product = new Product("poster", 15.99, 5, "img/logo.png", user);
 		System.out.println(productDao.addProduct(product));
 		System.out.println(productDao.modifyProduct(product, product.getName(), 10.15, product.getStock(),product.getImg()));
 		

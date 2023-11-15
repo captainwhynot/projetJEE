@@ -88,14 +88,14 @@ public class ModeratorDao {
 	        User user = moderator.getUser();
 	        moderator.setUser(null); 
 	        
-	        List<Product> products = moderator.getProducts();
+	        List<Product> products = user.getProducts();
 
 	        session.delete(moderator);
-	        if (user != null) {
-	            session.delete(user);
-	        }
 	        for (Product product : products) {
 	            session.delete(product);
+	        }
+	        if (user != null) {
+	            session.delete(user);
 	        }
 	        
 	        tx.commit();

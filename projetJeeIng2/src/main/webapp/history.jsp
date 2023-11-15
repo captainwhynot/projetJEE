@@ -40,8 +40,8 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
                                 %>
                                 <td><%= priceString %></td>
                                 <td><%= basket.getQuantity() %></td>
-                                <td><a href="./Market"><%= basket.getProduct().getModerator().getUsername() %></a>
-                                <input type="hidden" name="sellerId" value="<%= basket.getProduct().getModerator().getId() %>"></td>
+                                <td><a href="./Market"><%= basket.getProduct().getUser().getUsername() %></a>
+                                <input type="hidden" name="sellerId" value="<%= basket.getProduct().getUser().getId() %>"></td>
                                 <% double total = basket.getProduct().getPrice() * basket.getQuantity(); 
                                 String totalString = String.format("%.2f", total);
                                 %>

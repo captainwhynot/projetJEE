@@ -104,6 +104,14 @@ public class UserDao {
 
 	    return user;
 	}
+	
+	public User getUser(int id) {
+	    Session session = sessionFactory.openSession();
+		User user = session.get(User.class, id);
+		session.close();
+
+	    return user;
+	}
 
 	public boolean sendMail(String email, String object, String container) {
         String siteMail = "mangastorejee2023@gmail.com";

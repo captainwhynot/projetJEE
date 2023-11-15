@@ -23,18 +23,18 @@ public class Product {
 	private String img;
     @ManyToOne
     @JoinColumn(name = "sellerId")
-    private Moderator moderator;
+    private User user;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Basket> baskets;
 	
 	public Product() {
 	}
-	public Product(String name, double price, int stock, String img, Moderator moderator) {
+	public Product(String name, double price, int stock, String img, User user) {
 		this.name = name;
 		this.price = price;
 		this.stock = stock;
 		this.img = img;
-		this.moderator = moderator;
+		this.user = user;
 	}
 
 	public int getId() {
@@ -69,12 +69,12 @@ public class Product {
 		this.stock = stock;
 	}
 	
-	public Moderator getModerator() {
-		return moderator;
+	public User getUser() {
+		return user;
 	}
 	
-	public void setModerator(Moderator moderator) {
-		this.moderator = moderator;
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 	public List<Basket> getBaskets() {

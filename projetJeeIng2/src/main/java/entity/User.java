@@ -6,9 +6,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.DiscriminatorOptions;
+
+import java.util.List;
 
 import javax.persistence.CascadeType;
 
@@ -30,6 +33,8 @@ public class User {
     private Customer customer;
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Administrator admin;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> products;
 	
 	public User() {
 		
@@ -80,5 +85,13 @@ public class User {
 
 	public void setTypeUser(String typeUser) {
 		this.typeUser = typeUser;
-	}	
+	}
+
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
 }

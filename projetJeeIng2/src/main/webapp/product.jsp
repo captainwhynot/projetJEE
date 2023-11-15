@@ -18,8 +18,8 @@
 				    <p class="card-text">Price: <%= product.getPrice() %></p>
 				    <p class="card-text">Stock: <%= (product.getStock()==0?"Out of Stock.":product.getStock()) %></p>
 				    <form method="POST" action="Market" class="card-text">
-                           <input type="hidden" name="sellerId" value="<%= product.getModerator().getId() %>">
-                       	<button type="submit" style="background: none; padding: 0; font-size: 16px;">Seller: <%= product.getModerator().getUsername() %></button>
+                           <input type="hidden" name="sellerId" value="<%= product.getUser().getId() %>">
+                       	<button type="submit" style="background: none; padding: 0; font-size: 16px;">Seller: <%= product.getUser().getUsername() %></button>
                       	</form>
 				    <br>
 				    <div class="d-flex justify-content-center">
