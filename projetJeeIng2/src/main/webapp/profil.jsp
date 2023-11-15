@@ -7,15 +7,17 @@
 if (isLogged) {
 %>
 <body>
-	<div class="card centered" style="width: 18rem;">
-		<img src="./img/profilePicture.png" class="card-img-top">
-		<div class="card-body">
-			<p class="card-text">E-mail : <%= loginUser.getEmail() %></p>
-			<p class="card-text">Username : <%= loginUser.getUsername() %></p>
-			<br>
+	<div class="content" id="min-taille">
+	<br>
+		<div class="card centered" style="width: 18rem;">
+			<img src="./img/profilePicture.png" class="card-img-top">
+			<div class="card-body">
+				<p class="card-text">E-mail : <%= loginUser.getEmail() %></p>
+				<p class="card-text">Username : <%= loginUser.getUsername() %></p>
+				<br>
+			</div>
 		</div>
 	</div>
-
     <%@ include file="footer.jsp"%>
 </body>
 <%

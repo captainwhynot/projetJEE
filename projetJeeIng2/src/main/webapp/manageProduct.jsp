@@ -8,9 +8,9 @@
 if (isLogged && (loginUser.getTypeUser().equals("Administrator") || loginUser.getTypeUser().equals("Moderator")) ) {
 %>
 <body>
-    <div class="d-flex justify-content-center align-items-center page-container">
-            <div class="centered">
-                <h1>Product List</h1>
+    <div class="content" id="min-taille">
+        <div class="centered">
+            <h1>Product List</h1>
                 <form method="post" action="./ManageProduct">
 	                <table class="table">
 	                    <thead>
@@ -29,7 +29,7 @@ if (isLogged && (loginUser.getTypeUser().equals("Administrator") || loginUser.ge
 	                            for (Product product : productList) {
 	                        %>
 	                            <tr>
-	                                <td><img src="<%= product.getImg() %>" style="width: 28px;" alt="img/ProductImage.png"></img>
+	                                <td><img src="<%= product.getImg() %>" style="width: 28px;"></img>
 	                                <input type="hidden" name="img" value="<%= product.getImg() %>"></td>
 	                                <td><input type="text" name="name" value="<%= product.getName() %>"></td>
 	                                <td><input type="number" name="price" value="<%= product.getPrice() %>" step="0.01"></td>

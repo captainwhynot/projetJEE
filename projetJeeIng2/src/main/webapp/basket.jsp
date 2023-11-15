@@ -9,8 +9,7 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
 %>
 <body>
 
-    <div class="d-flex justify-content-center align-items-center page-container">
-        <div class="interieurAddProduct">
+    <div class="content d-flex align-items-center " id="min-taille">
             <div class="centered">
                 <h1>Basket</h1>
                 <form method="POST" action="Basket">
@@ -61,8 +60,6 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
 	              	<button type="submit">Pay</button>
 	          </form>
         </div>
-       
-    </div>
     </div>
 
 

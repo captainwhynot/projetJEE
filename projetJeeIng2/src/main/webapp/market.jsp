@@ -8,7 +8,7 @@
 <body>
 
     <div class="content" id="min-taille">
-        <div class="col-4 offset-4">
+        <div class="centered">
             <form method="post" action="Market">
             <br>
                 <div class="mb-3 centered2">

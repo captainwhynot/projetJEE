@@ -9,8 +9,7 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
 %>
 <body>
 
-    <div class="d-flex justify-content-center align-items-center page-container">
-        <div class="interieurAddProduct">
+	    <div class="content d-flex align-items-center " id="min-taille">
             <div class="centered">
                 <h1>Basket</h1>
                 <form method="POST" action="Basket">
@@ -73,17 +72,13 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
 	                    </tbody>
 	                </table>
 	                <input type="hidden" id="action" name="action" value="confirmCreditCard">
-				    <div style="display: flex;flex-direction: row; column-gap: 10px;">
-					    <button type="button" onclick="updateAction('');">Cancel</button>
-		              	<button type="button" onclick="updateAction('confirmCreditCard');">Confirm Order</button>
-	              	</div>
+					<button type="button" onclick="updateAction('');">Cancel</button>
+		            <button type="button" onclick="updateAction('confirmCreditCard');">Confirm Order</button>
 	              	<button type="submit" id="submitButton" style="display: none">Submit</button>
 	          </form>
         </div>
        
     </div>
-    </div>
-
 
     <%@ include file="footer.jsp"%>
     <script>

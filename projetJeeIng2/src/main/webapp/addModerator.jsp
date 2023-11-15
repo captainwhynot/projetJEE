@@ -8,9 +8,8 @@
 if (isLogged && loginUser.getTypeUser().equals("Administrator")) {
 %>
 <body>
-	<div
-		class="d-flex justify-content-center align-items-center page-container">
-			<div class="centered">
+	<div class="content" id="min-taille">
+        <div class="centered">
 				<h1>User List</h1>
 				<form method="POST" action="AddModerator">
 					<table class="table">
@@ -44,9 +43,7 @@ if (isLogged && loginUser.getTypeUser().equals("Administrator")) {
 					<button type="submit">Confirm</button>
 				</form>
 			</div>
-
-	</div>
-
+    </div>
 	<%@ include file="footer.jsp"%>
 </body>
 <%

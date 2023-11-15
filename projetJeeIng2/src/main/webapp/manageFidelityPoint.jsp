@@ -10,8 +10,7 @@ if (isLogged && loginUser.getTypeUser().equals("Administrator")) {
 %>
 <body>
 
-    <div class="d-flex justify-content-center align-items-center page-container">
-        <div class="interieurAddProduct">
+    <div class="content" id="min-taille">
             <div class="centered">
                 <h1>Customer List</h1>
                 <form method="POST" action="ManageFidelityPoint">
@@ -44,7 +43,6 @@ if (isLogged && loginUser.getTypeUser().equals("Administrator")) {
 	          </form>
         </div>
        
-    </div>
     </div>
 
     <%@ include file="footer.jsp"%>

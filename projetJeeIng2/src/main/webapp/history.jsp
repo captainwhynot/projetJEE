@@ -10,8 +10,7 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
 %>
 <body>
 
-    <div class="d-flex justify-content-center align-items-center page-container">
-        <div class="interieurAddProduct">
+    <div class="content" id="min-taille">
             <div class="centered">
                 <h1>History</h1>
                 <table class="table">
@@ -61,8 +60,6 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
                 </table>
                 <input type="hidden" name="action" value="confirmOrder">
         </div>
-       
-    </div>
     </div>
 
     <%@ include file="footer.jsp"%>
