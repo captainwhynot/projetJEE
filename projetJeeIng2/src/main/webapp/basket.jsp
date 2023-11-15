@@ -33,8 +33,10 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
 	                            <tr>
 	                            	<td><span class="id"><%= basket.getId() %></span></td>
 	                            	<td><img src="<%= basket.getProduct().getImg()%>" style="width: 28px;"></td>
-	                                <td><a href="./Product"><%= basket.getProduct().getName() %></a>
-                                	<input type="hidden" name="productId" value="<%= basket.getProduct().getId() %>"></td>
+	                                <td><form method="POST" action="Product" class="mr-2">
+								      <input type="hidden" name="productId" value="<%= basket.getProduct().getId() %>">
+								      <button type="submit" style="background: none; padding: 0; font-size: 16px; color: #007bff;"><%= basket.getProduct().getName() %></button>
+								    </form></td>
 	                                <td><span class="price"><%= basket.getProduct().getPrice() %></span></td>
 	                                <td><input type="number" onchange="checkStock(this)" class="quantity" value="<%= basket.getQuantity() %>">
 	                                <input type="hidden" class="oldQuantity" value="<%= basket.getQuantity() %>"></td>

@@ -31,9 +31,11 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
                         %>
                             <tr>
                             	<td><%= basket.getId() %></td>
-                                <td><a href="./Product"><%= basket.getProduct().getName() %></a>
-                                <input type="hidden" name="productId" value="<%= basket.getProduct().getId() %>"></td>
-                                <% double price = basket.getProduct().getPrice();
+                                <td><form method="POST" action="Product" class="mr-2">
+							      <input type="hidden" name="productId" value="<%= basket.getProduct().getId() %>">
+							      <button type="submit" style="background: none; padding: 0; font-size: 16px; color: #007bff;"><%= basket.getProduct().getName() %></button>
+							    </form></td>
+		                                <% double price = basket.getProduct().getPrice();
                                 String priceString = String.format("%.2f", price);
                                 %>
                                 <td><%= priceString %></td>
