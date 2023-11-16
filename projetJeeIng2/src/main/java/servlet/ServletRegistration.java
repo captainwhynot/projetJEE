@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import conn.HibernateUtil;
 import dao.UserDao;
 import entity.Customer;
@@ -30,7 +32,7 @@ public class ServletRegistration extends HttpServlet {
 		String password = request.getParameter("password");
 		String username = request.getParameter("username");
 		
-		Customer user = new Customer(email ,password, username);
+		Customer user = new Customer(email, BCrypt.hashpw(password, BCrypt.gensalt(12)), username);
 		UserDao dao = new UserDao(HibernateUtil.getSessionFactory());		
 		
 		if(dao.saveUser(user)) {
@@ -52,7 +54,7 @@ public class ServletRegistration extends HttpServlet {
 			if (dao.sendMail(email, "MANGASTORE : Registration", container)) {
 				response.getWriter().println("<script>showAlert('Your account has been successfully created.', 'success', './Index');</script>");
 			} else {
-		        response.getWriter().println("<script>showAlert('Confirmation mail didn't send well.', 'warning', './Index');</script>");
+		        response.getWriter().println("<script>showAlert('Confirmation mail didn\\'t send well.', 'warning', './Index');</script>");
 			}
 		} else {
 	        response.getWriter().println("<script>showAlert('This e-mail is already taken.', 'error', '');</script>");

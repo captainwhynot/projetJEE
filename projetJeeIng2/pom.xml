@@ -20,14 +20,12 @@
 	    <version>5.6.9.Final</version>
 	</dependency>
 	
-		<!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
 	<dependency>
 	    <groupId>com.mysql</groupId>
 	    <artifactId>mysql-connector-j</artifactId>
 	    <version>8.2.0</version>
 	</dependency>
 	
-		<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
 	<dependency>
 	    <groupId>javax.servlet</groupId>
 	    <artifactId>javax.servlet-api</artifactId>
@@ -35,12 +33,17 @@
 	    <scope>provided</scope>
 	</dependency>
 	
-		<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
 	<dependency>
 	    <groupId>com.sun.mail</groupId>
 	    <artifactId>javax.mail</artifactId>
-	    <version>1.6.2</version> <!-- Utilisez la version la plus rÃ©cente disponible -->
+	    <version>1.6.2</version>
 	</dependency>
+	
+	 <dependency>
+        <groupId>org.mindrot</groupId>
+        <artifactId>jbcrypt</artifactId>
+        <version>0.4</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>projetJeeIng2</finalName>

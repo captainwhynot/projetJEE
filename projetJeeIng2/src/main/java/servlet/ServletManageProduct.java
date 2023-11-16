@@ -148,7 +148,7 @@ public class ServletManageProduct extends HttpServlet {
                 		//Update the product's image if this is a new image
                 		if (!fileName.contains("img/Product/")) {
                 			if (!productDao.updateProductImg(product, filePart, fileName, savePath)) {
-                   				response.getWriter().println("<script>showAlert('An error has occured updating the product\'s image.', 'error', './ManageProduct')</script>");
+                   				response.getWriter().println("<script>showAlert('An error has occured updating the product\\'s image.', 'error', './ManageProduct')</script>");
                 			}
                 		}
                 	}

@@ -6,6 +6,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.mindrot.jbcrypt.BCrypt;
 
 import entity.Customer;
 import entity.Moderator;
@@ -73,7 +74,7 @@ public class ModeratorDao {
 	
 	public boolean transferIntoCustomer(Moderator moderator) {
 		UserDao userDao = new UserDao(sessionFactory);
-		Customer customer = new Customer(moderator.getEmail(), moderator.getPassword(), moderator.getUsername());
+		Customer customer = new Customer(moderator.getEmail(), BCrypt.hashpw(moderator.getPassword(), BCrypt.gensalt(12)), moderator.getUsername());
 	    boolean delete = deleteModerator(moderator);
 	    boolean save = userDao.saveUser(customer);
 		return (delete && save);

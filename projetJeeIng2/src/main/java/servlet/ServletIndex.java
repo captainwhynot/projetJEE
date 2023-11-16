@@ -41,7 +41,7 @@ public class ServletIndex extends HttpServlet {
 	}
 
 	public static boolean isLogged(HttpServletRequest request, HttpServletResponse response) {
-		return (loginUser(request, response) != null);
+		return (loginUser(request, response) != null && loginUser(request, response).getId() != 0);
 	}
 	
 	public static String getSubmittedFileName(Part part) {
