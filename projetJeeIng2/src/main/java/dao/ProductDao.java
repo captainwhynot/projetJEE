@@ -1,6 +1,9 @@
 package dao;
 
+import java.io.File;
 import java.util.List;
+
+import javax.servlet.http.Part;
 
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -30,13 +33,39 @@ public class ProductDao {
 		return (save > 0);
 	}
 	
-	public boolean modifyProduct(Product product, String name, double price, int stock, String img) {
+	public boolean modifyProduct(Product product, String name, double price, int stock) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		
 		if (stock < 0) return false;
 		try {
-			String sql = "UPDATE Product SET name='"+name+"', price="+price+", stock="+stock+", img='"+img+"' WHERE id="+product.getId()+";";
+			String sql = "UPDATE Product SET name='"+name+"', price="+price+", stock="+stock+" WHERE id="+product.getId()+";";
+			SQLQuery query = session.createSQLQuery(sql);
+			int rowCount = query.executeUpdate();
+			
+			tx.commit();
+			return (rowCount > 0);	
+		} catch (Exception e) {
+	        return false;
+		} finally {
+			session.close();
+		}
+	}
+	
+	public boolean updateProductImg(Product product, Part filePart, String fileName, String savePath) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		try {
+			File saveDir = new File(savePath);
+	        if (!saveDir.exists()) {
+	            saveDir.mkdirs();
+	        }
+
+	        fileName = product.getId() + "_"+ fileName;
+			String filePath = savePath + File.separator + fileName;
+			filePart.write(filePath);
+	        
+			String sql = "UPDATE Product SET img='img/Product/"+fileName+"' WHERE id="+product.getId()+";";
 			SQLQuery query = session.createSQLQuery(sql);
 			int rowCount = query.executeUpdate();
 			

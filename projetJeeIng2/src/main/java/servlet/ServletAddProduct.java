@@ -1,6 +1,5 @@
 package servlet;
 
-import java.io.File;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -64,38 +63,29 @@ public class ServletAddProduct extends HttpServlet {
 		product.setUser(seller);
 
 		ProductDao productDao = new ProductDao(sessionFactory);
+        String savePath = this.getServletContext().getRealPath("/img/Product");
 
 		if (productDao.addProduct(product)) {
-			//Save the image in the folder
-	        String savePath = this.getServletContext().getRealPath("/img/Product");
-	        File saveDir = new File(savePath);
-	        if (!saveDir.exists()) {
-	            saveDir.mkdirs();
-	        }
-	        
-	        fileName = product.getId() + "_" + fileName;
-	        String filePath = savePath + File.separator + fileName;
-	        filePart.write(filePath);
-	        
 	        //Save the image in the database
-			String image = "img/Product/"+fileName;
-			if (productDao.modifyProduct(product, name, price, stock, image)) {
+			if (productDao.updateProductImg(product, filePart, fileName, savePath)) {
 				response.getWriter().println("<script>showAlert('The product has been added!', 'success', './ManageProduct');</script>");
 			} else {
-				response.getWriter().println("<script>showAlert('The product\'s image has not been saved', 'warning', './ManageProduct');</script>");
+				response.getWriter().println("<script>showAlert('The product\\'s image has not been saved', 'warning', './ManageProduct');</script>");
 			}
 		} else {
 			response.getWriter().println("<script>showAlert('Error ! The product has not been added', 'error', '');</script>");
 		}
 	}
 	
-	private String getSubmittedFileName(Part part) {
-        for (String content : part.getHeader("content-disposition").split(";")) {
-            if (content.trim().startsWith("filename")) {
-                return content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
-            }
-        }
+	public static String getSubmittedFileName(Part part) {
+		for (String content : part.getHeader("content-disposition").split(";")) {
+	        if (content.trim().startsWith("filename")) {
+	            String fileName = content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
+	            if (!fileName.isEmpty()) {
+	                return fileName;
+	            }
+	        }
+	    }
         return null;
     }
-
 }

@@ -29,9 +29,6 @@ public class CreditCardDao {
 				save = (Integer) session.save(card);
 				tx.commit();
 			}
-			else {
-				System.out.println("The credit card already exists in the database.");
-			}
 			return (save > 0);
 		} catch (Exception e) {
 	        return false;

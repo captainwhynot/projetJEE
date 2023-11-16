@@ -49,7 +49,7 @@ public class Main{
 		ProductDao productDao = new ProductDao(sessionFactory);
 		Product product = new Product("poster", 15.99, 5, "img/logo.png", user);
 		System.out.println(productDao.addProduct(product));
-		System.out.println(productDao.modifyProduct(product, product.getName(), 10.15, product.getStock(),product.getImg()));
+		//System.out.println(productDao.modifyProduct(product, product.getName(), 10.15, product.getStock(),product.getImg()));
 		
 		//Créer un panier
 		BasketDao basketDao = new BasketDao(sessionFactory);

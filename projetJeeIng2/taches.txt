@@ -9,6 +9,3 @@ Product :
 
 - Traduire le site en anglais
 - Javadoc / commentaire en anglais
-- Supprimer tous les sysout dans les méthodes etc...
-
--update Image dans manageProduct

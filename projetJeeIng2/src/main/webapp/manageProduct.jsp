@@ -11,7 +11,7 @@ if (isLogged && (loginUser.getTypeUser().equals("Administrator") || loginUser.ge
     <div class="content" id="min-taille">
         <div class="centered">
             <h1>Product List</h1>
-                <form method="post" action="./ManageProduct">
+                <form method="post" action="ManageProduct" enctype="multipart/form-data">
 	                <table class="table">
 	                    <thead>
 	                        <tr>
@@ -29,7 +29,8 @@ if (isLogged && (loginUser.getTypeUser().equals("Administrator") || loginUser.ge
 	                            for (Product product : productList) {
 	                        %>
 	                            <tr>
-	                                <td><img src="<%= product.getImg() %>" style="height: 28px;"></img>
+	                                <td><img onclick="addFile('img_<%= product.getId() %>')" src="<%= product.getImg() %>" style="height: 28px;"></img>
+	                                <input type="file" class="d-none" id="img_<%= product.getId() %>" name="imgFile" accept="image/png, image/jpeg">
 	                                <input type="hidden" name="img" value="<%= product.getImg() %>"></td>
 	                                <td><input type="text" name="name" value="<%= product.getName() %>"></td>
 	                                <td><input type="number" name="price" value="<%= product.getPrice() %>" step="0.01"></td>
@@ -51,6 +52,10 @@ if (isLogged && (loginUser.getTypeUser().equals("Administrator") || loginUser.ge
     <%@ include file="footer.jsp"%>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
+    	function addFile(productId) {
+    		document.getElementById(productId).click();
+    	}
+    	
 	    function seeDetails(productId) {
 	        var form = document.createElement('form');
 	        form.method = 'post';

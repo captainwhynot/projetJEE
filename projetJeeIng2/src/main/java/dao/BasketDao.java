@@ -103,7 +103,6 @@ public SessionFactory sessionFactory;
 				
 				//if there is an error when updating the out of stock order, return null.
 				if (rowCount <= 0) return null;
-				else System.out.println("The order number n°" + basket.getId() + " has been removed due to rupture of stock.");
 			}
 		}
 		
