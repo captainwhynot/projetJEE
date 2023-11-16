@@ -71,15 +71,13 @@ boolean isLogged = ServletIndex.isLogged(request, response);
 						class="mb-3">
 						<input type="text" id="search" name="search"
 							placeholder="Search..."> <span class="icon"> <i
-							class="uil uil-search search-icon"></i> <%
-							 if (isLogged && loginUser.getTypeUser().equals("Customer")) {
-							 %>
-							<a href="./History"><i><img src="img/historique.png"
-									alt="" width="24px"></i></a>
-							<a id="decal2" href="./Basket"><i><img
-									src="img/shopping-cart.png" alt="" width="32px"></i></a> <%
-							 }
-							 %>
+							class="uil uil-search search-icon"></i> 
+							<% if (isLogged && loginUser.getTypeUser().equals("Customer")) { %>
+								<a href="./History"><i><img src="img/historique.png"
+										alt="" width="24px"></i></a>
+								<a id="decal2" href="./Basket"><i><img
+										src="img/shopping-cart.png" alt="" width="32px"></i></a> 
+							<% } %>
 						</span> <i class="uil uil-times close-icon"></i>
 					</form>
 				</div>
@@ -105,77 +103,57 @@ boolean isLogged = ServletIndex.isLogged(request, response);
 					</li>
 					<li class="nav-item"><a class="nav-link" href="./Market">Market</a>
 					</li>
-					<%
-					if (!isLogged) {
-					%>
-					<li><a class="nav-link" aria-current="page" href="./Login">Login</a></li>
-					<%
-					} else {
-					%>
-					<%
-					if (loginUser.getTypeUser().equals("Administrator")) {
-					%>
-					<li class="nav-item dropdown"><a
-						class="nav-link dropdown-toggle" href="#"
-						id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
-						aria-haspopup="true" aria-expanded="false">Moderator</a>
-						<div class="dropdown-menu"
-							aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="./ManageModerator">Manage
-								Rights</a> <a class="dropdown-item" href="./AddModerator">Add
-								Moderator</a>
-						</div></li>
-					<li class="nav-item"><a class="nav-link"
-						href="./ManageFidelityPoint">Manage Fidelity Points</a></li>
-					<li class="nav-item dropdown"><a
-						class="nav-link dropdown-toggle" href="#"
-						id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
-						aria-haspopup="true" aria-expanded="false">Products</a>
-						<div class="dropdown-menu"
-							aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="./ManageProduct">Manage
-								Product</a> <a class="dropdown-item" href="./AddProduct">Add Product</a>
-						</div></li>
-					<%
-					}
-					%>
-					<%
-					if (loginUser.getTypeUser().equals("Moderator")) {
+					<% if (!isLogged) { %>
+						<li><a class="nav-link" aria-current="page" href="./Login">Login</a></li>
+					<% } else { %>
+					<% if (loginUser.getTypeUser().equals("Administrator")) { %>
+						<li class="nav-item dropdown"><a
+							class="nav-link dropdown-toggle" href="#"
+							id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false">Moderator</a>
+							<div class="dropdown-menu"
+								aria-labelledby="navbarDropdownMenuLink">
+								<a class="dropdown-item" href="./ManageModerator">Manage
+									Rights</a> <a class="dropdown-item" href="./AddModerator">Add
+									Moderator</a>
+							</div></li>
+						<li class="nav-item"><a class="nav-link"
+							href="./ManageFidelityPoint">Manage Fidelity Points</a></li>
+						<li class="nav-item dropdown"><a
+							class="nav-link dropdown-toggle" href="#"
+							id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false">Products</a>
+							<div class="dropdown-menu"
+								aria-labelledby="navbarDropdownMenuLink">
+								<a class="dropdown-item" href="./ManageProduct">Manage
+									Product</a> <a class="dropdown-item" href="./AddProduct">Add Product</a>
+							</div></li>
+					<% } else if (loginUser.getTypeUser().equals("Moderator")) {
 						ModeratorDao moderatorDao = new ModeratorDao(HibernateUtil.getSessionFactory());
 						Moderator moderator = moderatorDao.getModerator(loginUser.getId());
 					%>
-					<li class="nav-item dropdown"><a
-						class="nav-link dropdown-toggle" href="#"
-						id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
-						aria-haspopup="true" aria-expanded="false">Products</a>
-						<div class="dropdown-menu"
-							aria-labelledby="navbarDropdownMenuLink">
-							<%
-							if (moderator.canModifyProduct() || moderator.canDeleteProduct()) {
-							%>
-							<a class="dropdown-item" href="./ManageProduct">Manage
-								Product</a>
-							<%
-							}
-							if (moderator.canAddProduct()) {
-							%>
-							<a class="dropdown-item" href="./AddProduct">Add Product</a>
-							<%
-							}
-							%>
-							</div></li>
-							<%
-					}%>
+						<li class="nav-item dropdown"><a
+							class="nav-link dropdown-toggle" href="#"
+							id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false">Products</a>
+							<div class="dropdown-menu"
+								aria-labelledby="navbarDropdownMenuLink">
+								<% if (moderator.canModifyProduct() || moderator.canDeleteProduct()) { %>
+								<a class="dropdown-item" href="./ManageProduct">Manage
+									Product</a>
+								<% } if (moderator.canAddProduct()) { %>
+									<a class="dropdown-item" href="./AddProduct">Add Product</a>
+								<% } %>
+							</div>
+						</li>
+					<% } %>
 					<li><a class="nav-link" aria-current="page" href="./Profil">Profil</a></li>
 					<li><a class="nav-link" aria-current="page" href="./Logout">Logout</a></li>
-					<%
-					}
-					%>
+					<% } %>
 				</ul>
 			</div>
 		</div>
 	</nav>
-
 	<script>
         let inputBox = document.querySelector(".input-box"),
             searchIcon = document.querySelector(".icon"),

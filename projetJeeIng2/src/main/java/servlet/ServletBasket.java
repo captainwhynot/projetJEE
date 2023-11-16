@@ -70,7 +70,7 @@ public class ServletBasket extends HttpServlet {
 					Basket basket = basketDao.getBasket(basketId);
 					response.setContentType("application/json");
 					response.setCharacterEncoding("UTF-8");
-
+					
 					if (basketDao.checkStock(basketId, quantity)) {
 						if (basketDao.updateQuantity(basket.getId(), quantity - basket.getQuantity())) {
 							response.setStatus(HttpServletResponse.SC_OK); // 200 OK
@@ -129,7 +129,7 @@ public class ServletBasket extends HttpServlet {
 
 				if (creditCardDao.checkCreditCard(cardNumber, cvv, expirationDate)) {
 					if (creditCardDao.checkBalance(cardNumber, basketDao.totalPrice(loginUser.getId()))) {
-						//Mail's container
+						//Mail's content
 						double totalOrderPrice = 0;
 						String container = "<span style='color: black'>Here is your paiement recapitulation :</span><br>";
 						container += "<table style='border-collapse: collapse; color: black; text-align: center;' border=1>"
@@ -160,6 +160,7 @@ public class ServletBasket extends HttpServlet {
 								+ String.format("%.2f", totalOrderPrice) + "</td>" + "</tr>" + "</tbody>" + "</table><br>";
 						container += "<span style='color: black'>Click here to access the site : </span>";
 						container += "<a href=\"http://localhost:8080/projetJeeIng2/Index\">MANGASTORE</a>";
+
 						if (basketDao.finalizePaiement(loginUser.getId(), cardNumber, basketDao.totalPrice(loginUser.getId()), container)) {
 							response.getWriter().println("<script>showAlert('Payment completed successfully.', 'success', './Basket');</script>");
 						} else {

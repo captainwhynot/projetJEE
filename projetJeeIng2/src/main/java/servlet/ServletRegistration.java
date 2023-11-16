@@ -48,6 +48,7 @@ public class ServletRegistration extends HttpServlet {
 			container += "Go to the site : ";
 			container += "<a href=\"http://localhost:8080/projetJeeIng2/Index\">MANGASTORE</a>" +
 					     "</div>";
+			//Send registration's mail
 			if (dao.sendMail(email, "MANGASTORE : Registration", container)) {
 				response.getWriter().println("<script>showAlert('Your account has been successfully created.', 'success', './Index');</script>");
 			} else {

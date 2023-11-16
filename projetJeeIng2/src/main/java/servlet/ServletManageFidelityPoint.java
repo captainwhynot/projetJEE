@@ -55,7 +55,7 @@ public class ServletManageFidelityPoint extends HttpServlet {
 			Customer customer = null;
 			String email = null;
 			int fidelityPoint = 0;
-			
+			//Update the fidelity points of each customer
     		for (int i = 0; i < customerList.length; i++) {
     			email = customerList[i];
     			fidelityPoint = Integer.parseInt(fidelityPointList[i]);

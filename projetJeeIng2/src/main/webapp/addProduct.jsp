@@ -5,10 +5,20 @@
 <html>
 <%@ include file="header.jsp" %>
 <%
-if (isLogged && (loginUser.getTypeUser().equals("Administrator") || loginUser.getTypeUser().equals("Moderator")) ) {
+boolean canAddProduct = false;
+if (isLogged) {
+	if (loginUser.getTypeUser().equals("Moderator")) {
+		ModeratorDao moderatorDao = new ModeratorDao(HibernateUtil.getSessionFactory());
+		Moderator moderator = moderatorDao.getModerator(loginUser.getId());
+		canAddProduct = moderator.canAddProduct();
+	}
+	if (loginUser.getTypeUser().equals("Administrator")) {
+		canAddProduct = true;
+	}
+}
+if (canAddProduct) {
 %>
 <body>
-
     <div class="d-flex justify-content-center align-items-center page-container" id="addPD">
         <div class="interieurAddProduct">
             <h1 class="text-center">Add a product</h1>
@@ -42,14 +52,9 @@ if (isLogged && (loginUser.getTypeUser().equals("Administrator") || loginUser.ge
             </form>
         </div>
     </div>
-
-
     <%@ include file="footer.jsp"%>
 </body>
-<%
-} else {
-%><script type="text/javascript">showAlert();</script>
-<%
-}
-%>
+<% } else { %>
+<script type="text/javascript">showAlert();</script>
+<% } %>
 </html>

@@ -4,15 +4,13 @@
 <!DOCTYPE html>
 <html>
 <%@ include file="header.jsp" %>
-<%
-if (isLogged && loginUser.getTypeUser().equals("Customer")) {
-%>
+<% if (isLogged && loginUser.getTypeUser().equals("Customer")) { %>
 <body>
 	<div class="d-flex align-items-center page-container" id="addPD">
         <div class="interieurAddProduct centered">
             <h1>Credit Card</h1>
                 <form method="POST" action="Basket">
-                <table class="table">
+                	<table class="table">
                         <tr>
 	               			<td>Card Number : </td>
 	               			<td><input type="text" style="text-align: center;" pattern="\d*" name="cardNumber" required></td>
@@ -27,16 +25,16 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
                         </tr>
 	                </table>
 	                <input type="hidden" id="action" name="action" value="finalizePaiement">
-					    <button type="button" onclick="updateAction('confirmOrder');">Cancel</button>
-		              	<button type="button" onclick="updateAction('finalizePaiement');">Confirm</button>
+				    <button type="button" onclick="updateAction('confirmOrder');">Cancel</button>
+	              	<button type="button" onclick="updateAction('finalizePaiement');">Confirm</button>
 	              	<button type="submit" id="submitButton" class="d-none">Submit</button>
 	          </form>
         </div>
     </div>
-
     <%@ include file="footer.jsp"%>
     <script>
 	    function updateAction(action) {
+	    	//Update the action and submit the form
 	        document.getElementById('action').value = action;
 	        if (action == "confirmOrder") {
 	        	var inputs = document.querySelectorAll('input');
@@ -47,12 +45,8 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
 	        document.getElementById('submitButton').click();
 	    }
 	</script>
-
 </body>
-<%
-} else {
-%><script type="text/javascript">showAlert();</script>
-<%
-}
-%>
+<% } else { %>
+<script type="text/javascript">showAlert();</script>
+<% } %>
 </html>

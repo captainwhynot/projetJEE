@@ -45,8 +45,7 @@ public class ServletProfil extends HttpServlet {
    		String action = request.getParameter("action");
 		String profilInfo = request.getParameter("profilInfo");
 		User loginUser = ServletIndex.loginUser(request, response);
-		System.out.println(action);
-		System.out.println(profilInfo);
+		
    		if (action != null) {
    			if (action.equals("updateProfil")) {
 				String newValue = request.getParameter("newValueInput");

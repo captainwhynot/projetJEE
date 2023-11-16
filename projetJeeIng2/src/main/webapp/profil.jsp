@@ -81,10 +81,7 @@ if (isLogged) {
     	}
     </script>
 </body>
-<%
-} else {
-%><script type="text/javascript">window.location.replace("./Index");</script>
-<%
-}
-%>
+<% } else { %>
+<script type="text/javascript">showAlert();</script>
+<% } %>
 </html>

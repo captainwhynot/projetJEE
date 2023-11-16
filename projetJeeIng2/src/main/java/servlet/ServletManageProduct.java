@@ -92,7 +92,7 @@ public class ServletManageProduct extends HttpServlet {
                         fileNameString.add(fileName);
                     }
                 }
-                
+                //Get all the products' informations
                 String[] imgString = request.getParameterValues("img");
                 String[] nameString = request.getParameterValues("name");
                 String[] priceString = request.getParameterValues("price");
@@ -121,11 +121,13 @@ public class ServletManageProduct extends HttpServlet {
                 		}
 
                 		filePart = filePartsString.get(i);
+                		//Update all the product's information if there is a change
                 		if (!product.getName().equals(name) || Double.compare(product.getPrice(), price) != 0 || Integer.compare(product.getStock(), stock) != 0) {
             				if (!productDao.modifyProduct(product, name, price, stock)) {
                    				response.getWriter().println("<script>showAlert('An error has occured updating the product.', 'error', './ManageProduct')</script>");
                 			}
                 		}
+                		//Update the product's image if this is a new image
                 		if (!fileName.contains("img/Product/")) {
                 			if (!productDao.updateProductImg(product, filePart, fileName, savePath)) {
                    				response.getWriter().println("<script>showAlert('An error has occured updating the product\'s image.', 'error', './ManageProduct')</script>");

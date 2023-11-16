@@ -45,7 +45,7 @@ public class ServletAddProduct extends HttpServlet {
 		}
 		doGet(request, response);
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-
+		//Get the form's data
 		String name = request.getParameter("name");
 		double price = Double.parseDouble(request.getParameter("price"));
 		int stock = Integer.parseInt(request.getParameter("stock"));
@@ -55,7 +55,7 @@ public class ServletAddProduct extends HttpServlet {
 		
 		UserDao userDao = new UserDao(sessionFactory);
 		User seller = userDao.getUser(sellerId);
-
+		//Create the product to add
 		Product product = new Product();
 		product.setName(name);
 		product.setPrice(price);

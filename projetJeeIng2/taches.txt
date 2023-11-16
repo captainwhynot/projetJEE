@@ -1,5 +1,5 @@
 Customer :
-- ServletProfil + profil.jsp updateProfil + affichage
+- profil.jsp affichage
 - ServletLogin : hashage password
 
 

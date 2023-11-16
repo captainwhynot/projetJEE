@@ -39,7 +39,7 @@ public class ServletLogin extends HttpServlet {
 
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		UserDao dao = new UserDao(sessionFactory);
-
+		//Check the login's information then log in
 		if (dao.checkUserLogin(email, password)) {
 			User user = dao.getUser(email);
 			HttpSession session = request.getSession();

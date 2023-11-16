@@ -6,24 +6,24 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"/>
 <%@ include file="header.jsp" %>
 <body>
-
     <div class="content" id="min-taille">
         <div class="centered">
             <form method="post" action="Market">
-            <br>
+            	<br>
                 <div class="mb-3 centered2">
                     <input type="text" class="form-control" id="search" name="search" placeholder="Search...">
                     <button type="submit" id="SR">Search</button>
                 </div>
             </form>        
             <br>
-            <% List<Product> productList = (List<Product>) request.getAttribute("productList");
-            int size = productList.size();%>
-            <% if (request.getAttribute("search") != null) { %>
+            <% 
+            List<Product> productList = (List<Product>) request.getAttribute("productList");
+            int size = productList.size();
+            if (request.getAttribute("search") != null) {
+            %>
 	            <div> <%= size %> result<%= (size > 1 ? "s" : "") %> for "<%= request.getAttribute("search") %>".
 	            </div>
-            <% }
-            else if (request.getAttribute("sellerId") != null) {
+            <% } else if (request.getAttribute("sellerId") != null) {
             	int sellerId = (int) request.getAttribute("sellerId");
             	UserDao userDao = new UserDao(HibernateUtil.getSessionFactory());
 	            User user = userDao.getUser(sellerId);%>
@@ -69,7 +69,6 @@
             </table>
         </div>
     </div>
-
     <%@ include file="footer.jsp"%>
 </body>
 </html>

@@ -4,7 +4,6 @@
 <html>
 <%@ include file="header.jsp" %>
 <body>
-	
 	<div class="container-fluid">
         <div class="row">
             <!-- slider banner	 -->
@@ -37,7 +36,5 @@
         <!-- bootstrap javascript cdn -->
     </div>
    <%@ include file="footer.jsp" %>
-
 </body>
-
 </html>
