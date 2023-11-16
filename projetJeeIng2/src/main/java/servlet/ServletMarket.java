@@ -23,17 +23,27 @@ public class ServletMarket extends HttpServlet {
     private static final int PRODUCTS_PER_PAGE = 10; // Nombre de produits par page
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-   		if (request.getAttribute("productList") == null) {
-   			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-   			//All results
-   			ProductDao productDao = new ProductDao(sessionFactory);
-   			List<Product> productList = productDao.getProductList();
-   			paginateProducts(request, productList); // Méthode pour la pagination
-   			request.setAttribute("productList", productList);
-   		}
-   		
-   		this.getServletContext().getRequestDispatcher("/market.jsp").include(request, response);
-   	}
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        ProductDao productDao = new ProductDao(sessionFactory);
+        List<Product> productList;
+
+        // Récupérez les critères de recherche/filtrage à partir des attributs de requête
+        String search = (String) request.getAttribute("search");
+        String seller = (String) request.getAttribute("sellerId");
+
+        if (search != null || seller != null) {
+            // Si des critères de recherche ou de filtrage existent, ne faites rien car la liste est déjà filtrée
+        } else {
+            // Sinon, récupérez la liste complète des produits
+            productList = productDao.getProductList();
+            paginateProducts(request, productList);
+            request.setAttribute("productList", productList);
+        }
+
+        this.getServletContext().getRequestDispatcher("/market.jsp").include(request, response);
+    }
+
+
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -54,12 +64,14 @@ public class ServletMarket extends HttpServlet {
             productList = query.list();
             request.setAttribute("sellerId", sellerId);
         } else {
-            productList = new ProductDao(sessionFactory).getProductList();
+            ProductDao productDao = new ProductDao(sessionFactory);
+            productList = productDao.getProductList();
         }
 
-        paginateProducts(request, productList); // Méthode pour la pagination
+        paginateProducts(request, productList);
         doGet(request, response);
     }
+
 
     private void paginateProducts(HttpServletRequest request, List<Product> productList) {
         int currentPage = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
@@ -71,4 +83,5 @@ public class ServletMarket extends HttpServlet {
         request.setAttribute("currentPage", currentPage);
         request.setAttribute("totalPages", (int) Math.ceil((double) productList.size() / PRODUCTS_PER_PAGE));
     }
+
 }
