@@ -72,17 +72,14 @@ public class UserDao {
 	
 	public boolean checkUserLogin(String email, String password) {
 		Session session = sessionFactory.openSession();
-		boolean isAuthenticated = false;
+		
 		try {
+			boolean isAuthenticated = false;
 			String sql = "SELECT *, 0 AS clazz_ FROM User WHERE email='"+email+"';";
 			SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);
 			User user = (User) query.getSingleResult();
+
 			isAuthenticated = BCrypt.checkpw(password, user.getPassword());
-			
-			System.out.println("Connecté : " + BCrypt.checkpw(password, user.getPassword()));
-			System.out.println("Mot de passe fourni par l'utilisateur : " + password);
-			System.out.println("Mot de passe haché récupéré de la base de données : " + user.getPassword());
-			//return (!userList.isEmpty());
 			return isAuthenticated;
 		} catch (Exception e) {
 			return false;
