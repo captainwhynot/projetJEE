@@ -87,7 +87,7 @@ public class ServletManageProduct extends HttpServlet {
                 //Get all the uploaded file's data
                 for (Part filePart : fileParts) {
                     if (filePart.getName().equals("imgFile")) {
-                        String fileName = ServletAddProduct.getSubmittedFileName(filePart);
+                        String fileName = ServletIndex.getSubmittedFileName(filePart);
                         filePartsString.add(filePart);
                         fileNameString.add(fileName);
                     }

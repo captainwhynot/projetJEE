@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import entity.User;
 
@@ -42,4 +43,16 @@ public class ServletIndex extends HttpServlet {
 	public static boolean isLogged(HttpServletRequest request, HttpServletResponse response) {
 		return (loginUser(request, response) != null);
 	}
+	
+	public static String getSubmittedFileName(Part part) {
+		for (String content : part.getHeader("content-disposition").split(";")) {
+	        if (content.trim().startsWith("filename")) {
+	            String fileName = content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
+	            if (!fileName.isEmpty()) {
+	                return fileName;
+	            }
+	        }
+	    }
+        return null;
+    }
 }

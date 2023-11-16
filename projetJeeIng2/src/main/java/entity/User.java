@@ -27,6 +27,7 @@ public class User {
 	private String password;
 	private String username;
 	private String typeUser;
+	private String profilePicture;
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Moderator moderator;
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -44,7 +45,8 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.username = username;
-		this.setTypeUser(typeUser);
+		this.typeUser = typeUser;
+		this.profilePicture = "img/profilPicture.png";
 	}
 
 	public int getId() {
@@ -93,5 +95,13 @@ public class User {
 
 	public void setProducts(List<Product> products) {
 		this.products = products;
+	}
+
+	public String getProfilePicture() {
+		return profilePicture;
+	}
+
+	public void setProfilePicture(String profilePicture) {
+		this.profilePicture = profilePicture;
 	}
 }

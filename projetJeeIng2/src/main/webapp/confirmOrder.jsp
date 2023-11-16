@@ -78,7 +78,7 @@ if (isLogged && loginUser.getTypeUser().equals("Customer")) {
 	                <input type="hidden" id="action" name="action" value="confirmCreditCard">
 					<button type="button" onclick="updateAction('');">Cancel</button>
 		            <button type="button" onclick="updateAction('confirmCreditCard');">Confirm Order</button>
-	              	<button type="submit" id="submitButton" style="display: none">Submit</button>
+	              	<button type="submit" id="submitButton" class="d-none">Submit</button>
 	          </form>
         </div>
        

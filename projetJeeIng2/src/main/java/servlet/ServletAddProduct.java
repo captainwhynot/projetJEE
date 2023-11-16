@@ -51,7 +51,7 @@ public class ServletAddProduct extends HttpServlet {
 		int stock = Integer.parseInt(request.getParameter("stock"));
 		int sellerId = Integer.parseInt(request.getParameter("sellerId"));
 		Part filePart = request.getPart("img");
-        String fileName = getSubmittedFileName(filePart);
+        String fileName = ServletIndex.getSubmittedFileName(filePart);
 		
 		UserDao userDao = new UserDao(sessionFactory);
 		User seller = userDao.getUser(sellerId);
@@ -76,16 +76,4 @@ public class ServletAddProduct extends HttpServlet {
 			response.getWriter().println("<script>showAlert('Error ! The product has not been added', 'error', '');</script>");
 		}
 	}
-	
-	public static String getSubmittedFileName(Part part) {
-		for (String content : part.getHeader("content-disposition").split(";")) {
-	        if (content.trim().startsWith("filename")) {
-	            String fileName = content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
-	            if (!fileName.isEmpty()) {
-	                return fileName;
-	            }
-	        }
-	    }
-        return null;
-    }
 }

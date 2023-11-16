@@ -142,7 +142,7 @@ boolean isLogged = ServletIndex.isLogged(request, response);
 					<%
 					if (loginUser.getTypeUser().equals("Moderator")) {
 						ModeratorDao moderatorDao = new ModeratorDao(HibernateUtil.getSessionFactory());
-						Moderator moderator = moderatorDao.getModerator(loginUser.getEmail());
+						Moderator moderator = moderatorDao.getModerator(loginUser.getId());
 					%>
 					<li class="nav-item dropdown"><a
 						class="nav-link dropdown-toggle" href="#"
