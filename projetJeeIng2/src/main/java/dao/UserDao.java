@@ -12,6 +12,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.mindrot.jbcrypt.BCrypt;
 
 import entity.Administrator;
 import entity.Customer;
@@ -61,7 +62,7 @@ public class UserDao {
 	public boolean checkUserMail(User user) {
 		Session session = sessionFactory.openSession();
 		
-		String sql = "SELECT * FROM User WHERE email = '"+ user.getEmail() +"';";
+		String sql = "SELECT *, 0 AS clazz_ FROM User WHERE email = '"+ user.getEmail() +"';";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);		
 		List<User> userList = query.list();
 		
@@ -72,11 +73,19 @@ public class UserDao {
 	public boolean checkUserLogin(String email, String password) {
 		Session session = sessionFactory.openSession();
 		
-		String sql = "SELECT *, 0 AS clazz_ FROM User WHERE email='"+email+"' AND password ='"+password+"';";
-		SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);
-		List<User> userList = query.list();
-			
-		return (!userList.isEmpty());
+		try {
+			boolean isAuthenticated = false;
+			String sql = "SELECT *, 0 AS clazz_ FROM User WHERE email='"+email+"';";
+			SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);
+			User user = (User) query.getSingleResult();
+
+			isAuthenticated = BCrypt.checkpw(password, user.getPassword());
+			return isAuthenticated;
+		} catch (Exception e) {
+			return false;
+		} finally {
+            session.close();
+        }
 	}
 	
 	public User getUser(String email) {

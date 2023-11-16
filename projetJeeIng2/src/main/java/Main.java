@@ -2,6 +2,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
+import org.mindrot.jbcrypt.BCrypt;
+
 import conn.HibernateUtil;
 import dao.*;
 import entity.*;
@@ -12,12 +14,12 @@ public class Main{
 		//Créer un admin
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		UserDao userDao = new UserDao(sessionFactory);
-		Administrator admin = new Administrator("mailAdmin", "password", "admin");
+		Administrator admin = new Administrator("mailAdmin", BCrypt.hashpw("password", BCrypt.gensalt(12)), "admin");
 		System.out.println(userDao.saveUser(admin));
 
 		//Créer et modifier un modo
 		ModeratorDao modoDao = new ModeratorDao(sessionFactory);
-		Moderator moderator = new Moderator("mailModo", "password", "modo");
+		Moderator moderator = new Moderator("mailModo", BCrypt.hashpw("password", BCrypt.gensalt(12)), "modo");
 		System.out.println(userDao.saveUser(moderator));
 		Moderator modo = modoDao.getModerator("mailModo");
 		System.out.println(modo.getEmail());
@@ -28,7 +30,7 @@ public class Main{
 		
 		//Créer un client
 		CustomerDao customerDao = new CustomerDao(sessionFactory);
-		Customer customer = new Customer("caichristo@cy-tech.fr", "password", "chris");
+		Customer customer = new Customer("caichristo@cy-tech.fr", BCrypt.hashpw("password", BCrypt.gensalt(12)), "chris");
 		System.out.println(userDao.saveUser(customer));
 		Customer cust = customerDao.getCustomer("caichristo@cy-tech.fr");
 		List<Customer> liste = customerDao.getCustomerList();
