@@ -9,3 +9,5 @@ Product :
 
 - Traduire le site en anglais
 - Javadoc / commentaire en anglais
+
+- Delete old images of a product/user when save image/when delete product

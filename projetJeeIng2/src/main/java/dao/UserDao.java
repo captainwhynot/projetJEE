@@ -1,6 +1,5 @@
 package dao;
 
-import java.util.List;
 import java.util.Properties;
 
 import javax.mail.*;
@@ -16,7 +15,7 @@ import entity.Customer;
 import entity.Moderator;
 import entity.User;
 
-@SuppressWarnings({ "rawtypes", "deprecation", "unchecked"})
+@SuppressWarnings({ "rawtypes", "deprecation"})
 public class UserDao {
 	public SessionFactory sessionFactory;
 	
@@ -35,19 +34,17 @@ public class UserDao {
 					case "Administrator" :
 						Administrator admin = new Administrator(user.getEmail(), user.getPassword(), user.getUsername());
 						save = (Integer) session.save(admin);
-						tx.commit();
 						break;
 					case "Customer" :
 						Customer customer = new Customer(user.getEmail(), user.getPassword(), user.getUsername());
 						save = (Integer) session.save(customer);
-						tx.commit();
 						break;
 					case "Moderator" :
 						Moderator moderator = new Moderator(user.getEmail(), user.getPassword(), user.getUsername());
 						save = (Integer) session.save(moderator);
-						tx.commit();
 						break;
 				}
+				tx.commit();
 			} catch (Exception e) {
 		        return false;
 			} finally {
@@ -64,9 +61,9 @@ public class UserDao {
 		try {
 			String sql = "SELECT * FROM User WHERE email = '"+ user.getEmail() +"';";
 			SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);		
-			List<User> userList = query.list();
+			query.getSingleResult();
 	
-		    return (userList.isEmpty());
+		    return true;
 		} catch (Exception e) {
 	        return false;
 		} finally {
@@ -77,30 +74,27 @@ public class UserDao {
 	public boolean checkUserLogin(String email, String password) {
 		Session session = sessionFactory.openSession();
 		
-		String sql = "SELECT *, 0 AS clazz_ FROM User WHERE email='"+email+"' AND password ='"+password+"';";
-		SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);
-		List<User> userList = (List<User>) query.list();
-		
-		session.close();
-		
-		return (!userList.isEmpty());
+		try { 
+			String sql = "SELECT *, 0 AS clazz_ FROM User WHERE email='"+email+"' AND password ='"+password+"';";
+			SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);
+			query.getSingleResult();
+			
+		    return true;
+		} catch (Exception e) {
+	        return false;
+		} finally {
+			session.close();
+		}
 	}
 	
 	public User getUser(String email) {
 	    Session session = sessionFactory.openSession();
 
-	    User user = null;
-	    try {
-	        String sql = "SELECT *, 0 AS clazz_ FROM User WHERE email = :email";
-	        SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);
-	        query.setParameter("email", email);
-
-	        user = (User) query.uniqueResult();
-	    } catch (Exception e) {
-	        return null;
-	    } finally {
-	        session.close();
-	    }
+        String sql = "SELECT *, 0 AS clazz_ FROM User WHERE email = '"+email+"';";
+        SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);
+        User user = (User) query.uniqueResult();
+        
+        session.close();
 
 	    return user;
 	}

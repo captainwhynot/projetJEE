@@ -1,7 +1,6 @@
 package dao;
 
 import java.util.Date;
-import java.util.List;
 
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -10,7 +9,7 @@ import org.hibernate.Transaction;
 
 import entity.CreditCard;
 
-@SuppressWarnings({"deprecation", "rawtypes", "unchecked"})
+@SuppressWarnings({"deprecation", "rawtypes"})
 public class CreditCardDao {
 	public SessionFactory sessionFactory;
 		
@@ -71,9 +70,9 @@ public class CreditCardDao {
 	        query.setParameter("cardNumber", cardNumber);
 	        query.setParameter("cvv", cvv);
 	        query.setParameter("expirationDate", date);
-	        List<CreditCard> creditCard = query.list();
-
-	        return !creditCard.isEmpty();
+	        CreditCard creditCard = (CreditCard) query.getSingleResult();
+	        //Check if the credit card's is expired, and if the informations are invalid, catch the exception
+	        return creditCard.getExpirationDate().after(new Date());
 	    } catch (Exception e) {
 	        return false;
 	    } finally {

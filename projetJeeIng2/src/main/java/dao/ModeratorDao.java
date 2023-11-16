@@ -25,9 +25,9 @@ public class ModeratorDao {
 		try {
 			String sql = "SELECT * FROM Moderator m JOIN User u ON m.id = u.id WHERE u.email = '"+ moderator.getEmail() +"';";
 			SQLQuery query = session.createSQLQuery(sql).addEntity(Moderator.class);		
-			List<Moderator> moderatorList = query.list();
-	
-		    return (moderatorList.isEmpty());
+			query.getSingleResult();
+			
+		    return true;
 		} catch (Exception e) {
 	        return false;
 		} finally {
@@ -74,7 +74,6 @@ public class ModeratorDao {
 	public boolean transferIntoCustomer(Moderator moderator) {
 		UserDao userDao = new UserDao(sessionFactory);
 		Customer customer = new Customer(moderator.getEmail(), moderator.getPassword(), moderator.getUsername());
-		customer.setId(moderator.getId());
 	    boolean delete = deleteModerator(moderator);
 	    boolean save = userDao.saveUser(customer);
 		return (delete && save);
@@ -87,9 +86,8 @@ public class ModeratorDao {
 		try {
 	        User user = moderator.getUser();
 	        moderator.setUser(null); 
-	        
 	        List<Product> products = user.getProducts();
-
+	        //Delete the moderator & the user & the moderator's products
 	        session.delete(moderator);
 	        for (Product product : products) {
 	            session.delete(product);

@@ -56,11 +56,13 @@ public class ProductDao {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		try {
+			//Create product folder if it does not exist
 			File saveDir = new File(savePath);
 	        if (!saveDir.exists()) {
 	            saveDir.mkdirs();
 	        }
 
+	        //Save the image in the folder
 	        fileName = product.getId() + "_"+ fileName;
 			String filePath = savePath + File.separator + fileName;
 			filePart.write(filePath);
@@ -110,7 +112,7 @@ public class ProductDao {
 	        Product product = session.get(Product.class, id);
 	        if (product != null) {
 	            List<Basket> baskets = product.getBaskets();
-
+	            //Delete the product and the product's reference in all basket using it.
 		        session.delete(product);
 		        for (Basket basket : baskets) {
 		            session.delete(basket);
