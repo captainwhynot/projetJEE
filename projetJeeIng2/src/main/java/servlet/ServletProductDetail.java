@@ -61,7 +61,7 @@ public class ServletProductDetail extends HttpServlet {
    						}
    					}
    					else {
-   	   					response.getWriter().println("<script>showAlert('You must be logged in with a Customer account to add a product to your basket.', 'warning', './Login');</script>");
+   	   					response.getWriter().println("<script>showAlert('You must be logged in with a Customer account to add a product to your basket.', 'warning', '');</script>");
    					}
    				} else {
    					response.getWriter().println("<script>showAlert('You must be logged in to add a product to your basket.', 'warning', './Login');</script>");

@@ -26,9 +26,9 @@ public class CustomerDao {
 		try {
 			String sql = "SELECT * FROM Customer c JOIN User u ON c.id = u.id WHERE u.email = '"+ customer.getEmail() +"';";
 			SQLQuery query = session.createSQLQuery(sql).addEntity(Customer.class);		
-			query.getSingleResult();
+			List<Customer> customerList = query.list();
 			
-		    return true;
+		    return (customerList.isEmpty());
 	    } catch (Exception e) {
 	        return false;
 	    } finally {

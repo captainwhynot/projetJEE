@@ -4,7 +4,23 @@
 <html>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"/>
 <%@ include file="header.jsp" %>
-<% if (isLogged && (loginUser.getTypeUser().equals("Administrator") || loginUser.getTypeUser().equals("Moderator")) ) { %>
+<% 
+boolean canModifyProduct = false;
+boolean canDeleteProduct = false;
+if (isLogged) {
+	if (loginUser.getTypeUser().equals("Moderator")) {
+		ModeratorDao moderatorDao = new ModeratorDao(HibernateUtil.getSessionFactory());
+		Moderator moderator = moderatorDao.getModerator(loginUser.getId());
+		canModifyProduct = moderator.canModifyProduct();
+		canDeleteProduct = moderator.canDeleteProduct();
+	}
+	if (loginUser.getTypeUser().equals("Administrator")) {
+		canModifyProduct = true;
+		canDeleteProduct = true;
+	}
+}
+if (canModifyProduct || canDeleteProduct) {
+%>
 <body>
     <div class="content" id="min-taille">
         <div class="centered">
@@ -19,7 +35,9 @@
 	                        <th>Stock</th>
 	                        <th>Seller</th>
 	                        <th>See details</th>
-	                    	<th>Delete Product</th>
+	                        <% if (canDeleteProduct) { %>
+	                    		<th>Delete Product</th>
+	                    	<% } %>
 	                	</tr>
 	                </thead>
 	                <tbody>
@@ -37,20 +55,33 @@
 	                            <td><%= product.getUser().getUsername() %></td>
 	                            <td><button type="button" style="padding : 0; background : none;" onclick="seeDetails(<%= product.getId() %>)">
 	                            <i class="fas fa-eye" style="color: #007bff;"></i></button></td>
-	                            <td><button type="button" style="padding : 0; background : none;" onclick="deleteProduct(<%= product.getId() %>)">
-	                            <i class="fas fa-trash" style="color: red;"></i></button></td>
+	                            <% if (canDeleteProduct) { %>
+		                            <td><button type="button" style="padding : 0; background : none;" onclick="deleteProduct(<%= product.getId() %>)">
+		                            <i class="fas fa-trash" style="color: red;"></i></button></td>
+	                            <% } %>
 	                        </tr>
 	                    <% } %>
 	                </tbody>
 	            </table>
-	            <input type="hidden" name="action" value="updateProduct">
-	            <button type="submit">Confirm</button>
+	            <% if (canModifyProduct) { %>
+	            	<input type="hidden" name="action" value="updateProduct">
+	            	<button type="submit">Confirm</button>
+	            <% } %>
 	    	</form>
 	    </div>
     </div>
     <%@ include file="footer.jsp"%>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
+    	<% if (!canModifyProduct) { %>
+	    	var inputs = document.querySelectorAll('input');
+	
+	    	//Disable all input
+	        inputs.forEach(function(input) {
+	            input.disabled = true;
+	        });
+    	<% } %>
+    	
     	function addFile(productId) {
     		document.getElementById(productId).click();
     	}

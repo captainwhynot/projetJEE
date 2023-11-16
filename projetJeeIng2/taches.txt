@@ -1,5 +1,5 @@
 Customer :
-- profil.jsp affichage
+- profil.jsp affichage 
 - ServletLogin : hashage password
 
 
@@ -8,6 +8,4 @@ Product :
 
 
 - Traduire le site en anglais
-- Javadoc / commentaire en anglais
-
-- Delete old images of a product/user when save image/when delete product
+- Javadoc en anglais

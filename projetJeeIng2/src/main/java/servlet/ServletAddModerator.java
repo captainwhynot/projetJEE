@@ -80,7 +80,7 @@ public class ServletAddModerator extends HttpServlet {
         			}
         		}
         	}
-			response.getWriter().println("<script>showAlert('Transfer completed.', 'success', './manageModerator')</script>");
+			response.getWriter().println("<script>showAlert('Transfer completed.', 'success', './ManageModerator')</script>");
 			
         }
 	}

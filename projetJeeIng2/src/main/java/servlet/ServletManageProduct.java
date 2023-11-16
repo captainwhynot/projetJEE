@@ -13,15 +13,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import conn.HibernateUtil;
 import dao.ProductDao;
 import entity.Product;
+import entity.User;
 
 /**
  * Servlet implementation class ServletManageProduct
  */
+
+@SuppressWarnings({"rawtypes", "deprecation", "unchecked"})
 
 @MultipartConfig
 @WebServlet("/ManageProduct")
@@ -37,11 +42,24 @@ public class ServletManageProduct extends HttpServlet {
 			return;
 		}
    		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		
 		ProductDao productDao = new ProductDao(sessionFactory);
-		List<Product> productList = productDao.getProductList();
-		
-	    request.setAttribute("productList", productList);
+
+   		User loginUser = ServletIndex.loginUser(request, response);
+   		if (loginUser.getTypeUser().equals("Administrator")) {
+			List<Product> productList = productDao.getProductList();
+			
+		    request.setAttribute("productList", productList);
+   		} else if (loginUser.getTypeUser().equals("Moderator")) {
+   			Session session = sessionFactory.openSession();
+   			
+   			String sql = "SELECT * FROM Product WHERE sellerId="+loginUser.getId()+";";
+   			SQLQuery query = session.createSQLQuery(sql).addEntity(Product.class);
+   			List<Product> productList = query.list();
+   			
+   			session.close();
+   			
+		    request.setAttribute("productList", productList);
+   		}
    		this.getServletContext().getRequestDispatcher("/manageProduct.jsp").include(request, response);
    	}
 

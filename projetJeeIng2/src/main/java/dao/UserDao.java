@@ -1,6 +1,7 @@
 package dao;
 
 import java.io.File;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.*;
@@ -17,7 +18,7 @@ import entity.Customer;
 import entity.Moderator;
 import entity.User;
 
-@SuppressWarnings({ "rawtypes", "deprecation"})
+@SuppressWarnings({ "rawtypes", "deprecation", "unchecked"})
 public class UserDao {
 	public SessionFactory sessionFactory;
 	
@@ -60,33 +61,22 @@ public class UserDao {
 	public boolean checkUserMail(User user) {
 		Session session = sessionFactory.openSession();
 		
-		try {
-			String sql = "SELECT * FROM User WHERE email = '"+ user.getEmail() +"';";
-			SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);		
-			query.getSingleResult();
-	
-		    return true;
-		} catch (Exception e) {
-	        return false;
-		} finally {
-			session.close();
-		}
+		String sql = "SELECT * FROM User WHERE email = '"+ user.getEmail() +"';";
+		SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);		
+		List<User> userList = query.list();
+		
+		session.close();
+		return (userList.isEmpty());
 	}
 	
 	public boolean checkUserLogin(String email, String password) {
 		Session session = sessionFactory.openSession();
 		
-		try { 
-			String sql = "SELECT *, 0 AS clazz_ FROM User WHERE email='"+email+"' AND password ='"+password+"';";
-			SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);
-			query.getSingleResult();
+		String sql = "SELECT *, 0 AS clazz_ FROM User WHERE email='"+email+"' AND password ='"+password+"';";
+		SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);
+		List<User> userList = query.list();
 			
-		    return true;
-		} catch (Exception e) {
-	        return false;
-		} finally {
-			session.close();
-		}
+		return (!userList.isEmpty());
 	}
 	
 	public User getUser(String email) {
@@ -131,6 +121,18 @@ public class UserDao {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		try {
+	        int userId = user.getId();
+
+	        File imgDir = new File(savePath);
+	        File[] files = imgDir.listFiles((dir, name) -> name.startsWith(userId + "_"));
+	        
+	        //Delete all the old profile picture of the user
+	        if (files != null) {
+	            for (File file : files) {
+	                file.delete();
+	            }
+	        }
+	        
 			//Create profil folder if it does not exist
 			File saveDir = new File(savePath);
 	        if (!saveDir.exists()) {
@@ -141,7 +143,36 @@ public class UserDao {
 			String filePath = savePath + File.separator + profilePicture;
 			filePart.write(filePath);
 	        
-			String sql = "UPDATE User SET profilePicture='img/Profil/"+profilePicture+"' WHERE id="+user.getId()+";";
+			String sql = "UPDATE User SET profilePicture='img/Profil/"+profilePicture+"' WHERE id="+userId+";";
+			SQLQuery query = session.createSQLQuery(sql);
+			int rowCount = query.executeUpdate();
+			
+			tx.commit();
+			return (rowCount > 0);	
+		} catch (Exception e) {
+	        return false;
+		} finally {
+			session.close();
+		}
+	}
+	
+	public boolean deleteProfilePicture(User user, String savePath) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		try {
+	        int userId = user.getId();
+	        
+	        File imgDir = new File(savePath);
+	        File[] files = imgDir.listFiles((dir, name) -> name.startsWith(userId + "_"));
+	        
+	        //Delete all the old profile picture of the user
+	        if (files != null) {
+	            for (File file : files) {
+	                file.delete();
+	            }
+	        }
+	        
+			String sql = "UPDATE User SET profilePicture='img/profilePicture.png' WHERE id="+userId+";";
 			SQLQuery query = session.createSQLQuery(sql);
 			int rowCount = query.executeUpdate();
 			

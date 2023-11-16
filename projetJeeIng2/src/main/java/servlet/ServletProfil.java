@@ -52,9 +52,10 @@ public class ServletProfil extends HttpServlet {
    				String password = request.getParameter("passwordInput");
    				UserDao userDao = new UserDao(HibernateUtil.getSessionFactory());
    				//Verify the password
-   				if (profilInfo.equals("profilePicture") || userDao.checkUserLogin(loginUser.getEmail(), password)) {
+   				if (userDao.checkUserLogin(loginUser.getEmail(), password) || profilInfo.equals("deleteProfilePicture") || profilInfo.equals("profilePicture")) {
    					//Update the information
    					boolean update = false;
+			        String savePath = this.getServletContext().getRealPath("/img/Profil");
 	   				switch (profilInfo) {
 	   					case "email":
 	   						String newEmail = newValue;
@@ -72,12 +73,15 @@ public class ServletProfil extends HttpServlet {
 	   						update = userDao.updateUser(loginUser, loginUser.getEmail(), loginUser.getUsername(), newPassword);
 	   						break;
 	   					case "profilePicture":
-	   				        String savePath = this.getServletContext().getRealPath("/img/Profil");
 	   						Part filePart = request.getPart("imgFile");
 	   				        String profilePicture = ServletIndex.getSubmittedFileName(filePart);
 	   				        profilePicture = loginUser.getId() + "_" + profilePicture;
 	   				        loginUser.setProfilePicture("img/Profil/" + profilePicture);
 	   				        update = userDao.updateProfilePicture(loginUser, filePart, profilePicture, savePath);
+	   						break;
+	   					case "deleteProfilePicture":
+	   				        loginUser.setProfilePicture("img/profilePicture.png");
+	   				        update = userDao.deleteProfilePicture(loginUser, savePath);
 	   						break;
 	   				}
 	   				if (update) response.getWriter().println("<script>showAlert('Profil updated.', 'success', './Profil');</script>");

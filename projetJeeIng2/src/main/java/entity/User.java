@@ -46,7 +46,7 @@ public class User {
 		this.password = password;
 		this.username = username;
 		this.typeUser = typeUser;
-		this.profilePicture = "img/profilPicture.png";
+		this.profilePicture = "img/profilePicture.png";
 	}
 
 	public int getId() {

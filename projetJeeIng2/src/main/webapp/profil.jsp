@@ -17,7 +17,10 @@ if (isLogged) {
 				<input type="hidden" id="newValueInput" name="newValueInput" value="">
 				<input type="hidden" id="passwordInput" name="passwordInput" value="">
 				<img src="<%= loginUser.getProfilePicture() %>" class="card-img-top">
-				<i class="fas fa-edit" style="background-color: white;position: absolute; top: 0; right: 0;" onclick="addFile();"></i>
+				<div style="display: flex; position: absolute; top: 0; right: 0;">
+					<i class="fas fa-edit" style="background-color: white;" onclick="addFile();"></i>
+					<i class="fas fa-trash" style="color: red; background-color: white;" onclick="deleteProfilePicture();"></i>
+				</div>
 				<input type="file" class="d-none" id="imgFile" name="imgFile" accept="image/png, image/jpeg" onchange="fileSelected(this)">
 				<div class="card-body">
 					<p class="card-text">E-mail : <%= loginUser.getEmail() %> <i class="fas fa-edit" onclick="newInfo('email');"></i></p>
@@ -51,6 +54,11 @@ if (isLogged) {
 		        document.getElementById('profilInfo').value = "profilePicture";
 	            document.getElementById("submitButton").click();
 	        }
+	    }
+	    
+	    function deleteProfilePicture() {
+	    	document.getElementById('profilInfo').value = "deleteProfilePicture";
+            document.getElementById("submitButton").click();
 	    }
 		
     	function newInfo(profilInfo) {

@@ -61,7 +61,7 @@
                             <td>
                             <form method="POST" action="Product">
                             	<input type="hidden" name="productId" value="<%= product.getId() %>">
-                            	<button type="submit" style="padding: 0; background: none;" ><i class="fas fa-eye"></i></button>
+                            	<button type="submit" style="padding: 0; background: none;" ><i class="fas fa-eye" style="color: #007bff;"></i></button>
                            	</form></td>
                         </tr>
                     <% } %>

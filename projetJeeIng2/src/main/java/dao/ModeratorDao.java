@@ -25,9 +25,9 @@ public class ModeratorDao {
 		try {
 			String sql = "SELECT * FROM Moderator m JOIN User u ON m.id = u.id WHERE u.email = '"+ moderator.getEmail() +"';";
 			SQLQuery query = session.createSQLQuery(sql).addEntity(Moderator.class);		
-			query.getSingleResult();
+			List<Moderator> moderatorList = query.list();
 			
-		    return true;
+		    return (moderatorList.isEmpty());
 		} catch (Exception e) {
 	        return false;
 		} finally {

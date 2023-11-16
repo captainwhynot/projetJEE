@@ -56,6 +56,17 @@ public class ProductDao {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		try {
+			int productId = product.getId();
+
+	        File imgDir = new File(savePath);
+	        File[] files = imgDir.listFiles((dir, name) -> name.startsWith(productId + "_"));
+	        
+	        //Delete all the old profile picture of the user
+	        if (files != null) {
+	            for (File file : files) {
+	                file.delete();
+	            }
+	        }
 			//Create product folder if it does not exist
 			File saveDir = new File(savePath);
 	        if (!saveDir.exists()) {
@@ -82,13 +93,11 @@ public class ProductDao {
 	
 	public List<Product> getProductList() {
 		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
 		
 		String sql = "SELECT * FROM Product;";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(Product.class);
 		List<Product> productList = query.list();
 		
-		tx.commit();
 		session.close();
 		
 		return productList;
@@ -96,9 +105,7 @@ public class ProductDao {
 	
 	public Product getProduct(int id) {
 		Session session = sessionFactory.openSession();
-		
 		Product product = session.get(Product.class, id);
-		
 		session.close();
 		
 		return product;
