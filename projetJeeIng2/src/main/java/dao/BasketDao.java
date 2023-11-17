@@ -119,11 +119,23 @@ public SessionFactory sessionFactory;
 	public boolean finalizePaiement(int customerId, int cardNumber, double price, String mailContainer) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		
-		String sqlCardSolde = "UPDATE CreditCard SET credit = credit - " + price + " WHERE cardNumber = " + cardNumber + ";";
+
+	    String sqlFidelityPoint = "SELECT fidelityPoint FROM Customer WHERE id = " + customerId + ";";
+	    SQLQuery queryFidelityPoint = session.createSQLQuery(sqlFidelityPoint);
+	    int fidelityPoint = (int) queryFidelityPoint.uniqueResult();
+	    //Use all the fidelity points available
+	    double fidelityPointToUse = Math.min(fidelityPoint, price);
+
+	    String sqlUpdateFidelityPoint = "UPDATE Customer SET fidelityPoint = fidelityPoint - " + fidelityPointToUse + " + " + price/10 + " WHERE id = " + customerId + ";";
+	    SQLQuery queryUpdateFidelityPoint = session.createSQLQuery(sqlUpdateFidelityPoint);
+	    int numberFidelityPoint = queryUpdateFidelityPoint.executeUpdate();
+
+		//Remove the price from credit card's credit
+		String sqlCardSolde = "UPDATE CreditCard SET credit = credit - " + (price - fidelityPointToUse) + " WHERE cardNumber = " + cardNumber + ";";
 		SQLQuery queryCardSolde = session.createSQLQuery(sqlCardSolde);
 		int numberRowSolde = queryCardSolde.executeUpdate();
 
+		//Put the order in the history
 		String sqlPaidBasket = "UPDATE Basket SET purchaseDate = :currentDate WHERE customerId = " + customerId + " AND quantity > 0 AND purchaseDate IS NULL;";
 		SQLQuery queryPaidBasket = session.createSQLQuery(sqlPaidBasket);
 		queryPaidBasket.setParameter("currentDate", new Date());
@@ -132,21 +144,12 @@ public SessionFactory sessionFactory;
 		int numberRowProduct = 0;
 		List<Basket> basketList = this.getBasketList(customerId);
 		for (Basket basket : basketList) {
+			//Update each product's stock
 			String sqlUpdateProduct = "UPDATE Product SET stock = stock - " + basket.getQuantity() + " WHERE id = " + basket.getProduct().getId() + " ";
 			SQLQuery queryUpdateProduct = session.createSQLQuery(sqlUpdateProduct);
 			numberRowProduct = queryUpdateProduct.executeUpdate();
 		}
 		
-	    String sqlFidelityPoint = "SELECT fidelityPoint FROM Customer WHERE id = " + customerId + ";";
-	    SQLQuery queryFidelityPoint = session.createSQLQuery(sqlFidelityPoint);
-	    int fidelityPoint = (int) queryFidelityPoint.uniqueResult();
-	    
-	    double fidelityPointToUse = Math.min(fidelityPoint, price);
-
-	    String sqlUpdateFidelityPoint = "UPDATE Customer SET fidelityPoint = fidelityPoint - " + fidelityPointToUse + " + " + price/10 + " WHERE id = " + customerId + ";";
-	    SQLQuery queryUpdateFidelityPoint = session.createSQLQuery(sqlUpdateFidelityPoint);
-	    int numberFidelityPoint = queryUpdateFidelityPoint.executeUpdate();
-
 		tx.commit();
 		session.close();
 
@@ -189,11 +192,7 @@ public SessionFactory sessionFactory;
 		}
 		session.close();
 		
-		CustomerDao customerDao = new CustomerDao(sessionFactory);
-		Customer customer = customerDao.getCustomer(customerId);
-		int fidelityPoint = customer.getFidelityPoint();
-		totalPrice -= fidelityPoint;
-		return (totalPrice >= 0 ? totalPrice : 0);
+		return totalPrice;
 	}
 	
 	public boolean deleteOrder(int id) {
