@@ -24,6 +24,11 @@ public class Main{
 		Moderator modo = modoDao.getModerator("mailModo");
 		System.out.println(modo.getEmail());
 		System.out.println(modoDao.modifyRight(modo, "addProduct", true));
+		
+		moderator = new Moderator("nie", BCrypt.hashpw("password", BCrypt.gensalt(12)), "nie");
+		System.out.println(userDao.saveUser(moderator));
+		modo = modoDao.getModerator("nie");
+		
 		//System.out.println(modoDao.deleteModerator(modo));
 		
 		User user = userDao.getUser("mailAdmin");
@@ -49,7 +54,48 @@ public class Main{
 		
 		//Créer et modifier un produit
 		ProductDao productDao = new ProductDao(sessionFactory);
-		Product product = new Product("poster", 15.99, 5, "img/logo.png", user);
+		Product product = new Product("DragonBall Tome 1", 7.95, 101, "img/products/db_1.jpg", user);
+		System.out.println(productDao.addProduct(product));
+		
+		product = new Product("One Piece Tome 1", 7.95, 100, "img/products/op_1.jpg", user);
+		System.out.println(productDao.addProduct(product));
+		
+		product = new Product("Naruto Tome 1", 7.95, 100, "img/products/naruto_1.jpg", user);
+		System.out.println(productDao.addProduct(product));
+		
+		
+		product = new Product("L'Attaque des Titans Tome 1", 5.95, 17, "img/products/snk_1.jpg", modo);
+		System.out.println(productDao.addProduct(product));
+		
+		product = new Product("L'Attaque des Titans Tome 30", 6.55, 9, "img/products/snk_30.jpg", modo);
+		System.out.println(productDao.addProduct(product));
+		
+		product = new Product("Vinland Saga Tome 6", 6.55, 12, "img/products/vs_6.jpg", modo);
+		System.out.println(productDao.addProduct(product));
+		
+		product = new Product("Hunter X Hunter Tome 37", 6.99, 19, "img/products/hxh_37.jpg",modo);
+		System.out.println(productDao.addProduct(product));
+		
+		product = new Product("Jujutsu Kaisen Tome 0", 7.99, 4, "img/products/jjk_0.jpg", modo);
+		System.out.println(productDao.addProduct(product));
+		
+		moderator = new Moderator("UnLibraire", BCrypt.hashpw("password", BCrypt.gensalt(12)), "UnLibraire");
+		System.out.println(userDao.saveUser(moderator));
+		modo = modoDao.getModerator("UnLibraire");
+		
+		product = new Product("My Hero Academia Tome 25", 6.95, 13, "img/products/mha_25.jpg", modo);
+		System.out.println(productDao.addProduct(product));
+		
+		product = new Product("Hunter X Hunter Tome 1", 6.90, 11, "img/products/hxh_1.jpg", modo);
+		System.out.println(productDao.addProduct(product));
+		
+		product = new Product("Fire Punch Tome 1", 6.90, 7, "img/products/fp_1.jpg", modo);
+		System.out.println(productDao.addProduct(product));
+		
+		product = new Product("Blue Lock Tome 1", 6.90, 8, "img/products/bl_1.jpg", modo);
+		System.out.println(productDao.addProduct(product));
+		
+		product = new Product("Chainsaw Man Tome 14", 7.00, 22, "img/products/csm_14.jpg", modo);
 		System.out.println(productDao.addProduct(product));
 		//System.out.println(productDao.modifyProduct(product, product.getName(), 10.15, product.getStock(),product.getImg()));
 		

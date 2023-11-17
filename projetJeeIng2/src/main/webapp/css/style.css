@@ -242,19 +242,19 @@ input {
     position: relative;
     height: 100%;
     width: 100%;
-    background-image: url("../img/op.jpg");
+    background-image: url("../img/db.jpg");
     background-size: 100% 100%;
     background-position: center;
 }
 
 #carouselExampleIndicators .carousel-inner .carousel-item:nth-child(2) {
-    background-image: url("../img/hxh.png");
+    background-image: url("../img/naruto.jpg");
     background-size: 100% 100%;
     background-position: center;
 }
 
 #carouselExampleIndicators .carousel-inner .carousel-item:nth-child(3) {
-    background-image: url("../img/dbz.png");
+    background-image: url("../img/op.jpg");
     background-size: 100% 100%;
     background-position: center;
 }
