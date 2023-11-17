@@ -35,9 +35,9 @@ public class Main{
 		
 		//Créer un client
 		CustomerDao customerDao = new CustomerDao(sessionFactory);
-		Customer customer = new Customer("caichristo@cy-tech.fr", BCrypt.hashpw("password", BCrypt.gensalt(12)), "chris");
+		Customer customer = new Customer("mailCustomer", BCrypt.hashpw("password", BCrypt.gensalt(12)), "chris");
 		System.out.println(userDao.saveUser(customer));
-		Customer cust = customerDao.getCustomer("caichristo@cy-tech.fr");
+		Customer cust = customerDao.getCustomer("mailCustomer");
 		List<Customer> liste = customerDao.getCustomerList();
 		
 		//Créer une carte bancaire
