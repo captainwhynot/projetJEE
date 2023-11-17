@@ -1,11 +1,9 @@
-Customer :
-- profil.jsp affichage 
-- ServletLogin : hashage password
-
-
 Product :
-- ServletMarket + market.jsp affichage card + max par page etc...
+- Taille de l'image/card à modifier.
 
 
-- Traduire le site en anglais
+Header :
+- Enlever animation barre de recherche quand on clique sur le panier
+
+
 - Javadoc en anglais

@@ -5,11 +5,11 @@
 <head>
     <style>
         .card-img-top {
-            max-height: 600px; /* Limite la hauteur maximale */
-            width: auto; /* S'adapte à la largeur de l'image */
-            height: auto; /* S'adapte à la hauteur de l'image */
-            object-fit: contain; /* Assure que l'image n'est pas déformée */
-            object-position: center; /* Centre l'image dans son conteneur */
+            max-height: 600px; 
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            object-position: center;
         }
     </style>
 </head>

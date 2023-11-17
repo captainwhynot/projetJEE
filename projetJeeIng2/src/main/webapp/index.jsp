@@ -15,13 +15,22 @@
                 </ol>
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <a href="productDetails.php?id=8"><button type="button" class="btn btn-3">See more</button></a>
+                        <form method="POST" action="Product">
+                            <input type="hidden" name="productId" value="1">
+                            <button type="submit" class="btn btn-3">See more</button>
+                        </form>
                     </div>
                     <div class="carousel-item">
-                        <a href="productDetails.php?id=7"><button class="btn btn-3">See more</button></a>
+                    	<form method="POST" action="Product">
+                            <input type="hidden" name="productId" value="2">
+                            <button type="submit" class="btn btn-3">See more</button>
+                        </form>
                     </div>
                     <div class="carousel-item">
-                    <a href="productDetails.php?id=9"><button class="btn btn-3">See more</button></a>
+                    	<form method="POST" action="Product">
+                            <input type="hidden" name="productId" value="3">
+                            <button type="submit" class="btn btn-3">See more</button>
+                        </form>
                     </div>
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">

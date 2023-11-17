@@ -1,9 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import="entity.Product" %>
-<%@ page import="dao.UserDao" %>
-<%@ page import="entity.User" %>
-<%@ page import="conn.HibernateUtil" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,7 +64,14 @@
                         <h3><%= product.getName() %></h3>
                         <p>Price: <%= product.getPrice() %></p>
                         <p>Stock: <%= product.getStock() == 0 ? "Out of Stock" : product.getStock() %></p>
-                        <p>Seller: <%= product.getUser().getUsername() %></p>
+                        <form method="POST" action="Market">
+                            <input type="hidden" name="sellerId" value="<%= product.getUser().getId() %>">
+                            Seller: 
+                        	<button type="submit" style="background: none; padding: 0; font-size: 16px;">
+                        		<span style="color: #007bff;"><%= product.getUser().getUsername() %></span>
+                        	</button>
+                       	</form>
+                       	<br>
                         <form method="POST" action="Product">
                             <input type="hidden" name="productId" value="<%= product.getId() %>">
                             <button type="submit" style="padding: 0; background: none;" >

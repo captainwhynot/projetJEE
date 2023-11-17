@@ -14,6 +14,7 @@ import conn.HibernateUtil;
 import dao.ProductDao;
 import entity.Product;
 
+@SuppressWarnings({"deprecation", "unchecked", "rawtypes"})
 @WebServlet("/Market")
 public class ServletMarket extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -23,11 +24,11 @@ public class ServletMarket extends HttpServlet {
         ProductDao productDao = new ProductDao(sessionFactory);
         List<Product> productList;
 
-        String search = (String) request.getAttribute("search");
-        String seller = (String) request.getAttribute("sellerId");
+        String search = request.getParameter("search");
+        String seller = request.getParameter("sellerId");
 
         if (search != null || seller != null) {
-            // Si des critères de recherche ou de filtrage existent, ne faites rien car la liste est déjà filtrée
+            //If search or filtering criteria exist, do nothing as the list is already filtered.
         } else {
             productList = productDao.getProductList();
             request.setAttribute("productList", productList);

@@ -6,12 +6,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"/>
 <style>
     .card-img-top {
-        max-width: 360px; /* Largeur maximale */
-        max-height: 360px; /* Hauteur maximale */
-        width: auto; /* Largeur automatique */
-        height: auto; /* Hauteur automatique */
+        max-width: 360px;
+        max-height: 360px;
+        width: auto; 
+        height: auto; 
     }
-    /* Ajoutez d'autres styles CSS si nécessaire */
 </style>
 </head> 
 <%@ include file="header.jsp" %>

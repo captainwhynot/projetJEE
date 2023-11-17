@@ -57,12 +57,11 @@ public class Main{
 		Product product = new Product("DragonBall Tome 1", 7.95, 101, "img/products/db_1.jpg", user);
 		System.out.println(productDao.addProduct(product));
 		
-		product = new Product("One Piece Tome 1", 7.95, 100, "img/products/op_1.jpg", user);
-		System.out.println(productDao.addProduct(product));
-		
 		product = new Product("Naruto Tome 1", 7.95, 100, "img/products/naruto_1.jpg", user);
 		System.out.println(productDao.addProduct(product));
 		
+		product = new Product("One Piece Tome 1", 7.95, 100, "img/products/op_1.jpg", user);
+		System.out.println(productDao.addProduct(product));
 		
 		product = new Product("L'Attaque des Titans Tome 1", 5.95, 17, "img/products/snk_1.jpg", modo);
 		System.out.println(productDao.addProduct(product));

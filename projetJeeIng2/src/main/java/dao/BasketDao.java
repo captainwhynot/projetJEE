@@ -11,7 +11,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import entity.Basket;
-import entity.Customer;
 import entity.User;
 
 @SuppressWarnings({"deprecation", "rawtypes", "unchecked"})
