@@ -2,7 +2,18 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+<head>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"/>
+<style>
+    .card-img-top {
+        max-width: 360px; /* Largeur maximale */
+        max-height: 360px; /* Hauteur maximale */
+        width: auto; /* Largeur automatique */
+        height: auto; /* Hauteur automatique */
+    }
+    /* Ajoutez d'autres styles CSS si nécessaire */
+</style>
+</head> 
 <%@ include file="header.jsp" %>
 <%
 if (isLogged) {
@@ -17,12 +28,13 @@ if (isLogged) {
 				<input type="hidden" id="newValueInput" name="newValueInput" value="">
 				<input type="hidden" id="passwordInput" name="passwordInput" value="">
 				<img src="<%= loginUser.getProfilePicture() %>" class="card-img-top">
-				<div style="display: flex; position: absolute; top: 0; right: 0;">
-					<i class="fas fa-edit" style="background-color: white;" onclick="addFile();"></i>
-					<i class="fas fa-trash" style="color: red; background-color: white;" onclick="deleteProfilePicture();"></i>
-				</div>
 				<input type="file" class="d-none" id="imgFile" name="imgFile" accept="image/png, image/jpeg" onchange="fileSelected(this)">
 				<div class="card-body">
+					<div>
+					<p>Avatar : <i class="fas fa-edit" style="background-color: white;" onclick="addFile();"></i>
+					<i class="fas fa-trash" style="color: red; background-color: white;" onclick="deleteProfilePicture();"></i></p>
+					<br>
+					</div>
 					<p class="card-text">E-mail : <%= loginUser.getEmail() %> <i class="fas fa-edit" onclick="newInfo('email');"></i></p>
 					<p class="card-text">Username : <%= loginUser.getUsername() %> <i class="fas fa-edit" onclick="newInfo('username');"></i></p>
 					<p class="card-text">Password : ********* <i class="fas fa-edit" onclick="newInfo('password');"></i></p>
@@ -79,10 +91,8 @@ if (isLogged) {
     			  if (result.isConfirmed) {
 					  const newValue = document.getElementById('new_' + profilInfo).value;
 			          const password = document.getElementById('confirmPassword').value;
-
 		          	  document.getElementById('newValueInput').value = newValue;
 		          	  document.getElementById('passwordInput').value = password;
-		          	  
     				  document.getElementById("submitButton").click();
     			  }
    			});
