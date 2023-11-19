@@ -20,21 +20,6 @@ public class ModeratorDao {
 	public ModeratorDao(SessionFactory sf) {
 		sessionFactory = sf;
 	}
-	
-	public boolean checkModerator(Moderator moderator) {
-		Session session = sessionFactory.openSession();		
-		try {
-			String sql = "SELECT * FROM Moderator m JOIN User u ON m.id = u.id WHERE u.email = '"+ moderator.getEmail() +"';";
-			SQLQuery query = session.createSQLQuery(sql).addEntity(Moderator.class);		
-			List<Moderator> moderatorList = query.list();
-			
-		    return (moderatorList.isEmpty());
-		} catch (Exception e) {
-	        return false;
-		} finally {
-			session.close();
-		}
-	}
 
 	public List<Moderator> getModeratorList(){
 		Session session = sessionFactory.openSession();

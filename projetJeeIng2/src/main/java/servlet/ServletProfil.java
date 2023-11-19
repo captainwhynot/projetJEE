@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import conn.HibernateUtil;
 import dao.UserDao;
 import entity.User;
@@ -70,7 +72,7 @@ public class ServletProfil extends HttpServlet {
 	   					case "password":
 	   						String newPassword = newValue;
 	   						loginUser.setPassword(newPassword);
-	   						update = userDao.updateUser(loginUser, loginUser.getEmail(), loginUser.getUsername(), newPassword);
+	   						update = userDao.updateUser(loginUser, loginUser.getEmail(), loginUser.getUsername(), BCrypt.hashpw(newPassword, BCrypt.gensalt(12)));
 	   						break;
 	   					case "profilePicture":
 	   						Part filePart = request.getPart("imgFile");
