@@ -111,11 +111,20 @@ public class ProductDao {
 		return product;
 	}
 	
-	public boolean deleteProduct(int id) {
+	public boolean deleteProduct(int id, String savePath) {
 	    Session session = sessionFactory.openSession();
 	    Transaction tx = session.beginTransaction();
 
 	    try {
+	        File imgDir = new File(savePath);
+	        File[] files = imgDir.listFiles((dir, name) -> name.startsWith(id + "_"));
+	        
+	        //Delete all the old image of the product
+	        if (files != null) {
+	            for (File file : files) {
+	                file.delete();
+	            }
+	        }
 	        Product product = session.get(Product.class, id);
 	        if (product != null) {
 	            List<Basket> baskets = product.getBaskets();

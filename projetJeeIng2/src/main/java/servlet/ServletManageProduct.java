@@ -84,8 +84,9 @@ public class ServletManageProduct extends HttpServlet {
 
 	                response.setContentType("application/json");
 	                response.setCharacterEncoding("UTF-8");
-	
-	                if (productDao.deleteProduct(productId)) {
+
+        	        String savePath = this.getServletContext().getRealPath("/img/Product");
+	                if (productDao.deleteProduct(productId, savePath)) {
 	                    response.setStatus(HttpServletResponse.SC_OK); // 200 OK
 	                    response.getWriter().write("{\"status\": \"Product deleted successfully.\"}");
 	                } else {
