@@ -66,12 +66,13 @@
 	    function checkStock(input) {
 	        var oldQuantity = input.closest('tr').querySelector('.oldQuantity').value;
 	  	 	var quantity = input.value;
+	        var price = input.closest('tr').querySelector('.price').textContent;
 	  	 	//If the quantity is negative, put the old quantity value
 	    	if (quantity < 0) {
 	    		input.value = oldQuantity;
+	    		quantity = oldQuantity;
 	    	}
 	    	else {
-		        var price = input.closest('tr').querySelector('.price').textContent;
 		        var basketId = input.closest('tr').querySelector('.id').textContent;
 				//Check if there is enough stock to add quantity
 		        $.ajax({
