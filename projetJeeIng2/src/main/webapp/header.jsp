@@ -66,12 +66,11 @@ boolean isLogged = ServletIndex.isLogged(request, response);
 				<h3>MANGASTORE</h3>
 			</div>
 			<div class="icons">
+
 				<div class="input-box">
-					<form method="post" action="Market"
-						class="mb-3">
-						<input type="text" id="search" name="search"
-							placeholder="Search..."> <span class="icon"> <i
-							class="uil uil-search search-icon"></i> 
+					<form method="post" action="Market" class="mb-3">
+						<input type="text" id="search" name="search" placeholder="Search..."> <span class="icon"> 
+						<i class="uil uil-search search-icon"></i> 
 							<% if (isLogged && loginUser.getTypeUser().equals("Customer")) { %>
 								<a href="./History"><i><img src="img/historique.png"
 										alt="" width="24px"></i></a>
@@ -155,10 +154,12 @@ boolean isLogged = ServletIndex.isLogged(request, response);
 		</div>
 	</nav>
 	<script>
-        let inputBox = document.querySelector(".input-box"),
-            searchIcon = document.querySelector(".icon"),
-            closeIcon = document.querySelector(".close-icon");
-        searchIcon.addEventListener("click", () => inputBox.classList.add("open"));
-        closeIcon.addEventListener("click", () => inputBox.classList.remove("open"));
-    </script>
+    let inputBox = document.querySelector(".input-box"),
+        searchIcon = document.querySelector(".search-icon"),
+        closeIcon = document.querySelector(".close-icon");
+    searchIcon.addEventListener("click", () => inputBox.classList.add("open"));
+
+    closeIcon.addEventListener("click", () => inputBox.classList.remove("open"));
+	</script>
+
 </header>
