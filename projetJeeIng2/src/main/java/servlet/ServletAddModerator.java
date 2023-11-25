@@ -44,7 +44,7 @@ public class ServletAddModerator extends HttpServlet {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		
-		// Retrive the list of users excluding administrators
+		// Get the list of users excluding administrators
 		String sql = "SELECT *, 0 AS clazz_ FROM User WHERE typeUser != 'Administrator';";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);
 		List<User> userList = query.list();
