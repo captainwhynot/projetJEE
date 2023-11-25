@@ -42,7 +42,7 @@ public class Main{
 		
 		//Créer une carte bancaire
 		CreditCardDao creditCardDao = new CreditCardDao(sessionFactory);
-		CreditCard card = new CreditCard(123, 111, new Date(2023 - 1900, 11 - 1, 20));
+		CreditCard card = new CreditCard(123, 111, new Date(2023 - 1900, 12 - 1, 20));
 		card.setCredit(1000);
 		System.out.println(creditCardDao.saveCreditCard(card));
 		
