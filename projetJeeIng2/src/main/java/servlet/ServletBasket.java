@@ -44,6 +44,7 @@ public class ServletBasket extends HttpServlet {
 			return;
 		}
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		// Get the basket list of the customer
 		BasketDao basketDao = new BasketDao(sessionFactory);
 		List<Basket> basketList = basketDao.getBasketList(ServletIndex.loginUser(request, response).getId());
 

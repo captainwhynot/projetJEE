@@ -58,7 +58,7 @@ public class ServletRegistration extends HttpServlet {
 		UserDao dao = new UserDao(HibernateUtil.getSessionFactory());		
 		
 		if(dao.saveUser(user)) {
-			// Set the user in the session
+			// Store the user in the session
 			HttpSession session = request.getSession();
 			session.setAttribute("user", user);
 
