@@ -108,7 +108,7 @@ public class CreditCardDao {
 	        query.setParameter("cvv", cvv);
 	        query.setParameter("expirationDate", date);
 	        CreditCard creditCard = (CreditCard) query.getSingleResult();
-	        //Check if the credit card's is expired, and if the informations are invalid, catch the exception
+	        // Check if the credit card's is expired, and if the informations are invalid, catch the exception
 	        return creditCard.getExpirationDate().after(new Date());
 	    } catch (Exception e) {
 	        return false;

@@ -198,14 +198,14 @@ public class UserDao {
 	        File imgDir = new File(savePath);
 	        File[] files = imgDir.listFiles((dir, name) -> name.startsWith(userId + "_"));
 	        
-	        //Delete all the old profile picture of the user
+	        // Delete all the old profile picture of the user
 	        if (files != null) {
 	            for (File file : files) {
 	                file.delete();
 	            }
 	        }
 	        
-			//Create profil folder if it does not exist
+			// Create profil folder if it does not exist
 			File saveDir = new File(savePath);
 	        if (!saveDir.exists()) {
 	            saveDir.mkdirs();

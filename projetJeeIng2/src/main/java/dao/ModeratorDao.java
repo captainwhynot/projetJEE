@@ -114,7 +114,7 @@ public class ModeratorDao {
 		try {
 	        User user = moderator.getUser();
 	        List<Product> products = user.getProducts();
-	        //Delete the moderator & the user & the moderator's products
+	        // Delete the moderator & the user & the moderator's products
 	        session.delete(moderator);
 	        for (Product product : products) {
 	            session.delete(product);

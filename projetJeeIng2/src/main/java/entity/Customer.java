@@ -55,7 +55,7 @@ public class Customer extends User implements Serializable {
      */
 	public Customer(String email, String password, String username) {
 		super(email, password, username, "Customer");
-		this.fidelityPoint =0;
+		this.fidelityPoint = 0;
 	}
 
     /**

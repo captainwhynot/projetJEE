@@ -139,7 +139,7 @@ public class CustomerDao {
 	    try {
 	        User user = customer.getUser();
 	        List<Basket> baskets = customer.getBaskets();
-	        //Delete the customer & the user & the customer's basket
+	        // Delete the customer & the user & the customer's basket
 	        session.delete(customer);
 	        if (user != null) {
 	            session.delete(user);

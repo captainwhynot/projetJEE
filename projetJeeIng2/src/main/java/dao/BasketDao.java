@@ -50,14 +50,14 @@ public class BasketDao {
 			String sql = "SELECT * FROM Basket WHERE productId = " + basket.getProduct().getId() + " AND purchaseDate IS NULL AND customerId = "+ customerId +";";
 			SQLQuery query = session.createSQLQuery(sql).addEntity(Basket.class);
 			Basket oldBasket = (Basket) query.getSingleResult();
-			//If the product is already in the basket, add quantity if there is enough stock
+			// If the product is already in the basket, add quantity if there is enough stock
 			return checkStock(oldBasket.getId(), oldBasket.getQuantity()+quantity) && updateQuantity(oldBasket.getId(), quantity);
 		} catch (NoResultException e) {
 	        // Handle the case where no result is found (basketId is null)
 	        int save = (Integer) session.save(basket);
 	        tx.commit();
 	        tx = session.beginTransaction();
-        	//If the product is out of stock, add it with quantity null
+        	// If the product is out of stock, add it with quantity null
 	        if (!checkStock(basket.getId(), quantity)) {
 	        	updateQuantity(basket.getId(), -basket.getQuantity());
 	        }
@@ -78,7 +78,7 @@ public class BasketDao {
      * @return True if the quantity is successfully updated; false otherwise.
      */
 	public boolean updateQuantity(int id, int quantity) {
-		//Add product only if there is stock left.
+		// Add product only if there is stock left.
 		if (checkStock(id, quantity)) {
 			Session session = sessionFactory.openSession();
 			Transaction tx = session.beginTransaction();
@@ -141,7 +141,7 @@ public class BasketDao {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 
-		//Check the stock for the final order.
+		// Check the stock for the final order.
 		String sql = "SELECT * FROM Basket WHERE customerId = "+customerId+" AND purchaseDate IS NULL;";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(Basket.class);;
 		List<Basket> basketList = query.list();
@@ -152,7 +152,7 @@ public class BasketDao {
 				SQLQuery queryRemove = session.createSQLQuery(sqlRemove);
 				int rowCount = queryRemove.executeUpdate();
 				
-				//if there is an error when updating the out of stock order, return null.
+				// If there is an error when updating the out of stock order, return null.
 				if (rowCount <= 0) return null;
 			}
 		}
@@ -174,19 +174,19 @@ public class BasketDao {
 	    String sqlFidelityPoint = "SELECT fidelityPoint FROM Customer WHERE id = " + customerId + ";";
 	    SQLQuery queryFidelityPoint = session.createSQLQuery(sqlFidelityPoint);
 	    int fidelityPoint = (int) queryFidelityPoint.uniqueResult();
-	    //Use all the fidelity points available
+	    // Use all the fidelity points available
 	    double fidelityPointToUse = Math.min(fidelityPoint, price);
 
 	    String sqlUpdateFidelityPoint = "UPDATE Customer SET fidelityPoint = fidelityPoint - " + fidelityPointToUse + " + " + price/10 + " WHERE id = " + customerId + ";";
 	    SQLQuery queryUpdateFidelityPoint = session.createSQLQuery(sqlUpdateFidelityPoint);
 	    int numberFidelityPoint = queryUpdateFidelityPoint.executeUpdate();
 
-		//Remove the price from credit card's credit
+		// Remove the price from credit card's credit
 		String sqlCardSolde = "UPDATE CreditCard SET credit = credit - " + (price - fidelityPointToUse) + " WHERE cardNumber = " + cardNumber + ";";
 		SQLQuery queryCardSolde = session.createSQLQuery(sqlCardSolde);
 		int numberRowSolde = queryCardSolde.executeUpdate();
 
-		//Put the order in the history
+		// Put the order in the history
 		String sqlPaidBasket = "UPDATE Basket SET purchaseDate = :currentDate WHERE customerId = " + customerId + " AND quantity > 0 AND purchaseDate IS NULL;";
 		SQLQuery queryPaidBasket = session.createSQLQuery(sqlPaidBasket);
 		queryPaidBasket.setParameter("currentDate", new Date());
@@ -195,7 +195,7 @@ public class BasketDao {
 		int numberRowProduct = 0;
 		List<Basket> basketList = this.getBasketList(customerId);
 		for (Basket basket : basketList) {
-			//Update each product's stock
+			// Update each product's stock
 			String sqlUpdateProduct = "UPDATE Product SET stock = stock - " + basket.getQuantity() + " WHERE id = " + basket.getProduct().getId() + " ";
 			SQLQuery queryUpdateProduct = session.createSQLQuery(sqlUpdateProduct);
 			numberRowProduct = queryUpdateProduct.executeUpdate();
@@ -229,7 +229,7 @@ public class BasketDao {
 	public double totalPrice(int customerId) {
 		double totalPrice = 0;
 		Session session = sessionFactory.openSession();
-		//Check the price for the final order.
+		// Check the price for the final order.
 		String sql = "SELECT * FROM Basket WHERE customerId = "+customerId+" AND quantity > 0 AND purchaseDate IS NULL;";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(Basket.class);
 		List<Basket> basketList = query.list();

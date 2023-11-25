@@ -49,8 +49,8 @@ public class CreditCard {
      */
 	public CreditCard (int cardNumber, int cvv, Date expirationDate) {
 		this.credit = 0;
-		this.cardNumber= cardNumber;
-		this.cvv=cvv;
+		this.cardNumber = cardNumber;
+		this.cvv = cvv;
 		this.expirationDate = expirationDate;
 	}
 

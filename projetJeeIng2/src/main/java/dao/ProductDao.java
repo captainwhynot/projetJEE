@@ -99,19 +99,19 @@ public class ProductDao {
 	        File imgDir = new File(savePath);
 	        File[] files = imgDir.listFiles((dir, name) -> name.startsWith(productId + "_"));
 	        
-	        //Delete all the old profile picture of the user
+	        // Delete all the old profile picture of the user
 	        if (files != null) {
 	            for (File file : files) {
 	                file.delete();
 	            }
 	        }
-			//Create product folder if it does not exist
+			// Create product folder if it does not exist
 			File saveDir = new File(savePath);
 	        if (!saveDir.exists()) {
 	            saveDir.mkdirs();
 	        }
 
-	        //Save the image in the folder
+	        // Save the image in the folder
 	        fileName = product.getId() + "_"+ fileName;
 			String filePath = savePath + File.separator + fileName;
 			filePart.write(filePath);
@@ -175,7 +175,7 @@ public class ProductDao {
 	        File imgDir = new File(savePath);
 	        File[] files = imgDir.listFiles((dir, name) -> name.startsWith(id + "_"));
 	        
-	        //Delete all the old image of the product
+	        // Delete all the old image of the product
 	        if (files != null) {
 	            for (File file : files) {
 	                file.delete();
@@ -184,7 +184,7 @@ public class ProductDao {
 	        Product product = session.get(Product.class, id);
 	        if (product != null) {
 	            List<Basket> baskets = product.getBaskets();
-	            //Delete the product and the product's reference in all basket using it.
+	            // Delete the product and the product's reference in all basket using it.
 		        session.delete(product);
 		        for (Basket basket : baskets) {
 		            session.delete(basket);
