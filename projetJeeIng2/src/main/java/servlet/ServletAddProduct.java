@@ -77,7 +77,7 @@ public class ServletAddProduct extends HttpServlet {
 		ProductDao productDao = new ProductDao(sessionFactory);
         String savePath = this.getServletContext().getRealPath("/img/Product");
 
-        // Add the producrt in the database
+        // Add the product in the database
 		if (productDao.addProduct(product)) {
 	        // Save the image in the database
 			if (productDao.updateProductImg(product, filePart, fileName, savePath)) {

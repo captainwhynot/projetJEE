@@ -77,6 +77,7 @@ public class ServletIndex extends HttpServlet {
      */
 	public static String getSubmittedFileName(Part part) {
 		for (String content : part.getHeader("content-disposition").split(";")) {
+			// Extract the file name from the Part file
 	        if (content.trim().startsWith("filename")) {
 	            String fileName = content.substring(content.indexOf('=') + 1).trim().replace("\"", "");
 	            if (!fileName.isEmpty()) {

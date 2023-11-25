@@ -78,7 +78,7 @@ public class ServletAddModerator extends HttpServlet {
             	if (transferList != null) isChecked = Arrays.asList(transferList).contains(email);
         		User user = userDao.getUser(email);
         		if (user.getTypeUser().equals("Moderator") && !isChecked) {
-        			//Transfer the moderator into a customer
+        			// Transfer the moderator into a customer
         			ModeratorDao moderatorDao = new ModeratorDao(sessionFactory);
         			Moderator moderator = moderatorDao.getModerator(email);
         			if (!moderatorDao.transferIntoCustomer(moderator)) {
@@ -86,7 +86,7 @@ public class ServletAddModerator extends HttpServlet {
         			}
         		}
         		else if (user.getTypeUser().equals("Customer") && isChecked) {
-        			//Transfer the customer into a moderator
+        			// Transfer the customer into a moderator
         			CustomerDao customerDao = new CustomerDao(sessionFactory);
         			Customer customer = customerDao.getCustomer(email);
         			if (!customerDao.transferIntoModerator(customer)) {
