@@ -10,10 +10,19 @@ import org.hibernate.service.ServiceRegistry;
 
 import entity.*;
 
+/**
+ * Hibernate utility class for managing the SessionFactory in a Java application.
+ * Ensures a single SessionFactory instance is shared across the application.
+ */
 public class HibernateUtil {
 	
 	private static SessionFactory sessionFactory;
 	
+	/**
+     * Retrieves the Hibernate SessionFactory instance. If not created, configures and builds a new instance.
+     *
+     * @return The Hibernate SessionFactory instance.
+     */
 	public static SessionFactory getSessionFactory() {
 		if(sessionFactory == null) {
 			Configuration configuration = new Configuration();

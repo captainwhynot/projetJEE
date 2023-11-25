@@ -10,13 +10,33 @@ import org.hibernate.Transaction;
 import entity.CreditCard;
 
 @SuppressWarnings({"deprecation", "rawtypes"})
+/**
+ * Data Access Object (DAO) for managing CreditCard entities in the database.
+ * This class provides methods to interact with CreditCard entities, including saving, retrieving,
+ * and performing various checks related to credit cards.
+ */
 public class CreditCardDao {
+
+    /**
+     * The Hibernate SessionFactory for database interactions.
+     */
 	public SessionFactory sessionFactory;
-		
+
+    /**
+     * Constructs a CreditCardDao instance with the specified Hibernate SessionFactory.
+     *
+     * @param sf The Hibernate SessionFactory.
+     */
 	public CreditCardDao(SessionFactory sf) {
 		sessionFactory = sf;
 	}
-	
+
+    /**
+     * Saves a CreditCard entity in the database. Deletes expired cards before saving.
+     *
+     * @param card The CreditCard entity to be saved.
+     * @return True if the card is successfully saved; false otherwise.
+     */
 	public boolean saveCreditCard(CreditCard card) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
@@ -35,7 +55,10 @@ public class CreditCardDao {
 			session.close();
 		}
 	}
-	
+
+    /**
+     * Deletes expired CreditCard entities from the database.
+     */
 	public void deleteExpiredCard() {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
@@ -49,6 +72,12 @@ public class CreditCardDao {
 		session.close();
 	}
 
+    /**
+     * Retrieves a CreditCard entity by its card number.
+     *
+     * @param cardNumber The card number of the CreditCard entity.
+     * @return The CreditCard entity, or null if not found or expired.
+     */
 	public CreditCard getCreditCard(int cardNumber) {
 		Session session = sessionFactory.openSession();
 		CreditCard card = session.get(CreditCard.class, cardNumber);
@@ -61,7 +90,15 @@ public class CreditCardDao {
 			return null;
 		}
 	}
-	
+
+    /**
+     * Checks the validity of a credit card based on card number, CVV, and expiration date.
+     *
+     * @param cardNumber The card number of the credit card.
+     * @param cvv        The CVV of the credit card.
+     * @param date       The expiration date of the credit card.
+     * @return True if the credit card is valid; false otherwise.
+     */
 	public boolean checkCreditCard(int cardNumber, int cvv, Date date) {
 	    Session session = sessionFactory.openSession();
 	    try {
@@ -79,7 +116,14 @@ public class CreditCardDao {
 	        session.close();
 	    }
 	}
-	
+
+    /**
+     * Checks if the credit card has sufficient balance for a given price.
+     *
+     * @param cardNumber The card number of the credit card.
+     * @param price      The price to be checked against the credit card balance.
+     * @return True if the credit card has sufficient balance; false otherwise.
+     */
 	public boolean checkBalance(int cardNumber, double price) {
 		Session session = sessionFactory.openSession();
 		
@@ -91,7 +135,14 @@ public class CreditCardDao {
 		
 		return (credit - price > 0);
 	}
-	
+
+    /**
+     * Sets the credit balance for a credit card.
+     *
+     * @param cardNumber The card number of the credit card.
+     * @param credit     The new credit balance to set.
+     * @return True if the credit balance is successfully updated; false otherwise.
+     */
 	public boolean setCredit(int cardNumber, int credit) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
@@ -105,7 +156,13 @@ public class CreditCardDao {
 
 		return (rowCount > 0);
 	}
-	
+
+    /**
+     * Deletes a CreditCard entity from the database by its card number.
+     *
+     * @param cardNumber The card number of the CreditCard entity to be deleted.
+     * @return True if the CreditCard entity is successfully deleted; false otherwise.
+     */
 	public boolean deleteCreditCard(int cardNumber) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();

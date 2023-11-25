@@ -14,13 +14,34 @@ import entity.Basket;
 import entity.User;
 
 @SuppressWarnings({"deprecation", "rawtypes", "unchecked"})
+/**
+ * Data Access Object (DAO) for managing Basket entities in the database.
+ * This class provides methods to interact with Basket entities, including order processing and retrieval.
+ */
 public class BasketDao {
-public SessionFactory sessionFactory;
 	
+	/**
+     * The Hibernate SessionFactory for database interactions.
+     */
+	public SessionFactory sessionFactory;
+
+    /**
+     * Constructs a BasketDao instance with the specified Hibernate SessionFactory.
+     *
+     * @param sf The Hibernate SessionFactory.
+     */
 	public BasketDao(SessionFactory sf) {
 		sessionFactory = sf;
 	}
-	
+
+    /**
+     * Adds an order to the basket or updates the quantity if the product is already in the basket.
+     *
+     * @param basket     The Basket entity to add or update.
+     * @param customerId The ID of the customer placing the order.
+     * @param quantity   The quantity of the product to be added or updated.
+     * @return True if the order is successfully added or updated; false otherwise.
+     */
 	public boolean addOrder(Basket basket, int customerId, int quantity) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
@@ -48,7 +69,14 @@ public SessionFactory sessionFactory;
 			session.close();
 		}
 	}
-	
+
+    /**
+     * Updates the quantity of a product in the basket.
+     *
+     * @param id       The ID of the Basket entity.
+     * @param quantity The new quantity to set.
+     * @return True if the quantity is successfully updated; false otherwise.
+     */
 	public boolean updateQuantity(int id, int quantity) {
 		//Add product only if there is stock left.
 		if (checkStock(id, quantity)) {
@@ -68,7 +96,13 @@ public SessionFactory sessionFactory;
 			return false;
 		}
 	}
-	
+
+    /**
+     * Retrieves a list of Basket entities for a specific customer with open orders.
+     *
+     * @param customerId The ID of the customer.
+     * @return List of Basket entities representing open orders for the customer.
+     */
 	public List<Basket> getBasketList(int customerId) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
@@ -82,7 +116,13 @@ public SessionFactory sessionFactory;
 		
 		return basketList;
 	}
-	
+
+    /**
+     * Retrieves a Basket entity by its ID.
+     *
+     * @param id The ID of the Basket entity.
+     * @return The Basket entity, or null if not found.
+     */
 	public Basket getBasket(int id) {
 		Session session = sessionFactory.openSession();
 		Basket basket = session.get(Basket.class, id);
@@ -90,7 +130,13 @@ public SessionFactory sessionFactory;
 		
 		return basket;
 	}
-	
+
+    /**
+     * Confirms and retrieves a list of open orders for a specific customer, checking stock availability.
+     *
+     * @param customerId The ID of the customer.
+     * @return List of Basket entities representing confirmed orders.
+     */
 	public List<Basket> confirmOrder(int customerId) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
