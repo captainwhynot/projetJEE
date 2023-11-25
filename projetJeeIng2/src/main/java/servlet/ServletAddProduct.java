@@ -17,6 +17,8 @@ import entity.*;
 
 /**
  * Servlet implementation class ServletAddProduct
+ *
+ * This servlet handles the addition of products.
  */
 
 @MultipartConfig
@@ -24,9 +26,14 @@ import entity.*;
 public class ServletAddProduct extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+    /**
+     * Handles the HTTP GET method.
+     *
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     * @throws ServletException If the servlet encounters a servlet-specific problem.
+     * @throws IOException      If an I/O error occurs.
+     */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (!ServletIndex.isLogged(request, response)) {
 			response.sendRedirect("./Index");
@@ -35,9 +42,14 @@ public class ServletAddProduct extends HttpServlet {
 		this.getServletContext().getRequestDispatcher("/addProduct.jsp").include(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+    /**
+     * Handles the HTTP POST method.
+     *
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     * @throws ServletException If the servlet encounters a servlet-specific problem.
+     * @throws IOException      If an I/O error occurs.
+     */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (!ServletIndex.isLogged(request, response)) {
 			response.sendRedirect("./Index");
@@ -45,7 +57,7 @@ public class ServletAddProduct extends HttpServlet {
 		}
 		doGet(request, response);
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-		//Get the form's data
+		// Get the form's data
 		String name = request.getParameter("name");
 		double price = Double.parseDouble(request.getParameter("price"));
 		int stock = Integer.parseInt(request.getParameter("stock"));
@@ -55,7 +67,7 @@ public class ServletAddProduct extends HttpServlet {
 		
 		UserDao userDao = new UserDao(sessionFactory);
 		User seller = userDao.getUser(sellerId);
-		//Create the product to add
+		// Create the product to add
 		Product product = new Product();
 		product.setName(name);
 		product.setPrice(price);
@@ -65,8 +77,9 @@ public class ServletAddProduct extends HttpServlet {
 		ProductDao productDao = new ProductDao(sessionFactory);
         String savePath = this.getServletContext().getRealPath("/img/Product");
 
+        // Add the producrt in the database
 		if (productDao.addProduct(product)) {
-	        //Save the image in the database
+	        // Save the image in the database
 			if (productDao.updateProductImg(product, filePart, fileName, savePath)) {
 				response.getWriter().println("<script>showAlert('The product has been added!', 'success', './ManageProduct');</script>");
 			} else {

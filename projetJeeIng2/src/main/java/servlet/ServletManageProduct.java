@@ -24,18 +24,23 @@ import entity.User;
 
 /**
  * Servlet implementation class ServletManageProduct
+ *
+ * This servlet manages products, providing functionality to view, delete, and update product information. It processes both GET and POST requests, allowing administrators and moderators to interact with the list of products.
  */
-
 @SuppressWarnings({"rawtypes", "deprecation", "unchecked"})
-
 @MultipartConfig
 @WebServlet("/ManageProduct")
 public class ServletManageProduct extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
-   	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-   	 */
+     * Handles the HTTP GET method.
+     *
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     * @throws ServletException If the servlet encounters a servlet-specific problem.
+     * @throws IOException      If an I/O error occurs.
+     */
    	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
    		if (!ServletIndex.isLogged(request, response)) {
 			response.sendRedirect("./Index");
@@ -46,10 +51,12 @@ public class ServletManageProduct extends HttpServlet {
 
    		User loginUser = ServletIndex.loginUser(request, response);
    		if (loginUser.getTypeUser().equals("Administrator")) {
+   			// Get the list of all products for administrators
 			List<Product> productList = productDao.getProductList();
 			
 		    request.setAttribute("productList", productList);
    		} else if (loginUser.getTypeUser().equals("Moderator")) {
+   			// Get the list of products of the logged in moderator
    			Session session = sessionFactory.openSession();
    			
    			String sql = "SELECT * FROM Product WHERE sellerId="+loginUser.getId()+";";
@@ -63,21 +70,27 @@ public class ServletManageProduct extends HttpServlet {
    		this.getServletContext().getRequestDispatcher("/manageProduct.jsp").include(request, response);
    	}
 
-   	/**
-   	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-   	 */
+    /**
+     * Handles the HTTP POST method.
+     *
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     * @throws ServletException If the servlet encounters a servlet-specific problem.
+     * @throws IOException      If an I/O error occurs.
+     */
    	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (!ServletIndex.isLogged(request, response)) {
             response.sendRedirect("./Index");
             return;
         }
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        // Get the action from the request (deleteProduct, updateProduct)
         String action = request.getParameter("action");
         
         if (action != null) {
             ProductDao productDao = new ProductDao(sessionFactory);
         	if (action.equals("deleteProduct")) {
-                //Delete product
+                // Delete product
 	            try {
 	                String productIdString = request.getParameter("productId");
 	                int productId = Integer.parseInt(productIdString);
@@ -99,11 +112,11 @@ public class ServletManageProduct extends HttpServlet {
 	            }
         	} else if (action.equals("updateProduct")){
         		doGet(request, response);
-        		//Update product's informations
+        		// Update product's informations
                 Collection<Part> fileParts = request.getParts();
                 List<Part> filePartsString = new ArrayList<>();
                 List<String> fileNameString = new ArrayList<>();
-                //Get all the uploaded file's data
+                // Get all the uploaded files' data from the request
                 for (Part filePart : fileParts) {
                     if (filePart.getName().equals("imgFile")) {
                         String fileName = ServletIndex.getSubmittedFileName(filePart);
@@ -111,7 +124,7 @@ public class ServletManageProduct extends HttpServlet {
                         fileNameString.add(fileName);
                     }
                 }
-                //Get all the products' informations
+                // Get all the products' informations from the request
                 String[] imgString = request.getParameterValues("img");
                 String[] nameString = request.getParameterValues("name");
                 String[] priceString = request.getParameterValues("price");
@@ -133,20 +146,20 @@ public class ServletManageProduct extends HttpServlet {
                 		name = nameString[i];
                 		price = Double.parseDouble(priceString[i]);
                 		stock = Integer.parseInt(stockString[i]);
-                		//If no file has been uploaded : get the old fileName
+                		// If no file has been uploaded : get the old fileName
                 		fileName = fileNameString.get(i);
                 		if (fileName == null || fileName.equals("")) {
                 			fileName = imgString[i];
                 		}
 
                 		filePart = filePartsString.get(i);
-                		//Update all the product's information if there is a change
+                		// Update all the product's information if there is a change
                 		if (!product.getName().equals(name) || Double.compare(product.getPrice(), price) != 0 || Integer.compare(product.getStock(), stock) != 0) {
             				if (!productDao.modifyProduct(product, name, price, stock)) {
                    				response.getWriter().println("<script>showAlert('An error has occured updating the product.', 'error', './ManageProduct')</script>");
                 			}
                 		}
-                		//Update the product's image if this is a new image
+                		// Update the product's image if this is a new image
                 		if (!fileName.contains("img/Product/")) {
                 			if (!productDao.updateProductImg(product, filePart, fileName, savePath)) {
                    				response.getWriter().println("<script>showAlert('An error has occured updating the product\\'s image.', 'error', './ManageProduct')</script>");
@@ -160,5 +173,4 @@ public class ServletManageProduct extends HttpServlet {
     		doGet(request, response);
         }
     }
-
 }

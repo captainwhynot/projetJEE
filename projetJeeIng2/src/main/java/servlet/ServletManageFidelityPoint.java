@@ -17,15 +17,21 @@ import entity.Customer;
 
 /**
  * Servlet implementation class ServletManageFidelityPoint
+ *
+ * This servlet manages the fidelity points of customers. It processes both GET and POST requests, allowing administrators to view and update the fidelity points of customers.
  */
-
 @WebServlet("/ManageFidelityPoint")  
 public class ServletManageFidelityPoint extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
-   	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-   	 */
+     * Handles the HTTP GET method.
+     *
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     * @throws ServletException If the servlet encounters a servlet-specific problem.
+     * @throws IOException      If an I/O error occurs.
+     */
    	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
    		if (!ServletIndex.isLogged(request, response)) {
 			response.sendRedirect("./Index");
@@ -33,6 +39,7 @@ public class ServletManageFidelityPoint extends HttpServlet {
 		}
    		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		
+   		// Get the customer list
 		CustomerDao customerDao = new CustomerDao(sessionFactory);
 		List<Customer> customerList = customerDao.getCustomerList();
 		
@@ -40,13 +47,19 @@ public class ServletManageFidelityPoint extends HttpServlet {
    		this.getServletContext().getRequestDispatcher("/manageFidelityPoint.jsp").include(request, response);
    	}
 
-   	/**
-   	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-   	 */
+    /**
+     * Handles the HTTP POST method.
+     *
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     * @throws ServletException If the servlet encounters a servlet-specific problem.
+     * @throws IOException      If an I/O error occurs.
+     */
    	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
    		doGet(request, response);
    		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
+   		// Get the fidelity points list updated from the request
 		String[] fidelityPointList = request.getParameterValues("fidelityPointList");
 		String[] customerList = request.getParameterValues("customerList");
 		CustomerDao customerDao = new CustomerDao(sessionFactory);
@@ -55,7 +68,7 @@ public class ServletManageFidelityPoint extends HttpServlet {
 			Customer customer = null;
 			String email = null;
 			int fidelityPoint = 0;
-			//Update the fidelity points of each customer
+			// Update the fidelity points of each customer
     		for (int i = 0; i < customerList.length; i++) {
     			email = customerList[i];
     			fidelityPoint = Integer.parseInt(fidelityPointList[i]);
@@ -67,5 +80,4 @@ public class ServletManageFidelityPoint extends HttpServlet {
     		response.getWriter().println("<script>showAlert('Update completed.', 'success', './ManageFidelityPoint')</script>");
 		}
    	}
-
 }

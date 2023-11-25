@@ -22,17 +22,22 @@ import entity.User;
 
 /**
  * Servlet implementation class ServletBasket
+ *
+ * This servlet handles operations related to the user's shopping basket, such as viewing, updating, and confirming orders.
  */
-
 @SuppressWarnings("deprecation")
-
 @WebServlet("/Basket")
 public class ServletBasket extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+    /**
+     * Handles the HTTP GET method.
+     *
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     * @throws ServletException If the servlet encounters a servlet-specific problem.
+     * @throws IOException      If an I/O error occurs.
+     */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (!ServletIndex.isLogged(request, response)) {
 			response.sendRedirect("./Index");
@@ -46,15 +51,21 @@ public class ServletBasket extends HttpServlet {
 		this.getServletContext().getRequestDispatcher("/basket.jsp").include(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+    /**
+     * Handles the HTTP POST method.
+     *
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     * @throws ServletException If the servlet encounters a servlet-specific problem.
+     * @throws IOException      If an I/O error occurs.
+     */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (!ServletIndex.isLogged(request, response)) {
 			response.sendRedirect("./Index");
 			return;
 		}
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        // Get the action from the request (checkStock, deleteOrder, confirmOrder, confirmCreditCard, finalizePaiement)
 		String action = request.getParameter("action");
 
 		User loginUser = ServletIndex.loginUser(request, response);
@@ -62,7 +73,7 @@ public class ServletBasket extends HttpServlet {
 
 		if (action != null) {
 			if (action.equals("checkStock")) {
-				//Check the stock to update quantity
+				// Check the stock of the product to update quantity
 				try {
 					int basketId = Integer.parseInt(request.getParameter("basketId"));
 					int quantity = Integer.parseInt(request.getParameter("quantity"));
@@ -88,7 +99,7 @@ public class ServletBasket extends HttpServlet {
 					response.getWriter().write("{\"status\": \"Internal Server Error.\"}");
 				}
 			} else if (action.equals("deleteOrder")) {
-				//Delete the order
+				// Delete the order specified
 				try {
 					int basketId = Integer.parseInt(request.getParameter("basketId"));
 
@@ -108,7 +119,7 @@ public class ServletBasket extends HttpServlet {
 					response.getWriter().write("{\"status\": \"Internal Server Error.\"}");
 				}
 			} else if (action.equals("confirmOrder")) {
-				//Confirm the basket to pay
+				// Confirm the basket to pay
 				List<Basket> basketList = basketDao.getBasketList(ServletIndex.loginUser(request, response).getId());
 				request.setAttribute("basketList", basketList);
 				
@@ -127,14 +138,15 @@ public class ServletBasket extends HttpServlet {
 					}
 				}
 			} else if (action.equals("confirmCreditCard")) {
-				//Enter the credit card to pay with
+				// Enter the credit card to pay with
 				this.getServletContext().getRequestDispatcher("/checkCreditCard.jsp").include(request, response);
 			} else if (action.equals("finalizePaiement")) {
-				//Finalize paiement
+				// Finalize paiement
 				List<Basket> basketList = basketDao.getBasketList(ServletIndex.loginUser(request, response).getId());
 				request.setAttribute("basketList", basketList);
 				this.getServletContext().getRequestDispatcher("/basket.jsp").include(request, response);
 
+				// Get the credit card's information from the request
 				int cardNumber = Integer.parseInt(request.getParameter("cardNumber"));
 				int cvv = Integer.parseInt(request.getParameter("cvv"));
 				String expirationDateString = request.getParameter("expirationDate");
@@ -147,9 +159,10 @@ public class ServletBasket extends HttpServlet {
 				Date expirationDate = new Date(year, month, day);
 				CreditCardDao creditCardDao = new CreditCardDao(sessionFactory);
 
+				// Verify that the credit card exists, is not expired, and have enough credit to pay
 				if (creditCardDao.checkCreditCard(cardNumber, cvv, expirationDate)) {
 					if (creditCardDao.checkBalance(cardNumber, basketDao.totalPrice(loginUser.getId()))) {
-						//Mail's content
+						// Mail's content
 						double totalOrderPrice = 0;
 						String container = "<span style='color: black'>Here is your paiement recapitulation :</span><br>";
 						container += "<table style='border-collapse: collapse; color: black; text-align: center;' border=1>"
@@ -181,6 +194,7 @@ public class ServletBasket extends HttpServlet {
 						container += "<span style='color: black'>Click here to access the site : </span>";
 						container += "<a href=\"http://localhost:8080/projetJeeIng2/Index\">MANGASTORE</a>";
 
+						// Finalize the paiement and send the recapitulation mail of paiement
 						if (basketDao.finalizePaiement(loginUser.getId(), cardNumber, basketDao.totalPrice(loginUser.getId()), container)) {
 							response.getWriter().println("<script>showAlert('Payment completed successfully.', 'success', './Basket');</script>");
 						} else {
@@ -203,5 +217,4 @@ public class ServletBasket extends HttpServlet {
 			doGet(request, response);
 		}
 	}
-
 }

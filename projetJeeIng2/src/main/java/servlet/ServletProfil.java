@@ -17,16 +17,22 @@ import entity.User;
 
 /**
  * Servlet implementation class ServletProfil
+ *
+ * This servlet manages user profile information, allowing users to view and update their profile details. It processes both GET and POST requests. The servlet handles actions such as updating the email, username, password, profile picture, and deleting the profile picture. The profil.jsp page is used to display and interact with the user's profile.
  */
-
 @MultipartConfig
 @WebServlet("/Profil")
 public class ServletProfil extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
-   	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-   	 */
+     * Handles the HTTP GET method.
+     *
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     * @throws ServletException If the servlet encounters a servlet-specific problem.
+     * @throws IOException      If an I/O error occurs.
+     */
    	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
    		if (!ServletIndex.isLogged(request, response)) {
 			response.sendRedirect("./Index");
@@ -35,27 +41,35 @@ public class ServletProfil extends HttpServlet {
    		this.getServletContext().getRequestDispatcher("/profil.jsp").include(request, response);
    	}
 
-   	/**
-   	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-   	 */
+    /**
+     * Handles the HTTP POST method.
+     *
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     * @throws ServletException If the servlet encounters a servlet-specific problem.
+     * @throws IOException      If an I/O error occurs.
+     */
    	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
    		if (!ServletIndex.isLogged(request, response)) {
 			response.sendRedirect("./Index");
 			return;
 		}
    		doGet(request, response);
+   		
+        // Get action and profile information parameters from the request
    		String action = request.getParameter("action");
 		String profilInfo = request.getParameter("profilInfo");
 		User loginUser = ServletIndex.loginUser(request, response);
 		
    		if (action != null) {
    			if (action.equals("updateProfil")) {
+                // Get the new value and the password
 				String newValue = request.getParameter("newValueInput");
    				String password = request.getParameter("passwordInput");
    				UserDao userDao = new UserDao(HibernateUtil.getSessionFactory());
-   				//Verify the password
+   				// Verify the password
    				if (userDao.checkUserLogin(loginUser.getEmail(), password) || profilInfo.equals("deleteProfilePicture") || profilInfo.equals("profilePicture")) {
-   					//Update the information
+   					// Update the information
    					boolean update = false;
 			        String savePath = this.getServletContext().getRealPath("/img/Profil");
 	   				switch (profilInfo) {

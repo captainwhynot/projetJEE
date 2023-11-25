@@ -20,16 +20,22 @@ import entity.*;
 
 /**
  * Servlet implementation class ServletAddModerator
+ *
+ * This servlet handles the addition and transfer of moderators.
  */
-
 @SuppressWarnings({"deprecation", "rawtypes", "unchecked"})
 @WebServlet("/AddModerator")
 public class ServletAddModerator extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+     * Handles the HTTP GET method.
+     *
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     * @throws ServletException If the servlet encounters a servlet-specific problem.
+     * @throws IOException      If an I/O error occurs.
+     */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (!ServletIndex.isLogged(request, response)) {
 			response.sendRedirect("./Index");
@@ -38,6 +44,7 @@ public class ServletAddModerator extends HttpServlet {
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.openSession();
 		
+		// Retrive the list of users excluding administrators
 		String sql = "SELECT *, 0 AS clazz_ FROM User WHERE typeUser != 'Administrator';";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(User.class);
 		List<User> userList = query.list();
@@ -48,12 +55,19 @@ public class ServletAddModerator extends HttpServlet {
 		this.getServletContext().getRequestDispatcher("/addModerator.jsp").include(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+    /**
+     * Handles the HTTP POST method.
+     *
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     * @throws ServletException If the servlet encounters a servlet-specific problem.
+     * @throws IOException      If an I/O error occurs.
+     */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+		
+		// Get transfer list information from the request
 		String[] transferList = request.getParameterValues("transferList");
 		String[] userList = request.getParameterValues("userList");
 		UserDao userDao = new UserDao(sessionFactory);

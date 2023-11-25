@@ -19,16 +19,22 @@ import entity.User;
 
 /**
  * Servlet implementation class ServletHistory
+ *
+ * This servlet handles operations related to the user's purchase history, such as retrieving and displaying past orders.
  */
-
 @SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
 @WebServlet("/History")
 public class ServletHistory extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+    /**
+     * Handles the HTTP GET method.
+     *
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     * @throws ServletException If the servlet encounters a servlet-specific problem.
+     * @throws IOException      If an I/O error occurs.
+     */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (!ServletIndex.isLogged(request, response)) {
 			response.sendRedirect("./Index");
@@ -38,6 +44,7 @@ public class ServletHistory extends HttpServlet {
 
 		User loginUser = ServletIndex.loginUser(request, response);
 
+		// Get the customer's purchase history
 		Session session = sessionFactory.openSession();
 		String sql = "SELECT * FROM Basket WHERE customerId = " + loginUser.getId() + " AND purchaseDate IS NOT NULL;";
 		SQLQuery query = session.createSQLQuery(sql).addEntity(Basket.class);
@@ -48,11 +55,15 @@ public class ServletHistory extends HttpServlet {
 		this.getServletContext().getRequestDispatcher("/history.jsp").include(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+    /**
+     * Handles the HTTP POST method.
+     *
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     * @throws ServletException If the servlet encounters a servlet-specific problem.
+     * @throws IOException      If an I/O error occurs.
+     */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }

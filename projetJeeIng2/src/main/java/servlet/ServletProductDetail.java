@@ -16,32 +16,45 @@ import entity.*;
 
 /**
  * Servlet implementation class ServletProductDetail
+ *
+ * This servlet manages the display and interaction with product details. It processes both GET and POST requests, allowing users to view product details and add products to their basket. The product.jsp page is used to display the product details.
  */
-
 @WebServlet("/Product")
 public class ServletProductDetail extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
+
     /**
-   	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-   	 */
+     * Handles the HTTP GET method.
+     *
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     * @throws ServletException If the servlet encounters a servlet-specific problem.
+     * @throws IOException      If an I/O error occurs.
+     */
    	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
    		int productId = Integer.parseInt(request.getParameter("productId"));
+   		// Display the product's information
 		request.setAttribute("productId", productId);
 		this.getServletContext().getRequestDispatcher("/product.jsp").include(request, response);
    	}
 
-   	/**
-   	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-   	 */
+    /**
+     * Handles the HTTP POST method.
+     *
+     * @param request  The HttpServletRequest object.
+     * @param response The HttpServletResponse object.
+     * @throws ServletException If the servlet encounters a servlet-specific problem.
+     * @throws IOException      If an I/O error occurs.
+     */
    	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
    		doGet(request, response);
    		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+   		// Get the action from the request (addOrder)
    		String action = request.getParameter("action");
    		int productId = Integer.parseInt(request.getParameter("productId"));
    		
    		if (action != null) {
-   			//Add the product to the basket
+   			// Add the product to the basket
    			if (action.equals("addOrder")) {
    				if (ServletIndex.isLogged(request, response)) {
    					User user = ServletIndex.loginUser(request, response);
@@ -69,5 +82,4 @@ public class ServletProductDetail extends HttpServlet {
    			}
    		}
    	}
-
 }
