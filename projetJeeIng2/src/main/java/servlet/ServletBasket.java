@@ -87,6 +87,26 @@ public class ServletBasket extends HttpServlet {
 					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500 Internal Server Error
 					response.getWriter().write("{\"status\": \"Internal Server Error.\"}");
 				}
+			} else if (action.equals("deleteOrder")) {
+				//Delete the order
+				try {
+					int basketId = Integer.parseInt(request.getParameter("basketId"));
+
+					Basket basket = basketDao.getBasket(basketId);
+					response.setContentType("application/json");
+					response.setCharacterEncoding("UTF-8");
+					
+					if (basketDao.deleteOrder(basket.getId())) {
+						response.setStatus(HttpServletResponse.SC_OK); // 200 OK
+						response.getWriter().write("{\"status\": \"Order n°"+basketId+" deleted successfully.\"}");
+					} else {
+						response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400 Bad Request
+						response.getWriter().write("{\"status\": \"Failed to delete order.\"}");
+					}
+				} catch (Exception e) {
+					response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500 Internal Server Error
+					response.getWriter().write("{\"status\": \"Internal Server Error.\"}");
+				}
 			} else if (action.equals("confirmOrder")) {
 				//Confirm the basket to pay
 				List<Basket> basketList = basketDao.getBasketList(ServletIndex.loginUser(request, response).getId());

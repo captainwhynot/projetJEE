@@ -35,6 +35,12 @@ public SessionFactory sessionFactory;
 	        // Handle the case where no result is found (basketId is null)
 	        int save = (Integer) session.save(basket);
 	        tx.commit();
+	        tx = session.beginTransaction();
+        	//If the product is out of stock, add it with quantity null
+	        if (!checkStock(basket.getId(), quantity)) {
+	        	updateQuantity(basket.getId(), -basket.getQuantity());
+	        }
+	        tx.commit();
 	        return (save > 0);
 	    }catch (Exception e) {
 	        return false;
@@ -49,7 +55,7 @@ public SessionFactory sessionFactory;
 			Session session = sessionFactory.openSession();
 			Transaction tx = session.beginTransaction();
 			
-			String sql = "UPDATE Basket SET quantity=quantity" + (quantity>0?"+":"") + quantity +" WHERE id="+id+";";
+			String sql = "UPDATE Basket SET quantity=quantity" + (quantity>=0?"+":"") + quantity +" WHERE id="+id+";";
 			SQLQuery query = session.createSQLQuery(sql);
 			int rowCount = query.executeUpdate();
 			
@@ -154,9 +160,9 @@ public SessionFactory sessionFactory;
 
 		UserDao userDao = new UserDao(sessionFactory);
 		User user = userDao.getUser(customerId);
-		boolean mailSent = userDao.sendMail(user.getEmail(), "MANGASTORE : Paiement recapitulation", mailContainer);
+		userDao.sendMail(user.getEmail(), "MANGASTORE : Paiement recapitulation", mailContainer);
 		
-		return (numberRowSolde > 0 && numberRowBasket > 0 && numberFidelityPoint > 0 && numberRowProduct > 0 && mailSent);
+		return (numberRowSolde > 0 && numberRowBasket > 0 && numberFidelityPoint > 0 && numberRowProduct > 0);
 	}
 	
 	public boolean checkStock(int id, int quantity) {

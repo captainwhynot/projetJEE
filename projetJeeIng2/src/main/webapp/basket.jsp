@@ -3,6 +3,7 @@
 <%@ page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"/>
 <%@ include file="header.jsp" %>
 <% if (isLogged && loginUser.getTypeUser().equals("Customer")) { %>
 <body>
@@ -21,6 +22,7 @@
 		                     <th>Quantity</th>
 		                     <th>Seller</th>
 		                     <th>Total Price</th>
+		                     <th>Delete Order</th>
 		                 </tr>
 		             </thead>
 		             <tbody>
@@ -45,12 +47,15 @@
 	                            totalOrderPrice += total;
 	                            %>
 	                            <td><span class="totalPrice"><%= totalString %></span></td>
+	                            <td><button type="button" style="padding : 0; background : none;" onclick="deleteOrder(<%= basket.getId() %>)">
+	                            <i class="fas fa-trash" style="color: red;"></i></button></td>
 	                        </tr>
 	                     <% }  %>
 	                     <tr>
 		                     <td colspan=6>Total Order Price :</td>
 		                     <% String totalOrderPriceString = String.format("%.2f", totalOrderPrice); %>
 		                     <td><span class="totalOrderPrice"><%= totalOrderPriceString %></span></td>
+		                     <td></td>
 	                     </tr>
 	                </tbody>
 	           	</table>
@@ -104,6 +109,22 @@
 	        });
 
 	        document.querySelector('.totalOrderPrice').textContent = totalOrderPrice.toFixed(2);
+	    }
+	    
+	    function deleteOrder(basketId) {
+	    	//Delete the order
+	    	$.ajax({
+	            type: "POST",
+	            url: "Basket",
+	            data: { basketId: basketId, action: "deleteOrder" },
+	            dataType: "json",
+	            success: function (response) {
+	            	showAlert("Success : " + response.status, "success", "./Basket");
+	            },
+	            error: function (jqXHR, textStatus, errorThrown) {
+	            	showAlert("Error " + jqXHR.status + ": " + jqXHR.responseJSON.status, "error", "./Basket");
+	            }
+	        });
 	    }
 	</script>
 </body>
