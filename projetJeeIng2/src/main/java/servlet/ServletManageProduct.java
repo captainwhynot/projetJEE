@@ -130,8 +130,18 @@ public class ServletManageProduct extends HttpServlet {
                 String[] priceString = request.getParameterValues("price");
                 String[] stockString = request.getParameterValues("stock");
 
-                List<Product> productList = productDao.getProductList();
-                if (productList != null && imgString != null && nameString != null && priceString != null && stockString != null && fileNameString != null) {
+                List<Product> productLists;
+                if (ServletIndex.loginUser(request, response).getTypeUser().equals("Administrator")) productLists = productDao.getProductList();
+                else {
+           			Session session = sessionFactory.openSession();
+           			
+           			String sql = "SELECT * FROM Product WHERE sellerId="+ServletIndex.loginUser(request, response).getId()+";";
+           			SQLQuery query = session.createSQLQuery(sql).addEntity(Product.class);
+           			productLists = query.list();
+           			
+           			session.close();
+                }
+                if (productLists != null && imgString != null && nameString != null && priceString != null && stockString != null && fileNameString != null) {
                 	Product product = null;
                 	String name = null;
                 	double price = 0;
@@ -141,8 +151,8 @@ public class ServletManageProduct extends HttpServlet {
                 	String fileName = null;
         	        Part filePart = null;
         	        
-                	for (int i = 0; i < productList.size(); i++) {
-                		product = productList.get(i);
+                	for (int i = 0; i < productLists.size(); i++) {
+                		product = productLists.get(i);
                 		name = nameString[i];
                 		price = Double.parseDouble(priceString[i]);
                 		stock = Integer.parseInt(stockString[i]);

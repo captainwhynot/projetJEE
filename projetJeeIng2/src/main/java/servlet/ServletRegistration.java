@@ -76,9 +76,9 @@ public class ServletRegistration extends HttpServlet {
 					     "</div>";
             // Send registration confirmation mail
 			if (dao.sendMail(email, "MANGASTORE : Registration", container)) {
-				response.getWriter().println("<script>showAlert('Your account has been successfully created.', 'success', './Index');</script>");
+				response.getWriter().println("<script>showAlert('Your account has been successfully created.', 'success', './Login');</script>");
 			} else {
-		        response.getWriter().println("<script>showAlert('Confirmation mail didn\\'t send well.', 'warning', './Index');</script>");
+		        response.getWriter().println("<script>showAlert('Confirmation mail didn\\'t send well.', 'warning', './Login');</script>");
 			}
 		} else {
 	        response.getWriter().println("<script>showAlert('This e-mail is already taken.', 'error', '');</script>");

@@ -30,7 +30,7 @@
 	                             <td><%= customer.getEmail() %>
 	                             <input type="hidden" name="customerList" value="<%= customer.getEmail() %>"></td>
 	                             <td><%= customer.getUsername() %></td>
-	                             <td><input type="number" name="fidelityPointList" value="<%= customer.getFidelityPoint() %>"></td>
+	                             <td><input type="number" name="fidelityPointList" value="<%= customer.getFidelityPoint() %>" min="0"></td>
 	                         </tr>
 	                     <% } %>
 	                 </tbody>

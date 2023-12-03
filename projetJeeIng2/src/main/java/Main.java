@@ -106,7 +106,7 @@ public class Main{
 		System.out.println(basketDao.addOrder(basket, cust.getId(), 1));
 		System.out.println(basketDao.updateQuantity(basket.getId(), 2));
 		System.out.println(basketDao.confirmOrder(cust.getId()));
-		if (creditCardDao.checkCreditCard(123, 111, new Date(2023 - 1900, 11 - 1, 20))) {
+		if (creditCardDao.checkCreditCard(123, 111, new Date(2023 - 1900, 12 - 1, 20))) {
 			System.out.println("credit card valid");
 			if (creditCardDao.checkBalance(123, basketDao.totalPrice(cust.getId()))) {
 				System.out.println("enough credit to pay");
